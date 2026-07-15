@@ -1,0 +1,6 @@
+{
+  "name": "AI Document Analyzer",
+  "description": "Production-grade multi-modal document analysis platform for parsing, chatting, summarizing, and translating PDFs, DOCX, PPTX, and images using Gemini API.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,224 @@
+import React, { useState } from "react";
+import { Languages, Globe, Loader2, Sparkles, AlertCircle, FileText } from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
+
+interface TranslationViewProps {
+  fileId: string;
+  onTranslate: (lang: string) => Promise<string | null>;
+}
+
+const LANGUAGES = [
+  { code: "Spanish", name: "Spanish (Español)" },
+  { code: "French", name: "French (Français)" },
+  { code: "German", name: "German (Deutsch)" },
+  { code: "Japanese", name: "Japanese (日本語)" },
+  { code: "Chinese", name: "Chinese (中文)" },
+  { code: "Hindi", name: "Hindi (हिन्दी)" },
+  { code: "Italian", name: "Italian (Italiano)" },
+];
+
+export default function TranslationView({ fileId, onTranslate }: TranslationViewProps) {
+  const [targetLang, setTargetLang] = useState("Spanish");
+  const [isLoading, setIsLoading] = useState(false);
+  const [translatedText, setTranslatedText] = useState<string | null>(null);
+  const [error, setError] = useState("");
+
+  const handleTranslateClick = async () => {
+    setIsLoading(true);
+    setError("");
+    setTranslatedText(null);
+
+    try {
+      const text = await onTranslate(targetLang);
+      if (text) {
+        setTranslatedText(text);
+      } else {
+        throw new Error("Translation service returned an empty payload");
+      }
+    } catch (err: any) {
+      console.error(err);
+      setError(err?.message || "Translation gateway error");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Senior Engineering: Custom dependency-free markdown visualizer
+  const renderMarkdown = (text: string) => {
+    const lines = text.split("\n");
+    return lines.map((line, idx) => {
+      let cleanLine = line.trim();
+      
+      if (cleanLine.startsWith("###")) {
+        return (
+          <h4 key={idx} className="text-xs font-bold text-slate-100 mt-4 mb-2 font-mono uppercase tracking-wider">
+            {cleanLine.replace("###", "").trim()}
+          </h4>
+        );
+      }
+      if (cleanLine.startsWith("##")) {
+        return (
+          <h3 key={idx} className="text-xs font-bold text-sky-400 mt-5 mb-2 border-b border-slate-800 pb-1 flex items-center gap-1.5 font-mono uppercase tracking-wider">
+            <Globe className="w-3.5 h-3.5" /> {cleanLine.replace("##", "").trim()}
+          </h3>
+        );
+      }
+      if (cleanLine.startsWith("#")) {
+        return (
+          <h2 key={idx} className="text-base font-extrabold text-white mt-6 mb-3 tracking-tight">
+            {cleanLine.replace("#", "").trim()}
+          </h2>
+        );
+      }
+      if (cleanLine.startsWith("-") || cleanLine.startsWith("*")) {
+        return (
+          <li key={idx} className="text-xs leading-relaxed text-slate-300 ml-5 list-disc mb-1.5 pl-0.5">
+            {cleanLine.substring(1).trim()}
+          </li>
+        );
+      }
+      if (cleanLine.startsWith("**") && cleanLine.endsWith("**")) {
+        return (
+          <p key={idx} className="text-xs font-bold text-slate-200 mt-2.5">
+            {cleanLine.replace(/\*\*/g, "").trim()}
+          </p>
+        );
+      }
+      if (cleanLine === "") {
+        return <div key={idx} className="h-2" />;
+      }
+      return (
+        <p key={idx} className="text-xs leading-relaxed text-slate-400 mb-1 font-sans">
+          {line}
+        </p>
+      );
+    });
+  };
+
+  return (
+    <div className="flex flex-col gap-4 w-full h-full" id="translation-view-container">
+      {/* Translation Toolbar Config */}
+      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4" id="translation-toolbar">
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded bg-sky-500/10 border border-sky-400/20 flex items-center justify-center text-sky-400">
+            <Languages className="w-4.5 h-4.5" />
+          </div>
+          <div>
+            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-300">
+              Cross-Lingual Translation
+            </h3>
+            <p className="text-[10px] text-slate-500 mt-0.5">
+              Gemini semantic localization engine
+            </p>
+          </div>
+        </div>
+
+        {/* Configuration input field */}
+        <div className="flex items-center gap-2.5 w-full sm:w-auto shrink-0">
+          <select
+            id="target-language-select"
+            value={targetLang}
+            onChange={(e) => setTargetLang(e.target.value)}
+            disabled={isLoading}
+            className="flex-1 sm:flex-none bg-slate-950 border border-slate-800 focus:border-sky-500 rounded-xl px-3.5 py-2 text-xs text-slate-200 focus:ring-0 outline-hidden transition-all disabled:opacity-50"
+          >
+            {LANGUAGES.map((lang) => (
+              <option key={lang.code} value={lang.code}>
+                {lang.name}
+              </option>
+            ))}
+          </select>
+
+          <button
+            id="trigger-translation-btn"
+            disabled={isLoading}
+            onClick={handleTranslateClick}
+            className="flex-1 sm:flex-none bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs transition-colors shrink-0 cursor-pointer disabled:opacity-40"
+          >
+            {isLoading ? "TRANSLATING..." : "TRANSLATE"}
+          </button>
+        </div>
+      </div>
+
+      {/* Translations Output Display */}
+      <div className="flex-1 flex flex-col min-h-[250px]" id="translation-output-canvas">
+        <AnimatePresence mode="wait">
+          {isLoading && (
+            <motion.div
+              key="translating"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="flex-1 flex flex-col items-center justify-center text-center gap-3 p-6"
+            >
+              <Loader2 className="w-8 h-8 text-sky-400 animate-spin" />
+              <div>
+                <p className="text-xs font-bold text-sky-400 uppercase tracking-wider">Performing Language Mapping...</p>
+                <p className="text-[10px] text-slate-500 mt-1">
+                  Re-aligning semantic matrices into {targetLang}
+                </p>
+              </div>
+            </motion.div>
+          )}
+
+          {error && (
+            <motion.div
+              key="error"
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
+              className="flex-1 flex flex-col items-center justify-center border border-rose-950/20 bg-rose-950/10 rounded-2xl p-6 text-center gap-3 text-rose-400"
+            >
+              <AlertCircle className="w-8 h-8 text-rose-500" />
+              <div>
+                <p className="text-xs font-bold">Translation Gateway Blocked</p>
+                <p className="text-[10px] text-slate-500 mt-1 max-w-sm leading-relaxed">
+                  {error}
+                </p>
+              </div>
+            </motion.div>
+          )}
+
+          {!isLoading && !error && !translatedText && (
+            <motion.div
+              key="empty"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="flex-1 flex flex-col items-center justify-center border border-slate-850 bg-slate-900 rounded-2xl p-8 text-center"
+            >
+              <Globe className="w-8 h-8 text-slate-600 mb-2.5 animate-pulse-slow" />
+              <p className="text-xs font-medium text-slate-400">
+                Choose a target language above and click "Translate" to begin.
+              </p>
+              <p className="text-[10px] text-slate-500 max-w-[280px] mt-1 font-mono">
+                The Gemini model localizes key summaries, tables, and sections seamlessly into the target dialect.
+              </p>
+            </motion.div>
+          )}
+
+          {!isLoading && !error && translatedText && (
+            <motion.div
+              key="content"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex-1 bg-slate-900 border border-slate-800 rounded-2xl p-5 md:p-6 overflow-y-auto max-h-[340px]"
+            >
+              <div className="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
+                <span className="text-[10px] font-bold tracking-wider font-mono uppercase bg-sky-500/10 border border-sky-500/20 text-sky-400 px-2.5 py-1 rounded flex items-center gap-1">
+                  <Languages className="w-3.5 h-3.5" /> {targetLang} OUTPUT
+                </span>
+                <span className="text-[9px] text-slate-500 font-mono">
+                  Characters: {translatedText.length}
+                </span>
+              </div>
+              <div className="space-y-1 text-slate-300">
+                {renderMarkdown(translatedText)}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </div>
+  );
+}

@@ -1,0 +1,37 @@
+version: "3.8"
+
+services:
+  # Python FastAPI backend microservice
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: doc_analyzer_backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - PYTHONUNBUFFERED=1
+    networks:
+      - doc_network
+
+  # Nginx + React SPA frontend client & secure API proxy gateway
+  frontend:
+    build:
+      context: .
+      dockerfile: ./frontend/Dockerfile
+    container_name: doc_analyzer_frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    environment:
+      - NODE_ENV=production
+    networks:
+      - doc_network
+
+networks:
+  doc_network:
+    driver: bridge
