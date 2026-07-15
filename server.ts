@@ -30,9 +30,8 @@ const upload = multer({
 const apiKey = process.env.GEMINI_API_KEY;
 let ai: GoogleGenAI | null = null;
 
-const isOAuthToken = apiKey && (apiKey.startsWith("AQ.Ab") || apiKey.startsWith("ya29."));
 
-if (apiKey && !isOAuthToken) {
+if (apiKey ) {
   ai = new GoogleGenAI({
     apiKey,
     httpOptions: {
@@ -42,13 +41,9 @@ if (apiKey && !isOAuthToken) {
     },
   });
   console.log("Gemini client successfully initialized server-side.");
-} else {
-  if (isOAuthToken) {
-    console.warn("Warning: The GEMINI_API_KEY environment variable contains an OAuth access token (starts with 'AQ.Ab' or 'ya29.') instead of a valid Gemini API key (starts with 'AIzaSy'). Using mock analysis mode. Please configure a valid Gemini API key (from Google AI Studio) in the Secrets panel to enable real-time Gemini AI analysis.");
   } else {
     console.warn("Warning: GEMINI_API_KEY environment variable is not defined. Using mock analysis mode.");
   }
-}
 
 // Robust wrapper for Gemini generateContent with exponential backoff, jitter, and fallback model to combat 503/429
 async function generateContentWithRetry(params: any, retries = 3, delay = 1000): Promise<any> {
