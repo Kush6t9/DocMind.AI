@@ -350,6 +350,29 @@ export default function LoginScreen({ onLoginSuccess, isVerifying, setIsVerifyin
         </div>
       </section>
 
+      {/* CTA Section */}
+      <section className="py-24 border-t border-slate-900/60 max-w-6xl w-full mx-auto px-8 flex flex-col items-center justify-center text-center space-y-6">
+        <h2 className="text-5xl md:text-7xl lg:text-[80px] font-black tracking-tight text-white leading-[0.95] uppercase font-sans">
+          YOUR<br />
+          DOCUMENTS ARE<br />
+          <span className="bg-gradient-to-r from-sky-400 to-indigo-400 bg-clip-text text-transparent">WAITING.</span>
+        </h2>
+        
+        <p className="text-sm md:text-base text-slate-400 font-sans tracking-wide max-w-lg">
+          Stop skimming. Start knowing. The first document takes ten seconds.
+        </p>
+
+        <div className="pt-4">
+          <button
+            onClick={() => login()}
+            className="flex items-center gap-2 px-8 py-4 rounded-full bg-sky-500 hover:bg-sky-400 text-slate-955 text-sm font-extrabold transition-all cursor-pointer shadow-lg hover:shadow-sky-500/20 active:scale-95"
+          >
+            <span>Launch DocMind</span>
+            <ArrowRight className="w-4 h-4 text-slate-950" />
+          </button>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="h-16 border-t border-slate-900/60 px-8 md:px-16 flex items-center justify-between text-xs font-mono text-slate-500 shrink-0">
         <span>© 2026 DOCMIND.AI SYSTEM. ALL RIGHTS RESERVED.</span>
