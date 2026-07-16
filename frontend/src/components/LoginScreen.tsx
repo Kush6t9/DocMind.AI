@@ -19,6 +19,8 @@ import {
   Download
 } from "lucide-react";
 
+import ThemeToggle from "./ThemeToggle";
+
 interface LoginScreenProps {
   onLoginSuccess: (accessToken: string, userProfile: any) => void;
   isVerifying: boolean;
@@ -83,15 +85,18 @@ export default function LoginScreen({ onLoginSuccess, isVerifying, setIsVerifyin
           <a href="#workflow" className="px-4 py-1.5 rounded-full text-xs font-semibold text-slate-350 hover:text-white transition-all">Workflow</a>
         </nav>
 
-        {/* Action button */}
-        <button
-          onClick={() => login()}
-          disabled={isVerifying}
-          className="flex items-center gap-1.5 px-5 py-2 rounded-full bg-sky-500 hover:bg-sky-400 text-slate-955 text-xs font-bold transition-all cursor-pointer shadow-md active:scale-95"
-        >
-          <span>{isVerifying ? "Verifying..." : "Launch app"}</span>
-          <ArrowRight className="w-3.5 h-3.5" />
-        </button>
+        {/* Action buttons with Theme Switcher */}
+        <div className="flex items-center gap-3">
+          <ThemeToggle />
+          <button
+            onClick={() => login()}
+            disabled={isVerifying}
+            className="flex items-center gap-1.5 px-5 py-2 rounded-full bg-sky-500 hover:bg-sky-400 text-slate-955 text-xs font-bold transition-all cursor-pointer shadow-md active:scale-95"
+          >
+            <span>{isVerifying ? "Verifying..." : "Launch app"}</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </button>
+        </div>
       </header>
 
       {/* HERO SECTION */}

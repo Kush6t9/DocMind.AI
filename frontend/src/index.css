@@ -63,3 +63,103 @@
 .glow-bento {
   box-shadow: 0 0 40px -15px rgba(56, 189, 248, 0.12);
 }
+
+/* Light theme overrides */
+html.light {
+  --color-bg-base: #f8fafc;
+  --color-bg-surface: #ffffff;
+  --color-bg-surface-raised: #f1f5f9;
+  
+  --color-slate-950: #f8fafc;
+  --color-slate-900: #ffffff;
+  --color-slate-850: #f1f5f9;
+  --color-slate-800: #e2e8f0;
+  --color-slate-700: #cbd5e1;
+  --color-slate-600: #94a3b8;
+}
+
+html.light body {
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+html.light .bg-grid {
+  background-image: 
+    linear-gradient(to right, rgba(15, 23, 42, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(15, 23, 42, 0.03) 1px, transparent 1px) !important;
+}
+
+html.light .text-slate-100,
+html.light .text-slate-200,
+html.light .text-slate-300,
+html.light .text-slate-350,
+html.light .text-slate-355,
+html.light .text-white {
+  color: #0f172a !important;
+}
+
+html.light .text-slate-400,
+html.light .text-slate-405,
+html.light .text-slate-450,
+html.light .text-slate-455 {
+  color: #475569 !important;
+}
+
+html.light .border-slate-800,
+html.light .border-slate-805,
+html.light .border-slate-850,
+html.light .border-slate-900,
+html.light .border-slate-905 {
+  border-color: #e2e8f0 !important;
+}
+
+html.light .bg-slate-950,
+html.light .bg-slate-900,
+html.light .bg-slate-800 {
+  background-color: #f1f5f9 !important;
+}
+
+html.light .bg-bg-surface-raised\/40 {
+  background-color: rgba(241, 245, 249, 0.4) !important;
+}
+
+html.light .bg-bg-surface\/20 {
+  background-color: rgba(255, 255, 255, 0.4) !important;
+}
+
+html.light .bg-bg-surface\/10 {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+html.light .bg-bg-surface-raised\/20 {
+  background-color: rgba(241, 245, 249, 0.2) !important;
+}
+
+html.light .bg-slate-700\/20 {
+  background-color: rgba(226, 232, 240, 0.3) !important;
+  border-color: #cbd5e1 !important;
+}
+
+html.light .bg-\[\#12131c\]\/30 {
+  background-color: rgba(241, 245, 249, 0.4) !important;
+}
+
+html.light .bg-bg-surface\/50 {
+  background-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+html.light .bg-bg-surface\/30 {
+  background-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+html.light .bg-slate-800\/30 {
+  background-color: rgba(226, 232, 240, 0.3) !important;
+}
+
+html.light .bg-slate-805\/30 {
+  background-color: rgba(226, 232, 240, 0.3) !important;
+}
+
+html.light .bg-slate-900\/60 {
+  background-color: rgba(241, 245, 249, 0.6) !important;
+}

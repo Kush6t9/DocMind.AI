@@ -13,6 +13,7 @@ import DocumentSummary from "./components/DocumentSummary";
 import ChatInterface from "./components/ChatInterface";
 import QuizView from "./components/QuizView";
 import TranslationView from "./components/TranslationView";
+import ThemeToggle from "./components/ThemeToggle";
 
 export default function App() {
   // Google OAuth States
@@ -288,6 +289,7 @@ ${activeDoc.summary?.actionItems?.map((a, idx) => `- ${a}`).join('\n') || "None"
           </div>
 
           <div className="flex items-center gap-3">
+            <ThemeToggle />
             {googleUser && (
               <div className="flex items-center gap-2.5">
                 {googleUser.picture ? (
@@ -462,8 +464,9 @@ ${activeDoc.summary?.actionItems?.map((a, idx) => `- ${a}`).join('\n') || "None"
           </div>
         </div>
 
-        {/* Top actions */}
+        {/* Top actions with Theme Switcher */}
         <div className="flex items-center gap-2">
+          <ThemeToggle />
           {activeDoc?.driveViewLink && (
             <a
               href={activeDoc.driveViewLink}
@@ -477,9 +480,9 @@ ${activeDoc.summary?.actionItems?.map((a, idx) => `- ${a}`).join('\n') || "None"
           )}
           <button
             onClick={handleExportNotes}
-            className="flex items-center gap-1 px-4 py-1.5 rounded-full bg-sky-500 hover:bg-sky-400 text-slate-950 text-xs font-bold transition-all cursor-pointer"
+            className="flex items-center gap-1 px-4 py-1.5 rounded-full bg-sky-500 hover:bg-sky-400 text-slate-955 text-xs font-bold transition-all cursor-pointer"
           >
-            <ArrowRight className="w-4 h-4 text-slate-955" />
+            <ArrowRight className="w-4 h-4 text-slate-950" />
             <span>Export notes</span>
           </button>
         </div>
