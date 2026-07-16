@@ -160,10 +160,10 @@ export default function UploadZone({
         onDragLeave={handleDrag}
         onDrop={handleDrop}
         onClick={triggerFileInput}
-        className={`relative flex flex-col items-center justify-center border-2 border-dashed rounded-xl p-5 text-center cursor-pointer transition-all duration-300 h-44 min-h-[11rem] ${
+        className={`relative flex flex-col items-center justify-center border-2 border-dashed rounded-3xl p-6 text-center cursor-pointer transition-all duration-300 h-48 min-h-[12rem] w-full max-w-lg mx-auto ${
           isDragActive
-            ? "border-sky-400 bg-sky-950/20 shadow-[0_0_15px_rgba(56,189,248,0.15)]"
-            : "border-slate-700 bg-slate-800/30 hover:border-slate-500 hover:bg-slate-800/50"
+            ? "border-sky-400 bg-sky-950/20 shadow-[0_0_20px_rgba(56,189,248,0.15)]"
+            : "border-slate-800 bg-slate-900/30 hover:border-slate-700 hover:bg-slate-900/60"
         }`}
       >
         <input
@@ -182,30 +182,30 @@ export default function UploadZone({
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              className="flex flex-col items-center gap-2"
+              className="flex flex-col items-center gap-3"
             >
-              <div className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-sky-400 shadow-inner">
+              <div className="w-12 h-12 rounded-full bg-slate-800 border border-slate-750 flex items-center justify-center text-sky-400 shadow-inner">
                 {accessToken ? (
-                  <Check className="w-5 h-5 text-emerald-400 animate-pulse-slow" />
+                  <Check className="w-6 h-6 text-emerald-400 animate-pulse-slow" />
                 ) : (
-                  <Upload className="w-5 h-5 animate-pulse-slow" />
+                  <Upload className="w-6 h-6 animate-pulse-slow" />
                 )}
               </div>
               <div>
-                <p className="text-xs font-semibold text-slate-200">
+                <p className="text-sm md:text-base font-bold text-slate-200">
                   {accessToken ? "Save directly to Google Drive" : "Drop PDF, PPTX or Image"}
                 </p>
-                <p className="text-[10px] text-slate-400 mt-0.5">
+                <p className="text-xs md:text-sm text-slate-400 mt-1">
                   {accessToken ? (
                     <span className="text-emerald-400 font-medium flex items-center justify-center gap-1">
                       Drive Sync Active (click to browse)
                     </span>
                   ) : (
-                    <>or <span className="text-sky-400 underline font-medium">browse local files</span></>
+                    <>or <span className="text-sky-400 underline font-semibold">browse local files</span></>
                   )}
                 </p>
               </div>
-              <p className="text-[9px] text-slate-500 max-w-[200px]">
+              <p className="text-xs text-slate-500 max-w-[200px]">
                 Max payload 25MB
               </p>
             </motion.div>

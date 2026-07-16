@@ -177,7 +177,7 @@ export default function ChatInterface({
   };
 
   return (
-    <div className="flex flex-col h-[520px] max-h-[520px] bg-slate-900 border border-slate-850 rounded-2xl overflow-hidden shadow-xl relative" id="chat-interface-wrapper">
+    <div className="flex flex-col h-full min-h-[450px] md:min-h-[550px] bg-slate-900 border border-slate-850 rounded-3xl overflow-hidden shadow-xl relative" id="chat-interface-wrapper">
       {/* Chat Header */}
       <div className="bg-slate-800/40 px-6 py-3 border-b border-slate-800 flex items-center justify-between" id="chat-header">
         <div className="flex items-center gap-2">
@@ -253,10 +253,10 @@ export default function ChatInterface({
 
                 {/* Content Bubble */}
                 <div className="flex flex-col gap-1">
-                  <div className={`rounded-xl text-xs leading-relaxed ${
+                  <div className={`rounded-2xl text-sm leading-relaxed ${
                     msg.role === "user"
-                      ? "bg-slate-800 rounded-tr-none p-3 border border-slate-700/50 text-slate-200"
-                      : "bg-slate-700/20 border border-slate-700 rounded-tl-none p-4 text-slate-300 whitespace-pre-wrap"
+                      ? "bg-slate-800 rounded-tr-none p-4 border border-slate-700/50 text-slate-200"
+                      : "bg-slate-700/20 border border-slate-700 rounded-tl-none p-5 text-slate-300 whitespace-pre-wrap"
                   }`}>
                     {msg.content === "" && msg.isStreaming ? (
                       <div className="flex items-center gap-1 text-sky-400 py-1" id="chat-typing-indicator">
@@ -313,13 +313,13 @@ export default function ChatInterface({
           onChange={(e) => setInput(e.target.value)}
           placeholder={isLoading ? "Analyzing document structure..." : "Ask about the document..."}
           disabled={isLoading}
-          className="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-xs focus:outline-hidden focus:border-sky-500 text-slate-200 outline-hidden transition-all placeholder-slate-500"
+          className="flex-1 bg-slate-900 border border-slate-700 rounded-full px-5 py-3 text-sm focus:outline-hidden focus:border-sky-500 text-slate-200 outline-hidden transition-all placeholder-slate-500"
         />
         <button
           id="chat-send-submit"
           type="submit"
           disabled={!input.trim() || isLoading}
-          className="bg-sky-500 text-slate-950 rounded-xl px-4 py-2 font-bold text-xs cursor-pointer hover:bg-sky-400 transition-colors shrink-0 disabled:opacity-40"
+          className="bg-sky-500 text-slate-950 rounded-full px-6 py-3 font-bold text-sm cursor-pointer hover:bg-sky-400 transition-colors shrink-0 disabled:opacity-40"
           title="Send query"
         >
           SEND
