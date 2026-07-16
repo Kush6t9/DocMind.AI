@@ -122,7 +122,7 @@ Follow these steps to deploy a local instance of DocMind.AI for development:
    # Windows PowerShell:
    $env:GEMINI_API_KEY="YourGeminiAPIKeyHere"
    # Windows Command Prompt:
-   set GEMINI_API_KEY="SyYourGeminiAPIKeyHere"
+   set GEMINI_API_KEY="YourGeminiAPIKeyHere"
    # macOS/Linux:
    export GEMINI_API_KEY="YourGeminiAPIKeyHere"
    ```
