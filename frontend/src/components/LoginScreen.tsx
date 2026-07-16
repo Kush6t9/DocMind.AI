@@ -69,9 +69,12 @@ export default function LoginScreen({ onLoginSuccess, isVerifying, setIsVerifyin
           <div className="w-8 h-8 rounded-lg bg-sky-500 flex items-center justify-center text-slate-950 font-bold font-sans">
             D
           </div>
-          <span className="font-extrabold text-base tracking-tight text-white uppercase font-sans">
+          <button 
+            onClick={() => document.getElementById("landing-page-root")?.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="font-extrabold text-base tracking-tight text-white uppercase font-sans hover:opacity-90 active:scale-[0.98] cursor-pointer"
+          >
             DocMind<span className="text-sky-400">.ai</span>
-          </span>
+          </button>
         </div>
 
         {/* Navigation Bar Pills */}
