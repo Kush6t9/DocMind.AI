@@ -120,11 +120,11 @@ Follow these steps to deploy a local instance of DocMind.AI for development:
 4. Configure API environment variable:
    ```bash
    # Windows PowerShell:
-   $env:GEMINI_API_KEY="AIzaSyYourGeminiAPIKeyHere"
+   $env:GEMINI_API_KEY="YourGeminiAPIKeyHere"
    # Windows Command Prompt:
-   set GEMINI_API_KEY="AIzaSyYourGeminiAPIKeyHere"
+   set GEMINI_API_KEY="SyYourGeminiAPIKeyHere"
    # macOS/Linux:
-   export GEMINI_API_KEY="AIzaSyYourGeminiAPIKeyHere"
+   export GEMINI_API_KEY="YourGeminiAPIKeyHere"
    ```
 5. Run the ASGI server:
    ```bash
