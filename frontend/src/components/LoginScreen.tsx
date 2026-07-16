@@ -13,10 +13,10 @@ import {
   Bookmark, 
   Shield, 
   Cpu,
-  Dropzone,
   ArrowRightLeft,
   CheckCircle,
-  HelpCircle
+  HelpCircle,
+  Download
 } from "lucide-react";
 
 interface LoginScreenProps {
@@ -66,7 +66,7 @@ export default function LoginScreen({ onLoginSuccess, isVerifying, setIsVerifyin
       {/* FIXED HEADER */}
       <header className="h-16 border-b border-slate-900/60 flex items-center justify-between px-8 bg-bg-base/40 backdrop-blur-xl sticky top-0 z-50">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-sky-500 flex items-center justify-center text-slate-950 font-bold font-sans">
+          <div className="w-8 h-8 rounded-lg bg-sky-500 flex items-center justify-center text-slate-955 font-bold font-sans">
             D
           </div>
           <button 
@@ -79,9 +79,8 @@ export default function LoginScreen({ onLoginSuccess, isVerifying, setIsVerifyin
 
         {/* Navigation Bar Pills */}
         <nav className="hidden md:flex items-center gap-1 bg-bg-surface/40 backdrop-blur-md border border-slate-850 rounded-full px-1.5 py-1">
-          <a href="#hero" className="px-4 py-1.5 rounded-full text-xs font-semibold text-slate-350 hover:text-white transition-all">Product</a>
+          <a href="#toolkit" className="px-4 py-1.5 rounded-full text-xs font-semibold text-slate-350 hover:text-white transition-all">Product</a>
           <a href="#workflow" className="px-4 py-1.5 rounded-full text-xs font-semibold text-slate-350 hover:text-white transition-all">Workflow</a>
-          <a href="#toolkit" className="px-4 py-1.5 rounded-full text-xs font-semibold text-slate-355 hover:text-white transition-all">Metrics</a>
         </nav>
 
         {/* Action button */}
@@ -132,7 +131,7 @@ export default function LoginScreen({ onLoginSuccess, isVerifying, setIsVerifyin
           </div>
         </div>
 
-        {/* Right side visualization: Interactive Chat Mockup (Matches screenshot exactly, themed Sky-Blue & Transparent) */}
+        {/* Right side visualization: Interactive Chat Mockup */}
         <div className="flex-1 w-full max-w-lg bg-bg-surface/20 backdrop-blur-xl border border-slate-800/40 rounded-3xl p-6 shadow-2xl relative shrink-0">
           <div className="flex items-center justify-between border-b border-slate-900 pb-3.5 mb-4">
             <div className="flex items-center gap-2.5">
@@ -147,7 +146,7 @@ export default function LoginScreen({ onLoginSuccess, isVerifying, setIsVerifyin
           <div className="space-y-4 min-h-[160px] flex flex-col justify-end">
             {/* User message */}
             <div className="self-end max-w-[85%] flex gap-2.5 flex-row-reverse items-start">
-              <div className="w-7 h-7 rounded bg-bg-surface-raised/20 border border-slate-850 flex items-center justify-center text-xs text-slate-350 font-mono font-bold">
+              <div className="w-7 h-7 rounded bg-bg-surface-raised/20 border border-slate-850 flex items-center justify-center text-xs text-slate-355 font-mono font-bold">
                 U
               </div>
               <div className="bg-bg-surface-raised/30 border border-slate-800 rounded-2xl rounded-tr-none px-4 py-2.5 text-xs text-slate-200 leading-relaxed font-normal">
@@ -236,7 +235,7 @@ export default function LoginScreen({ onLoginSuccess, isVerifying, setIsVerifyin
         <div className="text-left space-y-2">
           <span className="text-xs font-bold text-sky-400 uppercase tracking-widest font-mono">THE TOOLKIT</span>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white uppercase font-sans tracking-tight">
-            ONE UPLOAD. SEVEN SUPERPOWERS.
+            ONE UPLOAD. EIGHT SUPERPOWERS.
           </h2>
         </div>
 
@@ -251,7 +250,7 @@ export default function LoginScreen({ onLoginSuccess, isVerifying, setIsVerifyin
               Ask questions in natural language and get answers pulled straight from the source — with paragraph citations and zero hallucination-by-design. Context-aware follow-ups included.
             </p>
             <div className="bg-bg-surface-raised/20 border border-slate-850 p-4 rounded-2xl max-w-md space-y-2 font-mono text-[11px] text-slate-500">
-              <span className="text-slate-400">Which dataset performed best?</span>
+              <span className="text-slate-405">Which dataset performed best?</span>
               <p className="text-slate-350"><span className="text-sky-400 font-bold">WikiText-103</span> — perplexity dropped to <span className="text-sky-400 font-bold">18.3</span>, a 12% gain ([T14]).</p>
             </div>
           </div>
@@ -286,9 +285,9 @@ export default function LoginScreen({ onLoginSuccess, isVerifying, setIsVerifyin
               </p>
             </div>
             <div className="flex gap-2">
-              <span className="w-6 h-6 rounded-full bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-[10px] font-mono text-indigo-400 font-bold">1</span>
-              <span className="w-6 h-6 rounded-full bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-[10px] font-mono text-indigo-400 font-bold">2</span>
-              <span className="w-6 h-6 rounded-full bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-[10px] font-mono text-indigo-400 font-bold">3</span>
+              <span className="w-6 h-6 rounded-full bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-[10px] font-mono text-indigo-405 font-bold">1</span>
+              <span className="w-6 h-6 rounded-full bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-[10px] font-mono text-indigo-405 font-bold">2</span>
+              <span className="w-6 h-6 rounded-full bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-[10px] font-mono text-indigo-405 font-bold">3</span>
             </div>
           </div>
 
@@ -338,13 +337,27 @@ export default function LoginScreen({ onLoginSuccess, isVerifying, setIsVerifyin
           <div className="bg-bg-surface/20 backdrop-blur-md border border-slate-800/40 rounded-3xl p-6 space-y-4 hover:border-amber-500/20 transition-all">
             <div className="flex items-center gap-2">
               <Sparkles className="w-5 h-5 text-amber-400" />
-              <h4 className="text-sm font-bold text-white">Simplify text</h4>
+              <h4 className="text-sm font-bold text-white">Plain-language rewrite</h4>
             </div>
             <p className="text-xs text-slate-400 leading-relaxed font-normal">
-              Rewrite complex materials or structural paragraphs in plain English, explaining jargon like a kid could follow.
+              The same document, rewritten so simply a 12-year-old could pass the test.
             </p>
             <div className="px-3 py-1.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 text-[10px] font-bold inline-block">
               ✓ Plain English mode active
+            </div>
+          </div>
+
+          {/* Export notes bento (8th superpower - Added according to user requirement) */}
+          <div className="bg-bg-surface/20 backdrop-blur-md border border-slate-800/40 rounded-3xl p-6 space-y-4 hover:border-sky-500/20 transition-all">
+            <div className="flex items-center gap-2">
+              <Download className="w-5 h-5 text-sky-400" />
+              <h4 className="text-sm font-bold text-white">Export notes</h4>
+            </div>
+            <p className="text-xs text-slate-400 leading-relaxed font-normal">
+              Take your summary, key points and scores anywhere as clean Markdown.
+            </p>
+            <div className="px-3 py-1.5 rounded-xl bg-sky-500/10 border border-sky-500/20 text-sky-400 text-[10px] font-bold inline-block">
+              ✓ Export format: .txt / .md
             </div>
           </div>
         </div>
