@@ -51,44 +51,44 @@ export default function TranslationView({ fileId, onTranslate }: TranslationView
       
       if (cleanLine.startsWith("###")) {
         return (
-          <h4 key={idx} className="text-xs font-bold text-slate-100 mt-4 mb-2 font-mono uppercase tracking-wider">
+          <h4 key={idx} className="text-sm font-bold text-slate-100 mt-5 mb-2.5 font-mono uppercase tracking-wider">
             {cleanLine.replace("###", "").trim()}
           </h4>
         );
       }
       if (cleanLine.startsWith("##")) {
         return (
-          <h3 key={idx} className="text-xs font-bold text-cyan-400 mt-5 mb-2 border-b border-slate-800 pb-1 flex items-center gap-1.5 font-mono uppercase tracking-wider">
-            <Globe className="w-3.5 h-3.5" /> {cleanLine.replace("##", "").trim()}
+          <h3 key={idx} className="text-sm font-bold text-cyan-400 mt-6 mb-3 border-b border-slate-800 pb-1.5 flex items-center gap-2 font-mono uppercase tracking-wider">
+            <Globe className="w-4.5 h-4.5" /> {cleanLine.replace("##", "").trim()}
           </h3>
         );
       }
       if (cleanLine.startsWith("#")) {
         return (
-          <h2 key={idx} className="text-base font-extrabold text-white mt-6 mb-3 tracking-tight">
+          <h2 key={idx} className="text-lg font-extrabold text-white mt-7 mb-4 tracking-tight">
             {cleanLine.replace("#", "").trim()}
           </h2>
         );
       }
       if (cleanLine.startsWith("-") || cleanLine.startsWith("*")) {
         return (
-          <li key={idx} className="text-xs leading-relaxed text-slate-350 ml-5 list-disc mb-1.5 pl-0.5">
+          <li key={idx} className="text-sm leading-relaxed text-slate-300 ml-6 list-disc mb-2 pl-0.5">
             {cleanLine.substring(1).trim()}
           </li>
         );
       }
       if (cleanLine.startsWith("**") && cleanLine.endsWith("**")) {
         return (
-          <p key={idx} className="text-xs font-bold text-slate-200 mt-2.5">
+          <p key={idx} className="text-sm font-bold text-slate-200 mt-3">
             {cleanLine.replace(/\*\*/g, "").trim()}
           </p>
         );
       }
       if (cleanLine === "") {
-        return <div key={idx} className="h-2" />;
+        return <div key={idx} className="h-3" />;
       }
       return (
-        <p key={idx} className="text-xs leading-relaxed text-slate-400 mb-1 font-sans">
+        <p key={idx} className="text-sm leading-relaxed text-slate-350 mb-2 font-sans">
           {line}
         </p>
       );
@@ -98,16 +98,16 @@ export default function TranslationView({ fileId, onTranslate }: TranslationView
   return (
     <div className="flex flex-col gap-4 w-full h-full" id="translation-view-container">
       {/* Translation Toolbar Config */}
-      <div className="bg-bg-surface border border-slate-800/85 rounded-3xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4" id="translation-toolbar">
+      <div className="bg-bg-surface border border-slate-800/85 rounded-3xl p-5 flex flex-col sm:flex-row items-center justify-between gap-4" id="translation-toolbar">
         <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400">
+          <div className="w-10 h-10 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400">
             <Languages className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-300">
+            <h3 className="text-sm font-bold uppercase tracking-wider text-slate-300">
               Cross-Lingual Translation
             </h3>
-            <p className="text-[10px] text-slate-500 mt-0.5 font-mono">
+            <p className="text-[10px] text-slate-505 mt-0.5 font-mono">
               Gemini semantic localization engine
             </p>
           </div>
@@ -120,7 +120,7 @@ export default function TranslationView({ fileId, onTranslate }: TranslationView
             value={targetLang}
             onChange={(e) => setTargetLang(e.target.value)}
             disabled={isLoading}
-            className="flex-1 sm:flex-none bg-bg-surface-raised border border-slate-800 focus:border-cyan-500 rounded-full px-4 py-2 text-xs text-slate-250 outline-hidden transition-all disabled:opacity-50"
+            className="flex-1 sm:flex-none bg-bg-surface-raised border border-slate-800 focus:border-cyan-500 rounded-full px-4 py-2.5 text-xs text-slate-250 outline-hidden transition-all disabled:opacity-50"
           >
             {LANGUAGES.map((lang) => (
               <option key={lang.code} value={lang.code}>
@@ -133,15 +133,15 @@ export default function TranslationView({ fileId, onTranslate }: TranslationView
             id="trigger-translation-btn"
             disabled={isLoading}
             onClick={handleTranslateClick}
-            className="flex-1 sm:flex-none bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold px-5 py-2.5 rounded-full text-xs transition-colors shrink-0 cursor-pointer disabled:opacity-40"
+            className="flex-1 sm:flex-none bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold px-6 py-3 rounded-full text-xs transition-colors shrink-0 cursor-pointer disabled:opacity-40"
           >
             {isLoading ? "TRANSLATING..." : "TRANSLATE"}
           </button>
         </div>
       </div>
 
-      {/* Translations Output Display */}
-      <div className="flex-1 flex flex-col min-h-[250px]" id="translation-output-canvas">
+      {/* Translations Output Display (Increased min-h to 350px) */}
+      <div className="flex-1 flex flex-col min-h-[350px]" id="translation-output-canvas">
         <AnimatePresence mode="wait">
           {isLoading && (
             <motion.div
@@ -153,7 +153,7 @@ export default function TranslationView({ fileId, onTranslate }: TranslationView
             >
               <Loader2 className="w-8 h-8 text-cyan-400 animate-spin" />
               <div>
-                <p className="text-xs font-bold text-cyan-400 uppercase tracking-wider">Performing Language Mapping...</p>
+                <p className="text-sm font-bold text-cyan-400 uppercase tracking-wider">Performing Language Mapping...</p>
                 <p className="text-[10px] text-slate-500 mt-1 font-mono">
                   Re-aligning semantic matrices into {targetLang}
                 </p>
@@ -167,11 +167,11 @@ export default function TranslationView({ fileId, onTranslate }: TranslationView
               initial={{ opacity: 0, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
-              className="flex-1 flex flex-col items-center justify-center border border-rose-950/20 bg-rose-950/10 rounded-3xl p-6 text-center gap-3 text-rose-400"
+              className="flex-1 flex flex-col items-center justify-center border border-rose-955/20 bg-rose-955/10 rounded-3xl p-6 text-center gap-3 text-rose-455"
             >
               <AlertCircle className="w-8 h-8 text-rose-500" />
               <div>
-                <p className="text-xs font-bold">Translation Gateway Blocked</p>
+                <p className="text-sm font-bold">Translation Gateway Blocked</p>
                 <p className="text-[10px] text-slate-500 mt-1 max-w-sm leading-relaxed">
                   {error}
                 </p>
@@ -202,17 +202,17 @@ export default function TranslationView({ fileId, onTranslate }: TranslationView
               key="content"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="flex-1 bg-bg-surface border border-slate-800/80 rounded-3xl p-5 md:p-6 overflow-y-auto max-h-[340px]"
+              className="flex-1 bg-bg-surface border border-slate-800/80 rounded-3xl p-6 overflow-y-auto max-h-[550px]"
             >
-              <div className="flex items-center justify-between border-b border-slate-900 pb-3 mb-4">
-                <span className="text-[10px] font-bold tracking-wider font-mono uppercase bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 px-2.5 py-1 rounded flex items-center gap-1">
-                  <Languages className="w-3.5 h-3.5" /> {targetLang} OUTPUT
+              <div className="flex items-center justify-between border-b border-slate-900 pb-3.5 mb-4">
+                <span className="text-[10px] font-bold tracking-wider font-mono uppercase bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 px-3 py-1 rounded-lg flex items-center gap-1.5">
+                  <Languages className="w-4 h-4" /> {targetLang} OUTPUT
                 </span>
-                <span className="text-[9px] text-slate-500 font-mono">
+                <span className="text-xs text-slate-500 font-mono">
                   Characters: {translatedText.length}
                 </span>
               </div>
-              <div className="space-y-1 text-slate-350">
+              <div className="space-y-1.5 text-slate-300">
                 {renderMarkdown(translatedText)}
               </div>
             </motion.div>

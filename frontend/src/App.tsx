@@ -646,28 +646,28 @@ ${activeDoc.summary?.actionItems?.map((a, idx) => `- ${a}`).join('\n') || "None"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="bg-bg-surface/20 backdrop-blur-xl border border-slate-800/40 rounded-3xl p-6 space-y-4"
+                className="bg-bg-surface/20 backdrop-blur-xl border border-slate-800/40 rounded-3xl p-8 space-y-6 max-w-3xl mx-auto"
               >
-                <div className="flex items-center gap-2.5 pb-3 border-b border-slate-900">
-                  <Sparkles className="w-5 h-5 text-amber-400" />
-                  <h2 className="text-base font-bold text-white">Simplified Summary</h2>
+                <div className="flex items-center gap-2.5 pb-3.5 border-b border-slate-900">
+                  <Sparkles className="w-5.5 h-5.5 text-amber-400" />
+                  <h2 className="text-lg font-bold text-white">Simplified Summary</h2>
                 </div>
-                <div className="p-4 bg-bg-surface/30 backdrop-blur-xs border border-slate-855 rounded-2xl space-y-3">
-                  <h4 className="text-[10px] font-bold text-amber-400 font-mono uppercase tracking-wider">Simplified In 3 Bullets:</h4>
-                  <div className="space-y-2.5">
+                <div className="p-6 bg-bg-surface/30 backdrop-blur-xs border border-slate-855 rounded-2xl space-y-4">
+                  <h4 className="text-xs font-bold text-amber-400 font-mono uppercase tracking-wider">Simplified In 3 Bullets:</h4>
+                  <div className="space-y-3">
                     {(activeDoc.summary?.keyTakeaways || []).slice(0, 3).map((takeaway, idx) => (
-                      <div key={idx} className="flex gap-3.5 items-start p-2.5 bg-bg-surface-raised/20 backdrop-blur-xs border border-slate-800/50 rounded-2xl">
-                        <span className="w-5.5 h-5.5 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-[10px] font-mono font-bold text-amber-400 mt-0.5 shrink-0">
+                      <div key={idx} className="flex gap-4 items-start p-3.5 bg-bg-surface-raised/20 backdrop-blur-xs border border-slate-800/50 rounded-2xl">
+                        <span className="w-6 h-6 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-xs font-mono font-bold text-amber-400 mt-0.5 shrink-0">
                           {idx + 1}
                         </span>
-                        <p className="text-xs md:text-sm text-slate-350 leading-relaxed font-normal">{takeaway}</p>
+                        <p className="text-sm md:text-base text-slate-205 leading-relaxed font-normal">{takeaway}</p>
                       </div>
                     ))}
                   </div>
                 </div>
-                <div className="p-4 bg-bg-surface-raised/20 border border-slate-800 rounded-2xl space-y-2">
-                  <h4 className="text-[10px] font-bold text-slate-450 font-mono uppercase tracking-wider">Plain English Translation:</h4>
-                  <p className="text-xs md:text-sm text-slate-400 leading-normal font-normal">
+                <div className="p-6 bg-bg-surface-raised/20 border border-slate-800 rounded-2xl space-y-3.5">
+                  <h4 className="text-xs font-bold text-slate-450 font-mono uppercase tracking-wider">Plain English Translation:</h4>
+                  <p className="text-sm md:text-base text-slate-300 leading-relaxed font-normal">
                     {(activeDoc.summary?.executiveSummary || "").split('.').slice(0, 3).join('.')}.
                   </p>
                 </div>

@@ -175,61 +175,61 @@ export default function QuizView({
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="flex flex-col items-center gap-5 w-full max-w-sm mx-auto"
+            className="flex flex-col items-center gap-5 w-full max-w-2xl mx-auto"
           >
-            {/* 3D Flippable Flashcard Card */}
+            {/* 3D Flippable Flashcard Card (Increased Size to max-w-2xl, height h-80) */}
             <div
               id={`flashcard-card-${currentCard.id}`}
               onClick={() => setIsFlipped(!isFlipped)}
-              className="w-full h-56 relative cursor-pointer group"
+              className="w-full h-80 relative cursor-pointer group"
               style={{ perspective: "1000px" }}
             >
               <div
-                className={`w-full h-full duration-500 rounded-2xl border transition-all transform-style-3d ${
+                className={`w-full h-full duration-500 rounded-3xl border transition-all transform-style-3d ${
                   isFlipped
-                    ? "rotate-y-180 border-sky-500/40 bg-slate-900/80 shadow-[0_4px_25px_rgba(56,189,248,0.08)]"
+                    ? "rotate-y-180 border-purple-500/40 bg-slate-900/80 shadow-[0_4px_25px_rgba(168,85,247,0.08)]"
                     : "border-slate-800 bg-slate-900/40 group-hover:border-slate-700 shadow-lg"
                 }`}
                 style={{ transformStyle: "preserve-3d" }}
               >
                 {/* CARD FRONT */}
                 <div
-                  className="absolute inset-0 w-full h-full p-6 flex flex-col justify-between backface-hidden"
+                  className="absolute inset-0 w-full h-full p-8 flex flex-col justify-between backface-hidden"
                   style={{ backfaceVisibility: "hidden" }}
                 >
                   <div className="flex justify-between items-center text-slate-500">
-                    <span className="text-[9px] font-mono tracking-wider uppercase font-semibold">
+                    <span className="text-[10px] font-mono tracking-wider uppercase font-bold text-purple-400">
                       Term / Concept
                     </span>
-                    <Sparkles className="w-4 h-4 text-sky-500/50" />
+                    <Sparkles className="w-5 h-5 text-purple-400/50" />
                   </div>
-                  <div className="flex-1 flex items-center justify-center py-2">
-                    <p className="text-xs font-bold text-slate-100 text-center leading-relaxed max-w-xs">
+                  <div className="flex-1 flex items-center justify-center py-4">
+                    <p className="text-lg md:text-xl font-extrabold text-slate-100 text-center leading-relaxed max-w-lg">
                       {currentCard.front}
                     </p>
                   </div>
-                  <p className="text-[9px] font-mono font-medium text-slate-400 text-center animate-pulse">
+                  <p className="text-[10px] font-mono font-medium text-slate-400 text-center animate-pulse">
                     Click to flip card
                   </p>
                 </div>
 
                 {/* CARD BACK */}
                 <div
-                  className="absolute inset-0 w-full h-full p-6 flex flex-col justify-between backface-hidden rotate-y-180"
+                  className="absolute inset-0 w-full h-full p-8 flex flex-col justify-between backface-hidden rotate-y-180"
                   style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
                 >
-                  <div className="flex justify-between items-center text-sky-500/70">
-                    <span className="text-[9px] font-mono tracking-wider uppercase font-semibold">
+                  <div className="flex justify-between items-center text-purple-400/85">
+                    <span className="text-[10px] font-mono tracking-wider uppercase font-bold">
                       Definition / Details
                     </span>
-                    <GraduationCap className="w-4 h-4" />
+                    <GraduationCap className="w-5 h-5" />
                   </div>
-                  <div className="flex-1 flex items-center justify-center py-2">
-                    <p className="text-[11px] font-semibold leading-relaxed text-slate-200 text-center max-w-xs">
+                  <div className="flex-1 flex items-center justify-center py-4">
+                    <p className="text-sm md:text-base font-semibold leading-relaxed text-slate-200 text-center max-w-lg">
                       {currentCard.back}
                     </p>
                   </div>
-                  <p className="text-[9px] font-mono font-medium text-sky-400/70 text-center">
+                  <p className="text-[10px] font-mono font-medium text-purple-400/70 text-center">
                     Click to return to front
                   </p>
                 </div>
@@ -241,19 +241,19 @@ export default function QuizView({
               <button
                 id="prev-flashcard-btn"
                 onClick={handlePrevCard}
-                className="w-9 h-9 rounded-lg border border-slate-850 bg-slate-900 text-slate-400 hover:text-white flex items-center justify-center transition-all cursor-pointer"
+                className="w-10 h-10 rounded-xl border border-slate-800 bg-slate-900 text-slate-400 hover:text-white flex items-center justify-center transition-all cursor-pointer hover:border-purple-500/30"
               >
-                <ChevronLeft className="w-4 h-4" />
+                <ChevronLeft className="w-4.5 h-4.5" />
               </button>
-              <span className="text-[11px] font-mono font-semibold text-slate-500">
+              <span className="text-xs font-mono font-semibold text-slate-500">
                 Card {currentCardIdx + 1} of {flashcards.length}
               </span>
               <button
                 id="next-flashcard-btn"
                 onClick={handleNextCard}
-                className="w-9 h-9 rounded-lg border border-slate-850 bg-slate-900 text-slate-400 hover:text-white flex items-center justify-center transition-all cursor-pointer"
+                className="w-10 h-10 rounded-xl border border-slate-800 bg-slate-900 text-slate-400 hover:text-white flex items-center justify-center transition-all cursor-pointer hover:border-purple-500/30"
               >
-                <ChevronRight className="w-4 h-4" />
+                <ChevronRight className="w-4.5 h-4.5" />
               </button>
             </div>
           </motion.div>
@@ -265,21 +265,21 @@ export default function QuizView({
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="flex flex-col gap-4 w-full max-w-xl mx-auto"
+            className="flex flex-col gap-4 w-full max-w-3xl mx-auto"
           >
-            <div className="flex items-center justify-between border-b border-slate-800 pb-2" id="quiz-header-dashboard">
-              <span className="text-xs font-bold text-slate-500 flex items-center gap-1">
-                <HelpCircle className="w-3.5 h-3.5 text-sky-400" /> Multiple Choice Evaluation
+            <div className="flex items-center justify-between border-b border-slate-800 pb-2.5" id="quiz-header-dashboard">
+              <span className="text-xs font-bold text-slate-400 flex items-center gap-1.5">
+                <HelpCircle className="w-4 h-4 text-orange-400" /> Multiple Choice Evaluation
               </span>
               {quizScore !== null && (
-                <span className="text-[10px] font-mono font-bold text-sky-400 bg-sky-500/10 border border-sky-500/20 px-2.5 py-0.5 rounded">
+                <span className="text-xs font-mono font-bold text-orange-400 bg-orange-500/10 border border-orange-500/20 px-3 py-1 rounded-lg">
                   Score: {quizScore} / {quiz.length}
                 </span>
               )}
             </div>
 
-            {/* Questions Canvas */}
-            <div className="flex flex-col gap-4 max-h-[340px] overflow-y-auto pr-2" id="quiz-questions-canvas">
+            {/* Questions Canvas (Increased scrollable height to 480px) */}
+            <div className="flex flex-col gap-5 max-h-[480px] overflow-y-auto pr-2" id="quiz-questions-canvas">
               {quiz.map((q, idx) => {
                 const selectedAns = userAnswers[q.id];
                 const isAnswered = selectedAns !== undefined;
@@ -288,24 +288,24 @@ export default function QuizView({
                   <div
                     id={`quiz-question-box-${q.id}`}
                     key={q.id}
-                    className="p-4 rounded-xl border border-slate-800 bg-slate-900"
+                    className="p-5 rounded-2xl border border-slate-800 bg-slate-900/60"
                   >
-                    <p className="text-xs font-semibold text-slate-200 leading-relaxed mb-3">
-                      <span className="text-sky-400 font-bold font-mono mr-1">{idx + 1}.</span> {q.question}
+                    <p className="text-sm font-bold text-slate-200 leading-relaxed mb-4">
+                      <span className="text-orange-400 font-bold font-mono mr-1.5">{idx + 1}.</span> {q.question}
                     </p>
 
                     {/* Options Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       {q.options.map((option, optIdx) => {
                         const isOptionSelected = selectedAns === option;
                         const isCorrectOption = option === q.correctAnswer;
                         
-                        let optStyle = "border-slate-800 bg-slate-950/20 hover:border-slate-700 text-slate-300";
+                        let optStyle = "border-slate-800 bg-slate-950/20 hover:border-slate-700 text-slate-350";
                         if (isAnswered) {
                           if (isCorrectOption) {
-                            optStyle = "border-sky-500 bg-sky-950/10 text-sky-300";
+                            optStyle = "border-orange-500 bg-orange-950/10 text-orange-350";
                           } else if (isOptionSelected) {
-                            optStyle = "border-rose-500 bg-rose-950/10 text-rose-300";
+                            optStyle = "border-rose-500 bg-rose-950/10 text-rose-350";
                           } else {
                             optStyle = "border-slate-900 bg-slate-950/10 text-slate-500 opacity-60";
                           }
@@ -317,13 +317,13 @@ export default function QuizView({
                             key={optIdx}
                             disabled={isAnswered}
                             onClick={() => handleSelectOption(q.id, option, q.correctAnswer)}
-                            className={`flex items-center justify-between text-left p-2.5 rounded-lg border text-xs transition-all ${optStyle} ${
+                            className={`flex items-center justify-between text-left p-3.5 rounded-xl border text-sm transition-all ${optStyle} ${
                               !isAnswered ? "cursor-pointer hover:bg-slate-950/40" : ""
                             }`}
                           >
-                            <span className="font-medium">{option}</span>
-                            {isAnswered && isCorrectOption && <Check className="w-3.5 h-3.5 shrink-0 text-sky-400 stroke-[3]" />}
-                            {isAnswered && isOptionSelected && !isCorrectOption && <X className="w-3.5 h-3.5 shrink-0 text-rose-400 stroke-[3]" />}
+                            <span className="font-semibold">{option}</span>
+                            {isAnswered && isCorrectOption && <Check className="w-4 h-4 shrink-0 text-orange-400 stroke-[3]" />}
+                            {isAnswered && isOptionSelected && !isCorrectOption && <X className="w-4 h-4 shrink-0 text-rose-455 stroke-[3]" />}
                           </button>
                         );
                       })}
@@ -335,15 +335,15 @@ export default function QuizView({
                         <motion.div
                           initial={{ opacity: 0, height: 0 }}
                           animate={{ opacity: 1, height: "auto" }}
-                          className="mt-3 p-3 rounded-lg bg-slate-950/40 border border-slate-800"
+                          className="mt-4 p-4 rounded-xl bg-slate-950/40 border border-slate-800"
                         >
-                          <p className={`text-[10px] font-bold uppercase tracking-wider mb-1 ${
-                            selectedAns === q.correctAnswer ? "text-sky-400" : "text-rose-400"
+                          <p className={`text-[10px] font-bold uppercase tracking-wider mb-1.5 ${
+                            selectedAns === q.correctAnswer ? "text-orange-400" : "text-rose-455"
                           }`}>
                             {selectedAns === q.correctAnswer ? "Correct Answer" : "Incorrect Answer"}
                           </p>
-                          <p className="text-[10px] leading-relaxed text-slate-400">
-                            <span className="font-bold text-slate-300">Explanation:</span> {q.explanation}
+                          <p className="text-xs leading-relaxed text-slate-400">
+                            <span className="font-bold text-slate-305">Explanation:</span> {q.explanation}
                           </p>
                         </motion.div>
                       )}
@@ -358,9 +358,9 @@ export default function QuizView({
               <button
                 id="reset-quiz-btn"
                 onClick={resetQuiz}
-                className="text-[10px] font-bold flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-700 text-slate-400 hover:text-white transition-all cursor-pointer font-mono"
+                className="text-[10px] font-bold flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-slate-700 text-slate-400 hover:text-white transition-all cursor-pointer font-mono"
               >
-                <RefreshCw className="w-3 h-3" /> RESET
+                <RefreshCw className="w-3.5 h-3.5" /> RESET
               </button>
               
               {quizScore === null ? (
@@ -368,7 +368,7 @@ export default function QuizView({
                   id="submit-quiz-score-btn"
                   disabled={Object.keys(userAnswers).length < quiz.length}
                   onClick={calculateScore}
-                  className="bg-sky-500 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs cursor-pointer hover:bg-sky-400 transition-colors disabled:opacity-40"
+                  className="bg-orange-500 text-slate-950 font-bold px-5 py-2.5 rounded-xl text-xs cursor-pointer hover:bg-orange-400 transition-colors disabled:opacity-40"
                 >
                   GRADE EVALUATION
                 </button>
@@ -376,7 +376,7 @@ export default function QuizView({
                 <button
                   id="retake-quiz-btn"
                   onClick={resetQuiz}
-                  className="bg-sky-500 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs cursor-pointer hover:bg-sky-400 transition-colors"
+                  className="bg-orange-500 text-slate-950 font-bold px-5 py-2.5 rounded-xl text-xs cursor-pointer hover:bg-orange-400 transition-colors"
                 >
                   RETAKE QUIZ
                 </button>
