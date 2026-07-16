@@ -218,16 +218,17 @@ export default function ChatInterface({
                 Query the structural entities of <span className="font-semibold text-slate-200">"{fileName}"</span>. Ask for deep summaries, risk assessments, or contract clauses.
               </p>
             </div>
-            {/* Quick Suggestions Chips */}
-            <div className="flex flex-wrap justify-center gap-1.5 mt-1 w-full" id="query-suggestion-chips">
+            {/* Quick Suggestions Chips (Clean 2-column grid layout) */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-4 w-full max-w-lg mx-auto" id="query-suggestion-chips">
               {SUGGESTIONS.map((suggestion, idx) => (
                 <button
                   id={`suggestion-chip-${idx}`}
                   key={idx}
                   onClick={() => handleSend(suggestion)}
-                  className="text-[10px] font-medium bg-slate-800/40 hover:bg-slate-800 border border-slate-700/60 hover:border-slate-600 px-2.5 py-1.5 rounded-lg text-slate-300 hover:text-sky-300 transition-all text-left leading-normal"
+                  className="text-xs font-semibold bg-bg-surface border border-slate-800 hover:border-sky-500/30 px-3.5 py-2.5 rounded-2xl text-slate-350 hover:text-white hover:bg-bg-surface-raised transition-all text-left leading-normal shadow-xs cursor-pointer flex items-center justify-between group"
                 >
-                  {suggestion}
+                  <span className="truncate">{suggestion}</span>
+                  <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity ml-1 shrink-0 text-sky-400" />
                 </button>
               ))}
             </div>

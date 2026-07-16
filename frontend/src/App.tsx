@@ -327,18 +327,18 @@ ${activeDoc.summary?.actionItems?.map((a, idx) => `- ${a}`).join('\n') || "None"
             {/* Stats Bar */}
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3" id="library-stats-bar">
               {[
-                { label: "DOCUMENTS", value: totalDocs, icon: FileText },
-                { label: "PAGES READ", value: totalPages, icon: File },
-                { label: "AI ANSWERS", value: totalAIAnswers, icon: BrainCircuit },
-                { label: "AVG RESPONSE", value: "419ms", icon: Sparkles },
-                { label: "SUCCESS RATE", value: "100%", icon: Activity },
+                { label: "DOCUMENTS", value: totalDocs, icon: FileText, isVanity: false },
+                { label: "PAGES READ", value: totalPages, icon: File, isVanity: false },
+                { label: "AI ANSWERS", value: totalAIAnswers, icon: BrainCircuit, isVanity: false },
+                { label: "AVG RESPONSE", value: "419ms", icon: Sparkles, isVanity: true },
+                { label: "SUCCESS RATE", value: "100%", icon: Activity, isVanity: true },
               ].map((stat, idx) => (
-                <div key={idx} className="bg-slate-900/40 border border-slate-850 rounded-2xl p-4 flex flex-col gap-1.5 shadow-xs hover:border-slate-800 transition-colors">
-                  <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
-                    <stat.icon className="w-4 h-4 text-slate-500" />
+                <div key={idx} className={`bg-bg-surface border border-slate-800/80 rounded-2xl p-4 flex flex-col gap-1.5 shadow-xs transition-colors hover:border-slate-700 ${stat.isVanity ? 'opacity-70' : 'opacity-100'}`}>
+                  <span className={`text-[10px] font-bold uppercase tracking-wider flex items-center gap-1.5 ${stat.isVanity ? 'text-slate-500' : 'text-sky-400'}`}>
+                    <stat.icon className={`w-3.5 h-3.5 ${stat.isVanity ? 'text-slate-500' : 'text-sky-400'}`} />
                     {stat.label}
                   </span>
-                  <span className="text-xl font-extrabold text-slate-200 leading-none">{stat.value}</span>
+                  <span className={`font-extrabold leading-none ${stat.isVanity ? 'text-base text-slate-400' : 'text-xl text-white'}`}>{stat.value}</span>
                 </div>
               ))}
             </div>
@@ -371,7 +371,7 @@ ${activeDoc.summary?.actionItems?.map((a, idx) => `- ${a}`).join('\n') || "None"
                   {uploadedDocs.map((doc) => (
                     <div
                       key={doc.id}
-                      className="bg-[#12131c]/60 border border-slate-850 hover:border-sky-500/40 rounded-2xl p-5 flex flex-col justify-between gap-4 transition-all duration-300 group shadow-xs relative"
+                      className="bg-bg-surface border border-slate-800/80 hover:border-sky-500/30 rounded-2xl p-5 flex flex-col justify-between gap-4 transition-all duration-300 group shadow-xs relative"
                     >
                       {/* Top line with title and trash button */}
                       <div className="space-y-2">
@@ -382,9 +382,11 @@ ${activeDoc.summary?.actionItems?.map((a, idx) => `- ${a}`).join('\n') || "None"
                               {doc.name}
                             </h4>
                           </div>
+                          {/* De-emphasized delete button (×) */}
                           <button
                             onClick={(e) => handleDeleteDoc(doc.id, e)}
-                            className="w-7 h-7 rounded-full bg-slate-900 hover:bg-rose-950/20 hover:text-rose-400 border border-slate-800 hover:border-rose-900/30 flex items-center justify-center text-slate-400 transition-all cursor-pointer"
+                            className="w-6 h-6 rounded-full bg-transparent hover:bg-rose-950/20 hover:text-rose-400 flex items-center justify-center text-slate-500 transition-all cursor-pointer"
+                            title="Delete document"
                           >
                             <X className="w-3.5 h-3.5" />
                           </button>
@@ -401,10 +403,10 @@ ${activeDoc.summary?.actionItems?.map((a, idx) => `- ${a}`).join('\n') || "None"
                         </p>
                       </div>
 
-                      {/* Open Workspace action */}
+                      {/* Open Workspace action (Secondary Outline button style) */}
                       <button
                         onClick={() => handleOpenWorkspace(doc.id)}
-                        className="w-full bg-slate-900 border border-slate-800 text-slate-200 group-hover:bg-sky-500 group-hover:text-slate-950 py-2 rounded-full text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer active:scale-[0.98]"
+                        className="w-full bg-bg-surface-raised border border-slate-700/60 hover:border-slate-500 text-slate-300 py-2 rounded-full text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer active:scale-[0.98]"
                       >
                         <span>Open workspace</span>
                         <ChevronRight className="w-3.5 h-3.5" />
@@ -472,7 +474,7 @@ ${activeDoc.summary?.actionItems?.map((a, idx) => `- ${a}`).join('\n') || "None"
       </header>
 
       {/* Tabs bar */}
-      <div className="h-12 shrink-0 border-b border-slate-900 bg-slate-950 px-6 py-1 flex items-center justify-start gap-1.5 overflow-x-auto select-none scrollbar-none" id="workspace-horizontal-tabs">
+      <div className="h-12 shrink-0 border-b border-slate-900 bg-bg-surface px-6 py-1 flex items-center justify-start gap-1.5 overflow-x-auto select-none scrollbar-none" id="workspace-horizontal-tabs">
         {[
           { id: "chat", label: "Chat", icon: MessageSquare },
           { id: "summary", label: "Summary", icon: FileText },
@@ -483,17 +485,27 @@ ${activeDoc.summary?.actionItems?.map((a, idx) => `- ${a}`).join('\n') || "None"
           { id: "simplify", label: "Simplify", icon: Sparkles },
         ].map((tab) => {
           const isActive = activeTab === tab.id;
+          const accentColors: Record<string, { bg: string; text: string; shadow: string; iconColor: string }> = {
+            chat: { bg: "bg-sky-500", text: "text-slate-950", shadow: "shadow-sky-500/20", iconColor: "text-sky-400" },
+            summary: { bg: "bg-teal-500", text: "text-slate-950", shadow: "shadow-teal-500/20", iconColor: "text-teal-400" },
+            keypoints: { bg: "bg-indigo-500", text: "text-slate-950", shadow: "shadow-indigo-500/20", iconColor: "text-indigo-400" },
+            quiz: { bg: "bg-orange-500", text: "text-slate-950", shadow: "shadow-orange-500/20", iconColor: "text-orange-450" },
+            flashcards: { bg: "bg-purple-500", text: "text-slate-950", shadow: "shadow-purple-500/20", iconColor: "text-purple-400" },
+            translate: { bg: "bg-cyan-500", text: "text-slate-950", shadow: "shadow-cyan-500/20", iconColor: "text-cyan-400" },
+            simplify: { bg: "bg-amber-500", text: "text-slate-950", shadow: "shadow-amber-500/20", iconColor: "text-amber-400" }
+          };
+          const activeColor = accentColors[tab.id] || accentColors.chat;
           return (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as any)}
               className={`flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
                 isActive
-                  ? "bg-sky-500 text-slate-950 shadow-md shadow-sky-500/10"
-                  : "text-slate-400 hover:text-slate-200 hover:bg-slate-900/50"
+                  ? `${activeColor.bg} ${activeColor.text} shadow-md ${activeColor.shadow}`
+                  : "text-slate-400 opacity-60 hover:opacity-100 hover:bg-slate-900/50"
               }`}
             >
-              <tab.icon className={`w-4 h-4 ${isActive ? "text-slate-950" : "text-slate-500"}`} />
+              <tab.icon className={`w-4 h-4 ${isActive ? activeColor.text : "text-slate-500"}`} />
               <span>{tab.label}</span>
             </button>
           );
@@ -546,19 +558,20 @@ ${activeDoc.summary?.actionItems?.map((a, idx) => `- ${a}`).join('\n') || "None"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="bg-slate-900 border border-slate-800 rounded-3xl p-6 space-y-5"
+                className="bg-bg-surface border border-slate-800/80 rounded-3xl p-6 space-y-5"
               >
-                <div className="flex items-center gap-2 pb-3 border-b border-slate-800">
-                  <Bookmark className="w-5 h-5 text-sky-400" />
+                <div className="flex items-center gap-2 pb-3 border-b border-slate-900">
+                  <Bookmark className="w-5 h-5 text-indigo-400" />
                   <h2 className="text-base font-bold text-white">Logical Insights & Key Points</h2>
                 </div>
                 <div className="space-y-3">
                   {(activeDoc.summary?.keyTakeaways || []).map((takeaway, idx) => (
-                    <div key={idx} className="flex gap-3.5 items-start p-3.5 bg-slate-950/40 border border-slate-850 rounded-2xl">
-                      <span className="w-5.5 h-5.5 rounded-full bg-sky-500/10 border border-sky-400/20 text-sky-400 text-xs font-mono font-bold flex items-center justify-center shrink-0 mt-0.5">
+                    <div key={idx} className="flex gap-3.5 items-start p-3.5 bg-bg-surface-raised border border-slate-800/60 rounded-2xl">
+                      {/* Indigo Accent Numbered Circle */}
+                      <span className="w-5.5 h-5.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-mono font-bold flex items-center justify-center shrink-0 mt-0.5">
                         {idx + 1}
                       </span>
-                      <p className="text-xs md:text-sm text-slate-300 leading-relaxed font-medium">{takeaway}</p>
+                      <p className="text-xs md:text-sm text-slate-350 leading-relaxed font-medium">{takeaway}</p>
                     </div>
                   ))}
                 </div>
@@ -621,22 +634,28 @@ ${activeDoc.summary?.actionItems?.map((a, idx) => `- ${a}`).join('\n') || "None"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="bg-slate-900 border border-slate-800 rounded-3xl p-6 space-y-4"
+                className="bg-bg-surface border border-slate-800/80 rounded-3xl p-6 space-y-4"
               >
-                <div className="flex items-center gap-2.5 pb-3 border-b border-slate-800">
-                  <Sparkles className="w-5 h-5 text-sky-400" />
+                <div className="flex items-center gap-2.5 pb-3 border-b border-slate-900">
+                  <Sparkles className="w-5 h-5 text-amber-400" />
                   <h2 className="text-base font-bold text-white">Simplified Summary</h2>
                 </div>
-                <div className="p-4 bg-slate-950/40 border border-slate-855 rounded-2xl space-y-3">
-                  <h4 className="text-[10px] font-bold text-sky-400 font-mono uppercase tracking-wider">Simplified In 3 Bullets:</h4>
-                  <ul className="list-disc pl-4 space-y-2 text-xs md:text-sm text-slate-300 leading-normal font-normal">
+                <div className="p-4 bg-bg-surface border border-slate-800/60 rounded-2xl space-y-3">
+                  <h4 className="text-[10px] font-bold text-amber-400 font-mono uppercase tracking-wider">Simplified In 3 Bullets:</h4>
+                  {/* Standardized Numbered Circle pattern instead of list bullets */}
+                  <div className="space-y-2.5">
                     {(activeDoc.summary?.keyTakeaways || []).slice(0, 3).map((takeaway, idx) => (
-                      <li key={idx}>{takeaway}</li>
+                      <div key={idx} className="flex gap-3.5 items-start p-2.5 bg-bg-surface-raised border border-slate-800/50 rounded-2xl">
+                        <span className="w-5.5 h-5.5 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-[10px] font-mono font-bold text-amber-400 mt-0.5 shrink-0">
+                          {idx + 1}
+                        </span>
+                        <p className="text-xs md:text-sm text-slate-350 leading-relaxed font-normal">{takeaway}</p>
+                      </div>
                     ))}
-                  </ul>
+                  </div>
                 </div>
-                <div className="p-4 bg-slate-950/20 border border-slate-855/50 rounded-2xl space-y-2">
-                  <h4 className="text-[10px] font-bold text-slate-400 font-mono uppercase tracking-wider">Plain English Translation:</h4>
+                <div className="p-4 bg-bg-surface-raised border border-slate-800 rounded-2xl space-y-2">
+                  <h4 className="text-[10px] font-bold text-slate-450 font-mono uppercase tracking-wider">Plain English Translation:</h4>
                   <p className="text-xs md:text-sm text-slate-400 leading-normal font-normal">
                     {(activeDoc.summary?.executiveSummary || "").split('.').slice(0, 3).join('.')}.
                   </p>

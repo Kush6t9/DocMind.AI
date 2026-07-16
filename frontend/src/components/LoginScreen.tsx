@@ -42,22 +42,22 @@ export default function LoginScreen({ onLoginSuccess, isVerifying, setIsVerifyin
   });
 
   return (
-    <div className="h-screen w-screen bg-slate-950 flex flex-col justify-between text-slate-100 font-sans selection:bg-sky-500/20 overflow-hidden relative" id="login-screen-root">
+    <div className="h-screen w-screen bg-bg-base flex flex-col justify-between text-slate-100 font-sans selection:bg-sky-500/20 overflow-hidden relative" id="login-screen-root">
       {/* Dynamic ambient gradients for a premium glow */}
       <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-[#8efc79]/5 rounded-full blur-[140px] pointer-events-none animate-pulse-slow" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-sky-500/5 rounded-full blur-[140px] pointer-events-none animate-pulse-slow" style={{ animationDelay: "1.5s" }} />
 
       {/* Top Bar */}
-      <header className="h-14 flex items-center justify-between px-6 md:px-12 bg-slate-950/20 backdrop-blur-lg border-b border-slate-900/60 relative z-10 shrink-0">
+      <header className="h-14 flex items-center justify-between px-6 md:px-12 bg-bg-base/20 backdrop-blur-lg border-b border-slate-900/60 relative z-10 shrink-0">
         <div className="flex items-center gap-3">
           <span className="font-extrabold text-base tracking-tight text-white uppercase font-sans">
             DocMind<span className="text-sky-400">.ai</span>
           </span>
-          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-slate-900 border border-slate-800 text-slate-400">
+          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-bg-surface border border-slate-800 text-slate-400">
             v2.4.0-AWS
           </span>
         </div>
-        <div className="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-wider">
+        <div className="flex items-center gap-2 text-xs font-bold text-slate-405 uppercase tracking-wider">
           <span className="w-2 h-2 rounded-full bg-sky-400 animate-pulse"></span>
           Gateway Online
         </div>
@@ -66,7 +66,7 @@ export default function LoginScreen({ onLoginSuccess, isVerifying, setIsVerifyin
       {/* Hero Container */}
       <main className="flex-1 max-w-6xl w-full mx-auto px-6 md:px-12 flex flex-col lg:flex-row items-center gap-8 lg:gap-16 relative z-10 justify-center overflow-hidden">
         {/* Left Side: Product Value Propositions */}
-        <div className="flex-1 text-left max-w-xl space-y-4 py-2">
+        <div className="flex-1 text-left max-w-xl space-y-5 py-2">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -77,13 +77,14 @@ export default function LoginScreen({ onLoginSuccess, isVerifying, setIsVerifyin
             <span>AI-POWERED INTELLIGENT COMPANION</span>
           </motion.div>
 
+          {/* Smooth, multi-line flowing headline gradient */}
           <motion.h1
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-none uppercase"
+            className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-100 to-sky-400 bg-clip-text text-transparent leading-tight uppercase font-sans"
           >
-            Smarter <span className="text-sky-400 bg-gradient-to-r from-sky-400 to-indigo-400 bg-clip-text text-transparent">Document</span> Analysis.
+            Smarter Document Analysis.
           </motion.h1>
 
           <motion.p
@@ -95,14 +96,36 @@ export default function LoginScreen({ onLoginSuccess, isVerifying, setIsVerifyin
             Securely login with your Google Account to automatically upload PDF, PPTX, and image files to your private Google Drive and extract deep semantic insights using Gemini.
           </motion.p>
 
+          {/* CTA Buttons Group */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.25 }}
+            className="flex flex-wrap gap-3"
+          >
+            <button
+              onClick={() => login()}
+              className="px-5 py-2.5 rounded-full bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs md:text-sm transition-all cursor-pointer shadow-md active:scale-95"
+            >
+              Connect Now
+            </button>
+            <button
+              onClick={() => login()}
+              className="px-5 py-2.5 rounded-full border border-slate-700 hover:border-slate-500 text-slate-350 hover:text-white font-bold text-xs md:text-sm transition-all cursor-pointer"
+            >
+              See how it works
+            </button>
+          </motion.div>
+
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.6 }}
             className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-4 border-t border-slate-900"
           >
-            <div className="flex gap-3 p-3 rounded-2xl bg-[#12131c]/40 border border-slate-900">
-              <div className="w-8 h-8 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-sky-400 shrink-0">
+            {/* Added glowing gradient border design to features */}
+            <div className="flex gap-3 p-3 rounded-2xl bg-bg-surface border border-sky-500/10 shadow-[0_0_15px_rgba(56,189,248,0.03)] hover:border-sky-500/25 transition-all">
+              <div className="w-8 h-8 rounded-full bg-bg-surface-raised border border-slate-800 flex items-center justify-center text-sky-400 shrink-0">
                 <HardDrive className="w-4 h-4" />
               </div>
               <div className="space-y-0.5">
@@ -111,8 +134,8 @@ export default function LoginScreen({ onLoginSuccess, isVerifying, setIsVerifyin
               </div>
             </div>
 
-            <div className="flex gap-3 p-3 rounded-2xl bg-[#12131c]/40 border border-slate-900">
-              <div className="w-8 h-8 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-sky-400 shrink-0">
+            <div className="flex gap-3 p-3 rounded-2xl bg-bg-surface border border-[#8efc79]/10 shadow-[0_0_15px_rgba(142,252,121,0.03)] hover:border-[#8efc79]/25 transition-all">
+              <div className="w-8 h-8 rounded-full bg-bg-surface-raised border border-slate-800 flex items-center justify-center text-[#8efc79] shrink-0">
                 <FileSearch className="w-4 h-4" />
               </div>
               <div className="space-y-0.5">
@@ -123,12 +146,12 @@ export default function LoginScreen({ onLoginSuccess, isVerifying, setIsVerifyin
           </motion.div>
         </div>
 
-        {/* Right Side: Glass Login Bento Box */}
+        {/* Right Side: Glass Login Bento Box (Elevated) */}
         <motion.div
           initial={{ opacity: 0, scale: 0.97 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.4, delay: 0.15 }}
-          className="w-full max-w-sm bg-[#12131c]/60 border border-slate-850 rounded-[28px] p-6 md:p-8 backdrop-blur-lg shadow-xl relative shrink-0"
+          className="w-full max-w-sm bg-bg-surface border border-slate-800/80 rounded-[28px] p-6 md:p-8 shadow-2xl shadow-black/60 relative shrink-0"
           id="login-bento-card"
         >
           {/* Top glowing ambient line */}
@@ -162,7 +185,7 @@ export default function LoginScreen({ onLoginSuccess, isVerifying, setIsVerifyin
               <div className="flex-1 h-[1px] bg-slate-800" />
             </div>
 
-            <div className="rounded-2xl bg-[#0a0b10]/80 border border-slate-900 p-4 space-y-2">
+            <div className="rounded-2xl bg-bg-surface-raised border border-slate-800/80 p-4 space-y-2">
               <div className="flex items-start gap-2.5">
                 <Shield className="w-4.5 h-4.5 text-emerald-400 shrink-0 mt-0.5" />
                 <div className="space-y-0.5">
@@ -174,7 +197,7 @@ export default function LoginScreen({ onLoginSuccess, isVerifying, setIsVerifyin
           </div>
 
           {/* Card footer details */}
-          <div className="mt-6 pt-3 border-t border-slate-900 flex items-center justify-between text-[11px] font-mono text-slate-500">
+          <div className="mt-6 pt-3 border-t border-slate-800 flex items-center justify-between text-[11px] font-mono text-slate-500">
             <span>SECURE AES-256</span>
             <span>GDPR COMPLIANT</span>
           </div>

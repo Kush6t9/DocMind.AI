@@ -5,9 +5,13 @@
   --font-sans: "Outfit", "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
   
-  --color-slate-950: #0a0b10;
-  --color-slate-900: #12131b;
-  --color-slate-850: #1b1d29;
+  --color-bg-base: #0a0b0f;
+  --color-bg-surface: #12141c;
+  --color-bg-surface-raised: #1a1d29;
+  
+  --color-slate-950: #0a0b0f;
+  --color-slate-900: #12141c;
+  --color-slate-850: #1a1d29;
   --color-slate-800: #222535;
   --color-slate-700: #2f334a;
   --color-slate-600: #464c6d;
@@ -15,7 +19,7 @@
 
 @layer base {
   body {
-    background-color: var(--color-slate-950);
+    background-color: var(--color-bg-base);
     color: #f8fafc;
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;

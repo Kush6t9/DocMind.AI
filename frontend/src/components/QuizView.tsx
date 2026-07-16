@@ -85,10 +85,16 @@ export default function QuizView({
   if (hasNoData && !isLoading) {
     const isQuiz = activeTab === "quiz";
     return (
-      <div className="flex flex-col items-center justify-center border border-slate-800 bg-slate-900 rounded-3xl p-10 text-center max-w-md mx-auto" id="quiz-empty-state">
-        <div className="w-14 h-14 rounded-2xl bg-sky-500/10 border border-sky-400/20 flex items-center justify-center text-sky-400 mb-6">
-          <BrainCircuit className="w-7 h-7" />
-        </div>
+      <div className="flex flex-col items-center justify-center border border-slate-800 bg-bg-surface rounded-3xl p-10 text-center max-w-md mx-auto" id="quiz-empty-state">
+        {isQuiz ? (
+          <div className="w-14 h-14 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-400 mb-6">
+            <BrainCircuit className="w-7 h-7" />
+          </div>
+        ) : (
+          <div className="w-14 h-14 rounded-2xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 mb-6">
+            <GraduationCap className="w-7 h-7" />
+          </div>
+        )}
         <h3 className="text-lg font-bold text-slate-100 font-sans tracking-tight">
           {isQuiz ? "Synthesize Practice Quiz" : "Synthesize Flashcards"}
         </h3>
@@ -100,7 +106,11 @@ export default function QuizView({
         <button
           id="generate-quiz-btn"
           onClick={onGenerateQuiz}
-          className="mt-6 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold px-6 py-3 rounded-full text-sm transition-all cursor-pointer shadow-lg active:scale-95"
+          className={`mt-6 text-slate-950 font-bold px-6 py-3 rounded-full text-sm transition-all cursor-pointer shadow-lg active:scale-95 ${
+            isQuiz 
+              ? "bg-orange-500 hover:bg-orange-400 shadow-orange-500/10" 
+              : "bg-purple-500 hover:bg-purple-400 shadow-purple-500/10"
+          }`}
         >
           {isQuiz ? "GENERATE QUIZ" : "GENERATE FLASHCARDS"}
         </button>

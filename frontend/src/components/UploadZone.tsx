@@ -160,11 +160,15 @@ export default function UploadZone({
         onDragLeave={handleDrag}
         onDrop={handleDrop}
         onClick={triggerFileInput}
-        className={`relative flex flex-col items-center justify-center border-2 border-dashed rounded-3xl p-6 text-center cursor-pointer transition-all duration-300 h-48 min-h-[12rem] w-full max-w-lg mx-auto ${
+        className={`relative flex flex-col items-center justify-center border-2 border-dashed rounded-3xl p-5 text-center cursor-pointer transition-all duration-300 h-36 min-h-[9rem] w-full max-w-lg mx-auto ${
           isDragActive
-            ? "border-sky-400 bg-sky-950/20 shadow-[0_0_20px_rgba(56,189,248,0.15)]"
-            : "border-slate-800 bg-slate-900/30 hover:border-slate-700 hover:bg-slate-900/60"
+            ? "border-sky-400 bg-sky-955/20 shadow-[0_0_20px_rgba(56,189,248,0.15)]"
+            : "border-slate-800 bg-bg-surface-raised/40 hover:border-slate-700 hover:bg-bg-surface-raised/60"
         }`}
+        style={{
+          backgroundImage: 'radial-gradient(rgba(56, 189, 248, 0.08) 1.5px, transparent 1.5px)',
+          backgroundSize: '16px 16px',
+        }}
       >
         <input
           id="file-upload-input"
