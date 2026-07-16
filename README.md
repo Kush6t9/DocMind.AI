@@ -1,6 +1,6 @@
 <div align="center">
 
-# 📄 DocMind.AI
+<img src="assets/logo.png" alt="DocMind.AI Logo" width="360" style="margin-bottom: 10px;"/>
 
 ### The Intelligent Open-Source AI Document Companion & Study Suite
 
