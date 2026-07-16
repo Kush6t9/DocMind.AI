@@ -1,50 +1,4 @@
-# Project Deliverables: DocMind.AI
-
-This document compiles the **Project Concept Note** and **Project Development Report** for **DocMind.AI**, an intelligent AI document companion and study suite built for document analysis and knowledge retention.
-
----
-
-# Part 1: Project Concept Note
-
-## 1. Project Title & Application Name
-* **Application Name**: DocMind.AI
-* **Subtitle**: The Intelligent AI Document Companion & Study Suite
-
-## 2. Problem Statement & Objective
-In the modern academic and corporate landscape, users are inundated with vast quantities of dense textual information—such as textbook chapters, research papers, legal agreements, corporate slides, and project documentation. 
-* **The Problem**: Conventional document reading is slow, passive, and leads to low knowledge retention. Traditional search tools fail to extract semantic context, compile logical outlines, or generate active recall testing tools.
-* **The Objective**: DocMind.AI transforms static documents into interactive, context-aware digital study studios. The core objective is to reduce reading overhead while maximizing comprehension through dynamic, multi-modal semantic querying, automated outlines, translation, and interactive testing interfaces.
-
-## 3. Target User & Use Case
-* **Target Users**: 
-  1. **Students & Researchers**: Reviewing long textbook chapters, scientific PDFs, and slide decks who need to quickly quiz themselves and drill key terms.
-  2. **Corporate Analysts & Professionals**: Reading contracts, financial reports, and slide presentations seeking immediate, referenced answers.
-* **Primary Use Case**: A user uploads a dense, multi-page document (such as a research paper or presentation). DocMind.AI automatically structures the document, creates an executive summary, extracts logical key takeaways, generates flashcard concept drills, builds interactive practice quizzes, and translates insights on demand—backed up by Google Drive cloud integration.
-
-## 4. LLM Model & API Used
-* **Model**: `gemini-3.5-flash`
-* **API**: Google GenAI SDK (for Python backend processing)
-* **Rationale**: Gemini 3.5 Flash provides exceptional performance for high-speed multi-modal ingestion, low-latency streaming text generation (SSE), native JSON schema validation constraints, and budget-friendly operational efficiency.
-
-## 5. Key Features of the Application
-1. **Smart Library & Ingestion**: Drag & drop support for multiple file formats (`.pdf`, `.docx`, `.pptx`, `.txt`, and images). Saves active inventory in persistent localStorage.
-2. **Interactive Semantic Chat**: Ask questions in plain language and receive real-time, streaming word-by-word answers with paragraph-level source citations.
-3. **Structured Summary & Outline**: High-level synopsis including target objectives, key takeaways, and action items.
-4. **Practice Quiz Studio**: Automated synthesis of multiple-choice exams with correct answer validation and detailed explanations for active recall.
-5. **3D Study Flashcards**: Flippable digital cards detailing concepts and definitions for spaced repetition.
-6. **Cross-Lingual Translation**: Instantly translate complete outlines and definitions into 12 world languages.
-7. **Google Drive Sync**: Automatic, secure file sync to the user's personal Google Drive folder (`DocMind.ai Workspace`) via Google OAuth login.
-
-## 6. Expected User Experience & Outcomes
-* **User Experience**: A sleek, dark-mode viewport fitted (`100vh`) workspace inspired by Material You / Android 16 design aesthetics. Interactive 3D micro-animations, glassmorphic cards, and zero page scroll overhead.
-* **Outcomes**:
-  * **Time-saving**: Ingest and understand a 50-page document in under 3 seconds.
-  * **Retention**: Up to 60% higher recall efficiency through immediate interactive testing and flashcards.
-  * **Portability**: Clean export of aggregated notes and study cards as Markdown text logs.
-
----
-
-# Part 2: Project Development Report
+# Project Development Report: DocMind.AI
 
 ## 1. Application Overview & Tech Stack
 
@@ -124,7 +78,21 @@ gantt
 
 ---
 
-## 4. Challenges Encountered & Resolutions
+## 4. Application Architecture & Data Flow
+
+```mermaid
+graph TD
+    User([User Client]) <-->|React Vite SPA: Port 3000| FE[Frontend Server]
+    FE <-->|API Requests / SSE Streaming| BE[FastAPI Backend: Port 8000]
+    BE <-->|Multi-Modal Ingestion| Gemini[Google Gemini API]
+    BE <-->|OAuth / File Backup| GDrive[Google Drive API]
+```
+
+The system data flow starts with user authentication through Google OAuth, after which the document ingestion pipeline triggers. Raw PDF, DOCX, images, and PPTX slide formats are parsed asynchronously on the backend. The parsed text frames or base64 streams are securely passed to the `gemini-3.5-flash` endpoint using structured output configurations to formulate summaries and test configurations.
+
+---
+
+## 5. Challenges Encountered & Resolutions
 
 ### Challenge 1: Multi-Format Parsing Failures (specifically slide decks)
 * **Issue**: The server failed to ingest presentation slides (`.pptx` files) because binary ZIP files were decoded as UTF-8 fallback, causing parsing failures.
@@ -140,7 +108,7 @@ gantt
 
 ---
 
-## 5. Key Learnings & Reflection
+## 6. Key Learnings & Reflection
 * **Multi-Modal SDK Strength**: Leveraging Gemini's native multi-modal ingestion (sending raw PDF/Image bytes directly alongside prompts) provides a massive improvement over manual string parsing, especially for document structures containing charts or images.
 * **UX/Aesthetics Matter**: Aligning layouts to strict viewport constraints (`100vh` limits) and styling cards with transparency overlays (glassmorphism) elevates the application from a raw prototype to a premium product.
 * **Loose Dependencies Yield Stability**: Building custom text parsers (like the PPTX slide xml reader) rather than relying on bloated libraries decreases server bundle size, reduces deployment vulnerabilities, and improves runtime performance.
