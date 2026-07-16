@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Sparkles, FileText, BrainCircuit, Languages, File, MessageSquare, Menu, X, HelpCircle, Activity, Database, Server, ChevronRight, LogOut, CloudLightning } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Sparkles, FileText, BrainCircuit, Languages, File, MessageSquare, Menu, X, HelpCircle, Activity, Database, Server, ChevronRight, LogOut, CloudLightning, ChevronLeft, Eye, Bookmark, ArrowRight, GraduationCap } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { useGoogleLogin } from "@react-oauth/google";
 
@@ -52,35 +52,127 @@ export default function App() {
   const handleLogout = () => {
     setAccessToken(null);
     setGoogleUser(null);
+    setViewMode("library");
+    setActiveDocId(null);
   };
 
   // Application State
-  const [uploadedDocs, setUploadedDocs] = useState<DocumentItem[]>([]);
+  const [uploadedDocs, setUploadedDocs] = useState<DocumentItem[]>(() => {
+    try {
+      const saved = localStorage.getItem("docmind_uploaded_docs");
+      return saved ? JSON.parse(saved) : [];
+    } catch (e) {
+      console.error("Failed to load saved library:", e);
+      return [];
+    }
+  });
   const [activeDocId, setActiveDocId] = useState<string | null>(null);
   
-  // Tab Navigation: 'summary' | 'chat' | 'quiz' | 'translate'
-  const [activeTab, setActiveTab] = useState<"summary" | "chat" | "quiz" | "translate">("summary");
+  // Save files list changes to localStorage
+  useEffect(() => {
+    try {
+      localStorage.setItem("docmind_uploaded_docs", JSON.stringify(uploadedDocs));
+    } catch (e) {
+      console.error("Failed to persist library changes:", e);
+    }
+  }, [uploadedDocs]);
+  
+  // Navigation modes: 'library' | 'workspace'
+  const [viewMode, setViewMode] = useState<"library" | "workspace">("library");
+
+  // Tab Navigation
+  const [activeTab, setActiveTab] = useState<"summary" | "chat" | "keypoints" | "quiz" | "flashcards" | "translate" | "simplify">("chat");
 
   // In-Memory Multi-Document States Cache
   const [chatHistories, setChatHistories] = useState<Record<string, ChatMessage[]>>({});
   const [quizzesCache, setQuizzesCache] = useState<Record<string, QuizData>>({});
   const [isGeneratingQuiz, setIsGeneratingQuiz] = useState(false);
 
-  // Mobile drawer state
-  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
-
   // Get active document
   const activeDoc = uploadedDocs.find((doc) => doc.id === activeDocId) || null;
 
   const handleUploadSuccess = (newDoc: DocumentItem) => {
-    setUploadedDocs((prev) => [newDoc, ...prev]);
+    const docWithDate = {
+      ...newDoc,
+      createdAt: newDoc.createdAt || new Date().toISOString(),
+      summary: newDoc.summary || {
+        title: newDoc.name,
+        documentType: "Document",
+        executiveSummary: "Ingestion finished. Generating synopsis details...",
+        keyTakeaways: [],
+        actionItems: [],
+        fileStats: { pages: "1", wordCount: "0", readingTime: "1 min" }
+      }
+    };
+    setUploadedDocs((prev) => [docWithDate, ...prev]);
     setActiveDocId(newDoc.id);
-    setActiveTab("summary"); // default to summary on fresh ingestion
+    setViewMode("workspace");
+    setActiveTab("chat"); // default to chat on workspace open
   };
 
   const handleSelectDoc = (docId: string) => {
     setActiveDocId(docId);
-    setIsMobileSidebarOpen(false); // close drawer on selection
+    setViewMode("workspace");
+    setActiveTab("chat");
+  };
+
+  const handleOpenWorkspace = (docId: string) => {
+    setActiveDocId(docId);
+    setViewMode("workspace");
+    setActiveTab("chat");
+  };
+
+  const handleDeleteDoc = (docId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setUploadedDocs((prev) => prev.filter((doc) => doc.id !== docId));
+    if (activeDocId === docId) {
+      setActiveDocId(null);
+      setViewMode("library");
+    }
+  };
+
+  const handleBackToLibrary = () => {
+    setViewMode("library");
+  };
+
+  const formatBytes = (bytes: number) => {
+    if (bytes === 0) return "0 Bytes";
+    const k = 1024;
+    const sizes = ["Bytes", "KB", "MB"];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + " " + sizes[i];
+  };
+
+  const handleExportNotes = () => {
+    if (!activeDoc) return;
+    const docNameWithoutExtension = activeDoc.name.substring(0, activeDoc.name.lastIndexOf('.')) || activeDoc.name;
+    const notesText = `
+DocMind.ai - Document Summary
+====================================
+Title: ${activeDoc.summary?.title || activeDoc.name}
+Document Type: ${activeDoc.summary?.documentType || "Document"}
+Date: ${new Date().toLocaleDateString()}
+
+Executive Summary:
+------------------
+${activeDoc.summary?.executiveSummary || "N/A"}
+
+Key Takeaways:
+--------------
+${activeDoc.summary?.keyTakeaways?.map((t, idx) => `${idx + 1}. ${t}`).join('\n') || "None"}
+
+Action Items:
+-------------
+${activeDoc.summary?.actionItems?.map((a, idx) => `- ${a}`).join('\n') || "None"}
+    `.trim();
+
+    const blob = new Blob([notesText], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `${docNameWithoutExtension}_notes.txt`;
+    link.click();
+    URL.revokeObjectURL(url);
   };
 
   const handleGenerateQuiz = async () => {
@@ -167,444 +259,388 @@ export default function App() {
     );
   }
 
-  return (
-    <div className="min-h-screen bg-slate-950 flex flex-col text-slate-100 font-sans leading-normal selection:bg-sky-500/30" id="main-app-container">
-      
-      {/* 1. Header (Bento Styled top rail) */}
-      <header className="h-16 border-b border-slate-800 flex items-center justify-between px-6 bg-slate-900/40 backdrop-blur-md sticky top-0 z-40" id="app-header">
-        <div className="flex items-center gap-3">
-          <span className="font-extrabold text-sm tracking-wider text-white uppercase font-mono">
-            ANALYZER<span className="text-sky-400">.AI</span>
-          </span>
-          <span className="hidden md:inline px-2 py-0.5 rounded text-[10px] font-mono bg-slate-800 border border-slate-700 text-slate-400">
-            v2.4.0-AWS_FARGATE
-          </span>
-        </div>
+  // --- LIBRARY VIEW MODE (Android 16 Minimal Style) ---
+  if (viewMode === "library") {
+    const totalDocs = uploadedDocs.length;
+    const totalPages = uploadedDocs.reduce((acc, doc) => acc + parseInt(doc.summary?.fileStats?.pages || "1"), 0);
+    const totalAIAnswers = Object.values(chatHistories).reduce((acc, history) => {
+      return acc + history.filter(m => m.role === "model").length;
+    }, 2); // default to 2
 
-        {/* Telemetry Status Lights */}
-        <div className="flex items-center gap-4 sm:gap-6">
-          <div className="flex gap-4 text-[10px] font-mono font-bold">
-            {googleUser ? (
-              <span className="text-emerald-400 flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                DRIVE: CONNECTED
-              </span>
-            ) : (
-              <span className="text-amber-400 flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
-                DRIVE: OFFLINE
-              </span>
-            )}
-            <span className="text-slate-500 hidden sm:inline">DB: RDS_PROXY</span>
+    return (
+      <div className="min-h-screen bg-slate-950 flex flex-col text-slate-100 font-sans leading-relaxed selection:bg-sky-500/20 relative" id="library-view-root">
+        {/* Soft background layout glows */}
+        <div className="absolute top-[5%] left-[10%] w-[40%] h-[40%] bg-sky-500/5 rounded-full blur-[160px] pointer-events-none" />
+        <div className="absolute bottom-[5%] right-[10%] w-[40%] h-[40%] bg-indigo-500/5 rounded-full blur-[160px] pointer-events-none" />
+
+        {/* Brand Header */}
+        <header className="h-20 border-b border-slate-900/60 flex items-center justify-between px-8 bg-slate-950/20 backdrop-blur-lg sticky top-0 z-40">
+          <div className="flex items-center gap-3">
+            <span className="font-extrabold text-lg tracking-tight text-white uppercase font-sans">
+              DocMind<span className="text-sky-400">.ai</span>
+            </span>
+            <span className="px-3 py-1 rounded-full text-xs font-semibold bg-slate-900 border border-slate-800 text-slate-400">
+              Workspace
+            </span>
           </div>
 
-          {/* Google Sign In / User Profile */}
-          <div className="flex items-center gap-3 pl-3 border-l border-slate-800">
-            {googleUser ? (
-              <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-3">
+            {googleUser && (
+              <div className="flex items-center gap-3">
                 {googleUser.picture ? (
                   <img
                     src={googleUser.picture}
-                    alt={googleUser.name || "User Profile"}
+                    alt={googleUser.name}
                     referrerPolicy="no-referrer"
-                    className="w-7 h-7 rounded-full border border-slate-700"
+                    className="w-9 h-9 rounded-full border border-slate-800"
                   />
                 ) : (
-                  <div className="w-7 h-7 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-xs text-sky-400 font-bold font-mono">
+                  <div className="w-9 h-9 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-sm text-sky-400 font-bold font-sans">
                     {(googleUser.name || "U")[0].toUpperCase()}
                   </div>
                 )}
-                <div className="hidden lg:flex flex-col text-left">
-                  <span className="text-xs font-semibold text-slate-200 leading-tight">
-                    {googleUser.name}
-                  </span>
-                  <span className="text-[9px] text-slate-500 font-mono leading-none">
-                    {googleUser.email}
-                  </span>
-                </div>
                 <button
                   onClick={handleLogout}
-                  className="p-1.5 rounded bg-slate-800/60 hover:bg-red-950/20 hover:text-red-400 border border-slate-700 hover:border-red-900/50 text-slate-400 transition-all cursor-pointer"
+                  className="p-2 rounded-full bg-slate-900 hover:bg-rose-950/20 hover:text-rose-400 border border-slate-800 hover:border-rose-900/40 text-slate-400 transition-all cursor-pointer"
                   title="Sign Out"
                 >
-                  <LogOut className="w-3.5 h-3.5" />
+                  <LogOut className="w-4 h-4" />
                 </button>
               </div>
-            ) : (
-              <button
-                disabled={isVerifyingSession}
-                onClick={() => login()}
-                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-sky-500 hover:bg-sky-400 text-slate-950 text-xs font-semibold font-sans tracking-tight transition-all shadow-md active:scale-95 disabled:opacity-50 cursor-pointer"
-              >
-                <CloudLightning className="w-3.5 h-3.5 fill-current" />
-                <span>{isVerifyingSession ? "Signing In..." : "Connect Drive"}</span>
-              </button>
             )}
           </div>
-          
-          {/* Mobile menu trigger */}
-          <button
-            id="mobile-sidebar-toggle"
-            onClick={() => setIsMobileSidebarOpen(true)}
-            className="md:hidden w-8 h-8 border border-slate-700 bg-slate-800 rounded flex items-center justify-center text-slate-300"
-            aria-label="Open sidebar drawer"
-          >
-            <Menu className="w-4 h-4" />
-          </button>
-        </div>
-      </header>
+        </header>
 
-      {/* 2. Bento Container Framework */}
-      <div className="flex-1 max-w-[1500px] w-full mx-auto p-4 md:p-6" id="workspace-frame">
-        <div className="grid grid-cols-12 gap-4 h-full">
-          
-          {/* LEFT BENTO BLOCK: INGEST ENGINE (Desktop sidebar) */}
-          <aside className="col-span-12 md:col-span-4 lg:col-span-3 bg-slate-900 border border-slate-800 rounded-2xl p-5 flex flex-col hidden md:flex" id="desktop-sidebar">
+        {/* Library Body */}
+        <main className="flex-1 max-w-[1200px] w-full mx-auto px-8 py-12 flex flex-col gap-10 relative z-10">
+          {/* Header Title */}
+          <div className="text-left space-y-3">
+            <h1 className="text-5xl lg:text-6xl font-extrabold tracking-tight text-white font-sans uppercase">
+              THE LIBRARY<span className="text-sky-400">.</span>
+            </h1>
+            <p className="text-sm lg:text-base text-slate-400 max-w-3xl leading-relaxed">
+              Every document you feed DocMind becomes a living knowledge base — chat, quizzes, flashcards, translations and notes, one click away.
+            </p>
+          </div>
+
+          {/* Stats Bar */}
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4" id="library-stats-bar">
+            {[
+              { label: "DOCUMENTS", value: totalDocs, icon: FileText },
+              { label: "PAGES READ", value: totalPages, icon: File },
+              { label: "AI ANSWERS", value: totalAIAnswers, icon: BrainCircuit },
+              { label: "AVG RESPONSE", value: "419ms", icon: Sparkles },
+              { label: "SUCCESS RATE", value: "100%", icon: Activity },
+            ].map((stat, idx) => (
+              <div key={idx} className="bg-slate-900/40 border border-slate-850 rounded-3xl p-5 flex flex-col gap-2 shadow-xs hover:border-slate-800 transition-colors">
+                <span className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-2">
+                  <stat.icon className="w-4.5 h-4.5 text-slate-500" />
+                  {stat.label}
+                </span>
+                <span className="text-2xl lg:text-3xl font-extrabold text-slate-200 leading-none">{stat.value}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* Drag and Drop Container */}
+          <div className="bg-[#12131c]/40 border border-slate-850 rounded-3xl p-6 flex flex-col justify-center items-center shadow-xs">
             <UploadZone
               onUploadSuccess={handleUploadSuccess}
               uploadedDocs={uploadedDocs}
               activeDocId={activeDocId}
               onSelectDoc={handleSelectDoc}
               accessToken={accessToken || undefined}
+              hideList={true}
             />
-          </aside>
+          </div>
 
-          {/* CENTER BENTO BLOCK: CENTRAL EVALUATION LAB */}
-          <main className="col-span-12 md:col-span-8 lg:col-span-6 bg-slate-900 border border-slate-800 rounded-2xl p-5 flex flex-col overflow-hidden min-h-[550px]" id="workspace-main-content">
-            <AnimatePresence mode="wait">
-              {!activeDoc ? (
-                // Pre-Ingested State: Technical Guidance
-                <motion.div
-                  key="welcome-screen"
-                  initial={{ opacity: 0, scale: 0.98 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="flex-1 flex flex-col justify-center max-w-md mx-auto text-left gap-6 py-4"
-                >
-                  <div>
-                    <span className="text-[10px] bg-sky-500/10 border border-sky-500/20 text-sky-400 px-2 py-0.5 rounded font-mono font-bold uppercase">
-                      Ingestion Pending
-                    </span>
-                    <h2 className="text-base font-bold text-white mt-3 leading-snug">
-                      Evaluate Multi-modal Ingestion
-                    </h2>
-                    <p className="text-xs text-slate-400 mt-2 leading-relaxed">
-                      This sandbox performs real-time semantic structuring, synthesis and translation on documents via FastAPI and the Gemini-3.5 API.
-                    </p>
-                  </div>
-
-                  {/* Highlights Grid */}
-                  <div className="grid grid-cols-1 gap-2.5" id="welcome-features-grid">
-                    <div className="p-3 bg-slate-800/30 border border-slate-800/80 rounded-xl flex items-start gap-3">
-                      <FileText className="w-4 h-4 text-sky-400 mt-0.5 shrink-0" />
-                      <div>
-                        <h4 className="text-xs font-bold text-slate-200">Ingestion Summary</h4>
-                        <p className="text-[10px] text-slate-500 leading-normal mt-0.5">
-                          Parse paragraphs, extract numbers and compile action steps instantly.
-                        </p>
-                      </div>
-                    </div>
-                    <div className="p-3 bg-slate-800/30 border border-slate-800/80 rounded-xl flex items-start gap-3">
-                      <MessageSquare className="w-4 h-4 text-sky-400 mt-0.5 shrink-0" />
-                      <div>
-                        <h4 className="text-xs font-bold text-slate-200">Interactive Streaming</h4>
-                        <p className="text-[10px] text-slate-500 leading-normal mt-0.5">
-                          Query document logical paths with progressive stream chunks (SSE).
-                        </p>
-                      </div>
-                    </div>
-                    <div className="p-3 bg-slate-800/30 border border-slate-800/80 rounded-xl flex items-start gap-3">
-                      <BrainCircuit className="w-4 h-4 text-sky-400 mt-0.5 shrink-0" />
-                      <div>
-                        <h4 className="text-xs font-bold text-slate-200">Study Synthesizer</h4>
-                        <p className="text-[10px] text-slate-500 leading-normal mt-0.5">
-                          Auto-construct memory cards and multiple-choice practice modules.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <p className="text-[10px] font-mono text-slate-500 italic">
-                    * Standard file picker or drop zone active on the left sidebar.
-                  </p>
-                </motion.div>
-              ) : (
-                // Active Ingested Document State
-                <motion.div
-                  key="active-workspace"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="flex-1 flex flex-col gap-4"
-                >
-                  {/* Top Control Bar with Bento navigation buttons */}
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3" id="workspace-navbar">
-                    <div className="flex flex-wrap gap-1.5" id="workspace-tabs-group">
-                      <button
-                        id="tab-btn-summary"
-                        onClick={() => setActiveTab("summary")}
-                        className={`px-3 py-1.5 rounded text-xs font-mono font-bold uppercase transition-all cursor-pointer ${
-                          activeTab === "summary"
-                            ? "bg-sky-400 text-slate-950 font-bold"
-                            : "bg-slate-800 text-slate-400 hover:text-slate-200"
-                        }`}
-                      >
-                        SUMMARY
-                      </button>
-                      <button
-                        id="tab-btn-chat"
-                        onClick={() => setActiveTab("chat")}
-                        className={`px-3 py-1.5 rounded text-xs font-mono font-bold uppercase transition-all cursor-pointer ${
-                          activeTab === "chat"
-                            ? "bg-sky-400 text-slate-950 font-bold"
-                            : "bg-slate-800 text-slate-400 hover:text-slate-200"
-                        }`}
-                      >
-                        CHAT
-                      </button>
-                      <button
-                        id="tab-btn-quiz"
-                        onClick={() => setActiveTab("quiz")}
-                        className={`px-3 py-1.5 rounded text-xs font-mono font-bold uppercase transition-all cursor-pointer ${
-                          activeTab === "quiz"
-                            ? "bg-sky-400 text-slate-950 font-bold"
-                            : "bg-slate-800 text-slate-400 hover:text-slate-200"
-                        }`}
-                      >
-                        STUDY KIT
-                      </button>
-                      <button
-                        id="tab-btn-translate"
-                        onClick={() => setActiveTab("translate")}
-                        className={`px-3 py-1.5 rounded text-xs font-mono font-bold uppercase transition-all cursor-pointer ${
-                          activeTab === "translate"
-                            ? "bg-sky-400 text-slate-950 font-bold"
-                            : "bg-slate-800 text-slate-400 hover:text-slate-200"
-                        }`}
-                      >
-                        TRANSLATE
-                      </button>
-                    </div>
-
-                    <span className="text-[10px] font-mono text-slate-500 truncate max-w-[160px]" title={activeDoc.name}>
-                      REF: {activeDoc.name}
-                    </span>
-                  </div>
-
-                  {/* Component Viewport */}
-                  <div className="flex-1" id="workspace-content-viewport">
-                    <AnimatePresence mode="wait">
-                      {activeTab === "summary" && (
-                        <motion.div
-                          key="summary-tab-content"
-                          initial={{ opacity: 0, y: 5 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -5 }}
-                        >
-                          <DocumentSummary summary={activeDoc.summary} driveViewLink={activeDoc.driveViewLink} />
-                        </motion.div>
-                      )}
-
-                      {activeTab === "chat" && (
-                        <motion.div
-                          key="chat-tab-content"
-                          initial={{ opacity: 0, y: 5 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -5 }}
-                        >
-                          <ChatInterface
-                            fileId={activeDoc.id}
-                            fileName={activeDoc.name}
-                            chatHistory={currentChatHistory}
-                            setChatHistory={setChatHistoryForActiveDoc}
-                            accessToken={accessToken || undefined}
-                          />
-                        </motion.div>
-                      )}
-
-                      {activeTab === "quiz" && (
-                        <motion.div
-                          key="quiz-tab-content"
-                          initial={{ opacity: 0, y: 5 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -5 }}
-                        >
-                          <QuizView
-                            fileId={activeDoc.id}
-                            quizData={activeQuizData}
-                            onGenerateQuiz={handleGenerateQuiz}
-                            isLoading={isGeneratingQuiz}
-                          />
-                        </motion.div>
-                      )}
-
-                      {activeTab === "translate" && (
-                        <motion.div
-                          key="translate-tab-content"
-                          initial={{ opacity: 0, y: 5 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -5 }}
-                        >
-                          <TranslationView
-                            fileId={activeDoc.id}
-                            onTranslate={handleTranslate}
-                          />
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </main>
-
-          {/* RIGHT BENTO BLOCK: TELEMETRY & SYSTEM ANALYTICS */}
-          <aside className="col-span-12 lg:col-span-3 flex flex-col gap-4" id="desktop-telemetry">
-            
-            {/* TILE 1: Ingestion Engine Analytics */}
-            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 flex flex-col gap-3">
-              <span className="text-[10px] font-mono font-bold text-slate-500 uppercase tracking-wider">
-                Ingestion Core
-              </span>
-              <div className="mt-1">
-                <div className="flex justify-between items-center text-xs">
-                  <span className="text-slate-400">Semantic Confidence</span>
-                  <span className="font-mono text-sky-400 font-bold">{activeDoc ? "96%" : "0%"}</span>
-                </div>
-                {/* Progress bar */}
-                <div className="w-full bg-slate-950 rounded-full h-1 mt-2 overflow-hidden">
+          {/* Document Grid List */}
+          <div className="flex flex-col gap-5">
+            <h3 className="text-sm font-bold uppercase tracking-wider text-slate-500">
+              Ingested Documents
+            </h3>
+            {uploadedDocs.length === 0 ? (
+              <div className="flex flex-col items-center justify-center rounded-3xl bg-slate-900/20 border border-slate-850 p-16 text-center">
+                <p className="text-sm text-slate-500 font-medium max-w-sm leading-relaxed">
+                  No documents in your library yet. Upload documents using the dropzone above to begin analyzing.
+                </p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                {uploadedDocs.map((doc) => (
                   <div
-                    className="bg-sky-400 h-full transition-all duration-500"
-                    style={{ width: activeDoc ? "96%" : "0%" }}
-                  />
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-2 text-[10px] font-mono mt-1 text-slate-400 border-t border-slate-800 pt-2.5">
-                <div>
-                  <span className="block text-slate-500">Status</span>
-                  <span className={activeDoc ? "text-emerald-400 font-bold" : "text-slate-400"}>
-                    {activeDoc ? "ANALYZED" : "AWAITING"}
-                  </span>
-                </div>
-                <div>
-                  <span className="block text-slate-500">Type</span>
-                  <span>{activeDoc ? activeDoc.summary.documentType : "N/A"}</span>
-                </div>
-              </div>
-            </div>
+                    key={doc.id}
+                    className="bg-[#12131c]/60 border border-slate-850 hover:border-sky-500/40 rounded-3xl p-6 flex flex-col justify-between gap-5 transition-all duration-300 group shadow-xs relative"
+                  >
+                    {/* Top line with title and trash button */}
+                    <div className="space-y-3">
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="flex items-center gap-2.5">
+                          <FileText className="w-5 h-5 text-sky-400 shrink-0" />
+                          <h4 className="text-sm lg:text-base font-bold text-slate-100 truncate max-w-[200px]" title={doc.name}>
+                            {doc.name}
+                          </h4>
+                        </div>
+                        <button
+                          onClick={(e) => handleDeleteDoc(doc.id, e)}
+                          className="w-8 h-8 rounded-full bg-slate-900 hover:bg-rose-950/20 hover:text-rose-400 border border-slate-800 hover:border-rose-900/30 flex items-center justify-center text-slate-400 transition-all cursor-pointer"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
 
-            {/* TILE 2: Quick Operations Map */}
-            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 flex flex-col gap-3">
-              <span className="text-[10px] font-mono font-bold text-slate-500 uppercase tracking-wider">
-                Operation Matrix
+                      {/* Info stats */}
+                      <p className="text-xs text-slate-500 font-mono">
+                        {doc.summary?.fileStats?.pages || "1"} pages • {doc.summary?.fileStats?.wordCount || "~" + (doc.summary?.executiveSummary || "").split(" ").length * 5} words • {formatBytes(doc.size)} • {new Date(doc.createdAt || Date.now()).toLocaleDateString([], { month: "short", day: "numeric" })}
+                      </p>
+
+                      {/* Excerpt */}
+                      <p className="text-xs lg:text-sm text-slate-400 leading-relaxed font-normal line-clamp-3">
+                        {doc.summary?.executiveSummary || ""}
+                      </p>
+                    </div>
+
+                    {/* Open Workspace action */}
+                    <button
+                      onClick={() => handleOpenWorkspace(doc.id)}
+                      className="w-full bg-slate-900 border border-slate-800 text-slate-200 group-hover:bg-sky-500 group-hover:text-slate-950 py-3 rounded-full text-xs lg:text-sm font-bold transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]"
+                    >
+                      <span>Open workspace</span>
+                      <ChevronRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  // --- WORKSPACE VIEW MODE (Android 16 Minimal Style) ---
+  return (
+    <div className="min-h-screen bg-slate-950 flex flex-col text-slate-100 font-sans leading-relaxed selection:bg-sky-500/20" id="workspace-view-root">
+      {/* Top bar */}
+      <header className="h-20 border-b border-slate-900 flex items-center justify-between px-8 bg-slate-950/20 backdrop-blur-lg sticky top-0 z-40">
+        <div className="flex items-center gap-4">
+          <button
+            onClick={handleBackToLibrary}
+            className="flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 text-xs lg:text-sm font-bold transition-all cursor-pointer"
+          >
+            <ChevronLeft className="w-4.5 h-4.5" />
+            <span>Library</span>
+          </button>
+
+          <div className="h-5 w-[1px] bg-slate-800" />
+
+          {/* Doc metadata */}
+          <div className="flex items-center gap-2.5">
+            <FileText className="w-5 h-5 text-sky-400" />
+            <div>
+              <span className="text-sm font-bold text-slate-100 block leading-tight">{activeDoc?.name}</span>
+              <span className="text-xs text-slate-500 font-mono block leading-none mt-0.5">
+                {activeDoc?.summary?.fileStats?.pages || "1"}p • {activeDoc?.summary?.fileStats?.wordCount || "0"} words • engine: Local
               </span>
-              <div className="flex flex-col gap-1.5 text-xs font-mono font-bold mt-1">
-                <button
-                  disabled={!activeDoc}
-                  onClick={() => setActiveTab("chat")}
-                  className="flex items-center justify-between p-2 rounded bg-slate-950/40 border border-slate-800 hover:border-slate-700 hover:text-sky-300 transition-colors disabled:opacity-40 disabled:hover:text-slate-400 text-left cursor-pointer"
-                >
-                  <span>ASK FILE GPT</span>
-                  <ChevronRight className="w-3.5 h-3.5 text-sky-400 shrink-0" />
-                </button>
-                <button
-                  disabled={!activeDoc}
-                  onClick={() => setActiveTab("quiz")}
-                  className="flex items-center justify-between p-2 rounded bg-slate-950/40 border border-slate-800 hover:border-slate-700 hover:text-sky-300 transition-colors disabled:opacity-40 disabled:hover:text-slate-400 text-left cursor-pointer"
-                >
-                  <span>SYNTHESIZE CARDS</span>
-                  <ChevronRight className="w-3.5 h-3.5 text-sky-400 shrink-0" />
-                </button>
-                <button
-                  disabled={!activeDoc}
-                  onClick={() => setActiveTab("translate")}
-                  className="flex items-center justify-between p-2 rounded bg-slate-950/40 border border-slate-800 hover:border-slate-700 hover:text-sky-300 transition-colors disabled:opacity-40 disabled:hover:text-slate-400 text-left cursor-pointer"
-                >
-                  <span>TRANSLATE SYSTEM</span>
-                  <ChevronRight className="w-3.5 h-3.5 text-sky-400 shrink-0" />
-                </button>
-              </div>
             </div>
-
-            {/* TILE 3: AWS Architecture Reference */}
-            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 flex flex-col gap-3">
-              <span className="text-[10px] font-mono font-bold text-slate-500 uppercase tracking-wider">
-                AWS Sandbox Context
-              </span>
-              <div className="flex flex-col gap-2 mt-1">
-                <div className="flex items-center gap-2.5 text-xs">
-                  <Server className="w-3.5 h-3.5 text-sky-400 shrink-0" />
-                  <div>
-                    <span className="block text-[10px] text-slate-500 font-mono">DEPLOYMENT</span>
-                    <span className="font-semibold text-slate-300">ECS Fargate Cluster</span>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2.5 text-xs border-t border-slate-800 pt-2">
-                  <Database className="w-3.5 h-3.5 text-sky-400 shrink-0" />
-                  <div>
-                    <span className="block text-[10px] text-slate-500 font-mono">DATABASE</span>
-                    <span className="font-semibold text-slate-300">RDS Proxy (Aurora)</span>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2.5 text-xs border-t border-slate-800 pt-2">
-                  <Activity className="w-3.5 h-3.5 text-sky-400 shrink-0" />
-                  <div>
-                    <span className="block text-[10px] text-slate-500 font-mono">REGION</span>
-                    <span className="font-semibold text-slate-300">us-east-1 (N. Virginia)</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </aside>
-
+          </div>
         </div>
+
+        {/* Top actions */}
+        <div className="flex items-center gap-2">
+          {activeDoc?.driveViewLink && (
+            <a
+              href={activeDoc.driveViewLink}
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 text-xs lg:text-sm font-bold transition-all"
+            >
+              <Eye className="w-4.5 h-4.5" />
+              <span>Preview</span>
+            </a>
+          )}
+          <button
+            onClick={handleExportNotes}
+            className="flex items-center gap-2 px-5 py-2 rounded-full bg-sky-500 hover:bg-sky-400 text-slate-950 text-xs lg:text-sm font-bold transition-all cursor-pointer"
+          >
+            <ArrowRight className="w-4.5 h-4.5 text-slate-950" />
+            <span>Export notes</span>
+          </button>
+        </div>
+      </header>
+
+      {/* Tabs bar */}
+      <div className="border-b border-slate-900 bg-slate-950 px-8 py-3.5 flex items-center justify-start gap-2 overflow-x-auto select-none scrollbar-none" id="workspace-horizontal-tabs">
+        {[
+          { id: "chat", label: "Chat", icon: MessageSquare },
+          { id: "summary", label: "Summary", icon: FileText },
+          { id: "keypoints", label: "Key points", icon: Bookmark },
+          { id: "quiz", label: "Quiz", icon: BrainCircuit },
+          { id: "flashcards", label: "Flashcards", icon: GraduationCap },
+          { id: "translate", label: "Translate", icon: Languages },
+          { id: "simplify", label: "Simplify", icon: Sparkles },
+        ].map((tab) => {
+          const isActive = activeTab === tab.id;
+          return (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id as any)}
+              className={`flex items-center gap-2.5 px-5 py-2.5 rounded-full text-xs lg:text-sm font-bold transition-all cursor-pointer whitespace-nowrap ${
+                isActive
+                  ? "bg-sky-500 text-slate-950 shadow-md shadow-sky-500/10"
+                  : "text-slate-400 hover:text-slate-200 hover:bg-slate-900/50"
+              }`}
+            >
+              <tab.icon className={`w-4.5 h-4.5 ${isActive ? "text-slate-950" : "text-slate-500"}`} />
+              <span>{tab.label}</span>
+            </button>
+          );
+        })}
       </div>
 
-      {/* MOBILE DRAWER (For Uploads & File Workspace) */}
-      <AnimatePresence>
-        {isMobileSidebarOpen && (
-          <>
-            {/* Overlay Backdrop */}
+      {/* Viewport content */}
+      <main className="flex-1 max-w-[1000px] w-full mx-auto p-8" id="workspace-viewport">
+        <AnimatePresence mode="wait">
+          {activeTab === "summary" && activeDoc && (
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsMobileSidebarOpen(false)}
-              className="fixed inset-0 bg-black/75 z-50 md:hidden backdrop-blur-xs"
-            />
-            {/* Drawer Content */}
-            <motion.aside
-              initial={{ x: "-100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "-100%" }}
-              transition={{ type: "spring", damping: 25 }}
-              className="fixed top-0 left-0 bottom-0 w-80 bg-slate-900 border-r border-slate-800 z-50 p-6 flex flex-col md:hidden gap-5 shadow-2xl"
+              key="summary"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
             >
-              <div className="flex justify-between items-center border-b border-slate-800 pb-3">
-                <span className="text-[10px] font-mono font-bold text-sky-400 uppercase tracking-wider">
-                  Ingestion Workspace
-                </span>
-                <button
-                  onClick={() => setIsMobileSidebarOpen(false)}
-                  className="w-7 h-7 rounded bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400 hover:text-white"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
-              <div className="flex-1 overflow-y-auto">
-                <UploadZone
-                  onUploadSuccess={handleUploadSuccess}
-                  uploadedDocs={uploadedDocs}
-                  activeDocId={activeDocId}
-                  onSelectDoc={handleSelectDoc}
-                  accessToken={accessToken || undefined}
-                />
-              </div>
-            </motion.aside>
-          </>
-        )}
-      </AnimatePresence>
+              <DocumentSummary summary={activeDoc.summary || {
+                title: activeDoc.name,
+                documentType: "Document",
+                executiveSummary: "",
+                keyTakeaways: [],
+                actionItems: [],
+                fileStats: {}
+              }} driveViewLink={activeDoc.driveViewLink} />
+            </motion.div>
+          )}
 
+          {activeTab === "chat" && activeDoc && (
+            <motion.div
+              key="chat"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+            >
+              <ChatInterface
+                fileId={activeDoc.id}
+                fileName={activeDoc.name}
+                chatHistory={currentChatHistory}
+                setChatHistory={setChatHistoryForActiveDoc}
+                accessToken={accessToken || undefined}
+              />
+            </motion.div>
+          )}
+
+          {activeTab === "keypoints" && activeDoc && (
+            <motion.div
+              key="keypoints"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="bg-slate-900 border border-slate-800 rounded-3xl p-8 space-y-6"
+            >
+              <div className="flex items-center gap-2.5 pb-4 border-b border-slate-800">
+                <Bookmark className="w-5.5 h-5.5 text-sky-400" />
+                <h2 className="text-lg font-bold text-white">Logical Insights & Key Points</h2>
+              </div>
+              <div className="space-y-4">
+                {(activeDoc.summary?.keyTakeaways || []).map((takeaway, idx) => (
+                  <div key={idx} className="flex gap-4 items-start p-4 bg-slate-950/40 border border-slate-850 rounded-2xl">
+                    <span className="w-6 h-6 rounded-full bg-sky-500/10 border border-sky-400/20 text-sky-400 text-xs font-mono font-bold flex items-center justify-center shrink-0 mt-0.5">
+                      {idx + 1}
+                    </span>
+                    <p className="text-sm text-slate-300 leading-relaxed font-medium">{takeaway}</p>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          )}
+
+          {activeTab === "quiz" && activeDoc && (
+            <motion.div
+              key="quiz"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+            >
+              <QuizView
+                fileId={activeDoc.id}
+                quizData={activeQuizData}
+                onGenerateQuiz={handleGenerateQuiz}
+                isLoading={isGeneratingQuiz}
+                defaultView="quiz"
+                hideTabSelectors={true}
+              />
+            </motion.div>
+          )}
+
+          {activeTab === "flashcards" && activeDoc && (
+            <motion.div
+              key="flashcards"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+            >
+              <QuizView
+                fileId={activeDoc.id}
+                quizData={activeQuizData}
+                onGenerateQuiz={handleGenerateQuiz}
+                isLoading={isGeneratingQuiz}
+                defaultView="flashcards"
+                hideTabSelectors={true}
+              />
+            </motion.div>
+          )}
+
+          {activeTab === "translate" && activeDoc && (
+            <motion.div
+              key="translate"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+            >
+              <TranslationView
+                fileId={activeDoc.id}
+                onTranslate={handleTranslate}
+              />
+            </motion.div>
+          )}
+
+          {activeTab === "simplify" && activeDoc && (
+            <motion.div
+              key="simplify"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="bg-slate-900 border border-slate-800 rounded-3xl p-8 space-y-5"
+            >
+              <div className="flex items-center gap-2.5 pb-4 border-b border-slate-800">
+                <Sparkles className="w-5.5 h-5.5 text-sky-400" />
+                <h2 className="text-lg font-bold text-white">Simplified Summary</h2>
+              </div>
+              <div className="p-5 bg-slate-950/40 border border-slate-855 rounded-2xl space-y-4">
+                <h4 className="text-xs font-bold text-sky-400 font-mono uppercase tracking-wider">Simplified In 3 Bullets:</h4>
+                <ul className="list-disc pl-5 space-y-3 text-sm text-slate-300 leading-relaxed font-normal">
+                  {(activeDoc.summary?.keyTakeaways || []).slice(0, 3).map((takeaway, idx) => (
+                    <li key={idx}>{takeaway}</li>
+                  ))}
+                </ul>
+              </div>
+              <div className="p-5 bg-slate-950/25 border border-slate-855/50 rounded-2xl space-y-3">
+                <h4 className="text-xs font-bold text-slate-400 font-mono uppercase tracking-wider">Plain English Translation:</h4>
+                <p className="text-sm text-slate-400 leading-relaxed font-normal">
+                  {(activeDoc.summary?.executiveSummary || "").split('.').slice(0, 3).join('.')}.
+                </p>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </main>
     </div>
   );
 }

@@ -9,6 +9,7 @@ interface UploadZoneProps {
   activeDocId: string | null;
   onSelectDoc: (id: string) => void;
   accessToken?: string;
+  hideList?: boolean;
 }
 
 export default function UploadZone({
@@ -17,6 +18,7 @@ export default function UploadZone({
   activeDocId,
   onSelectDoc,
   accessToken,
+  hideList = false,
 }: UploadZoneProps) {
   const [isDragActive, setIsDragActive] = useState(false);
   const [uploadState, setUploadState] = useState<"idle" | "uploading" | "parsing" | "error">("idle");
@@ -273,55 +275,57 @@ export default function UploadZone({
       </div>
 
       {/* Uploaded Documents List */}
-      <div className="flex-1 flex flex-col gap-2 min-h-[160px]" id="uploaded-documents-list">
-        <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500 px-1">
-          Recent Uploads
-        </h3>
-        {uploadedDocs.length === 0 ? (
-          <div className="flex-1 flex flex-col items-center justify-center rounded-xl bg-slate-800/10 border border-slate-800/40 p-4 text-center">
-            <p className="text-[11px] text-slate-500 leading-relaxed font-medium">
-              No files ingested yet. Drop files above to evaluate.
-            </p>
-          </div>
-        ) : (
-          <div className="flex flex-col gap-1.5 max-h-[220px] overflow-y-auto pr-1">
-            {uploadedDocs.map((doc) => {
-              const isActive = doc.id === activeDocId;
-              return (
-                <button
-                  id={`doc-item-${doc.id}`}
-                  key={doc.id}
-                  onClick={() => onSelectDoc(doc.id)}
-                  className={`flex items-center justify-between text-left p-2 rounded-lg border transition-all duration-200 ${
-                    isActive
-                      ? "bg-slate-800 border-sky-500 text-white shadow-md shadow-sky-500/5"
-                      : "bg-slate-800/30 border-slate-700/40 text-slate-300 hover:bg-slate-850 hover:border-slate-700"
-                  }`}
-                >
-                  <div className="flex items-center gap-2.5 overflow-hidden">
-                    <div className="flex-shrink-0 w-8 h-8 rounded bg-slate-800/60 border border-slate-700/50 flex items-center justify-center">
-                      {getFileIcon(doc.mimeType, doc.name)}
+      {!hideList && (
+        <div className="flex-1 flex flex-col gap-2 min-h-[160px]" id="uploaded-documents-list">
+          <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500 px-1">
+            Recent Uploads
+          </h3>
+          {uploadedDocs.length === 0 ? (
+            <div className="flex-1 flex flex-col items-center justify-center rounded-xl bg-slate-800/10 border border-slate-800/40 p-4 text-center">
+              <p className="text-[11px] text-slate-500 leading-relaxed font-medium">
+                No files ingested yet. Drop files above to evaluate.
+              </p>
+            </div>
+          ) : (
+            <div className="flex flex-col gap-1.5 max-h-[220px] overflow-y-auto pr-1">
+              {uploadedDocs.map((doc) => {
+                const isActive = doc.id === activeDocId;
+                return (
+                  <button
+                    id={`doc-item-${doc.id}`}
+                    key={doc.id}
+                    onClick={() => onSelectDoc(doc.id)}
+                    className={`flex items-center justify-between text-left p-2 rounded-lg border transition-all duration-200 ${
+                      isActive
+                        ? "bg-slate-800 border-sky-500 text-white shadow-md shadow-sky-500/5"
+                        : "bg-slate-800/30 border-slate-700/40 text-slate-300 hover:bg-slate-850 hover:border-slate-700"
+                    }`}
+                  >
+                    <div className="flex items-center gap-2.5 overflow-hidden">
+                      <div className="flex-shrink-0 w-8 h-8 rounded bg-slate-800/60 border border-slate-700/50 flex items-center justify-center">
+                        {getFileIcon(doc.mimeType, doc.name)}
+                      </div>
+                      <div className="overflow-hidden">
+                        <p className="text-[11px] font-medium truncate pr-1 text-slate-200">
+                          {doc.name}
+                        </p>
+                        <p className="text-[9px] text-slate-500 mt-0.5 font-mono">
+                          {formatSize(doc.size)} • {doc.summary.fileStats?.pages || "1"} {parseInt(doc.summary.fileStats?.pages || "1") === 1 ? "page" : "pages"}
+                        </p>
+                      </div>
                     </div>
-                    <div className="overflow-hidden">
-                      <p className="text-[11px] font-medium truncate pr-1 text-slate-200">
-                        {doc.name}
-                      </p>
-                      <p className="text-[9px] text-slate-500 mt-0.5 font-mono">
-                        {formatSize(doc.size)} • {doc.summary.fileStats?.pages || "1"} {parseInt(doc.summary.fileStats?.pages || "1") === 1 ? "page" : "pages"}
-                      </p>
-                    </div>
-                  </div>
-                  {isActive && (
-                    <span className="flex-shrink-0 w-4 h-4 rounded-full bg-sky-500/20 border border-sky-400/30 flex items-center justify-center text-sky-400">
-                      <Check className="w-2.5 h-2.5 stroke-[3]" />
-                    </span>
-                  )}
-                </button>
-              );
-            })}
-          </div>
-        )}
-      </div>
+                    {isActive && (
+                      <span className="flex-shrink-0 w-4 h-4 rounded-full bg-sky-500/20 border border-sky-400/30 flex items-center justify-center text-sky-400">
+                        <Check className="w-2.5 h-2.5 stroke-[3]" />
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

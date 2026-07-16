@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Sparkles, BrainCircuit, GraduationCap, ChevronLeft, ChevronRight, HelpCircle, Check, X, RefreshCw } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { QuizQuestion, FlashcardItem, QuizData } from "../types";
@@ -8,6 +8,8 @@ interface QuizViewProps {
   quizData: QuizData | null;
   onGenerateQuiz: () => Promise<void>;
   isLoading: boolean;
+  defaultView?: "flashcards" | "quiz";
+  hideTabSelectors?: boolean;
 }
 
 export default function QuizView({
@@ -15,9 +17,17 @@ export default function QuizView({
   quizData,
   onGenerateQuiz,
   isLoading,
+  defaultView,
+  hideTabSelectors = false,
 }: QuizViewProps) {
-  const [activeTab, setActiveTab] = useState<"flashcards" | "quiz">("flashcards");
-  
+  const [activeTab, setActiveTab] = useState<"flashcards" | "quiz">(defaultView || "flashcards");
+
+  useEffect(() => {
+    if (defaultView) {
+      setActiveTab(defaultView);
+    }
+  }, [defaultView]);
+
   // Flashcards navigation
   const [currentCardIdx, setCurrentCardIdx] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
@@ -67,24 +77,32 @@ export default function QuizView({
     }, 150);
   };
 
-  if (!quizData && !isLoading) {
+  const flashcards = quizData?.flashcards || [];
+  const quiz = quizData?.quiz || [];
+  const currentCard = flashcards[currentCardIdx];
+  const hasNoData = activeTab === "quiz" ? quiz.length === 0 : flashcards.length === 0;
+
+  if (hasNoData && !isLoading) {
+    const isQuiz = activeTab === "quiz";
     return (
-      <div className="flex flex-col items-center justify-center border border-slate-800 bg-slate-900 rounded-2xl p-8 text-center max-w-sm mx-auto" id="quiz-empty-state">
-        <div className="w-10 h-10 rounded-lg bg-sky-500/10 border border-sky-400/20 flex items-center justify-center text-sky-400 mb-4">
-          <BrainCircuit className="w-5 h-5" />
+      <div className="flex flex-col items-center justify-center border border-slate-800 bg-slate-900 rounded-3xl p-10 text-center max-w-md mx-auto" id="quiz-empty-state">
+        <div className="w-14 h-14 rounded-2xl bg-sky-500/10 border border-sky-400/20 flex items-center justify-center text-sky-400 mb-6">
+          <BrainCircuit className="w-7 h-7" />
         </div>
-        <h3 className="text-xs font-bold uppercase tracking-wider text-slate-300">
-          Synthesize Study Kit
+        <h3 className="text-lg font-bold text-slate-100 font-sans tracking-tight">
+          {isQuiz ? "Synthesize Practice Quiz" : "Synthesize Flashcards"}
         </h3>
-        <p className="text-xs text-slate-400 mt-2 leading-relaxed">
-          Let Gemini scan this document to construct interactive flashcards and multiple-choice practice quizzes automatically.
+        <p className="text-sm text-slate-400 mt-3 leading-relaxed">
+          {isQuiz 
+            ? "Let Gemini scan this document to construct interactive multiple-choice practice quizzes automatically."
+            : "Let Gemini scan this document to construct interactive concept study cards automatically."}
         </p>
         <button
           id="generate-quiz-btn"
           onClick={onGenerateQuiz}
-          className="mt-6 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs transition-all cursor-pointer shadow-lg"
+          className="mt-6 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold px-6 py-3 rounded-full text-sm transition-all cursor-pointer shadow-lg active:scale-95"
         >
-          GENERATE KIT
+          {isQuiz ? "GENERATE QUIZ" : "GENERATE FLASHCARDS"}
         </button>
       </div>
     );
@@ -92,14 +110,14 @@ export default function QuizView({
 
   if (isLoading) {
     return (
-      <div className="flex flex-col items-center justify-center h-64 text-center gap-3" id="quiz-loading-state">
+      <div className="flex flex-col items-center justify-center h-64 text-center gap-4" id="quiz-loading-state">
         <div className="relative">
-          <div className="w-10 h-10 rounded-full border-2 border-sky-500/10 border-t-sky-400 animate-spin" />
-          <BrainCircuit className="absolute top-2.5 left-2.5 w-5 h-5 text-sky-400 animate-pulse" />
+          <div className="w-14 h-14 rounded-full border-2 border-sky-500/10 border-t-sky-400 animate-spin" />
+          <BrainCircuit className="absolute top-4 left-4 w-6 h-6 text-sky-400 animate-pulse" />
         </div>
         <div>
-          <p className="text-xs font-bold text-sky-400 uppercase tracking-wider">Synthesizing Questions...</p>
-          <p className="text-[11px] text-slate-500 mt-1">
+          <p className="text-sm font-bold text-sky-400 uppercase tracking-wider">Synthesizing Questions...</p>
+          <p className="text-xs text-slate-500 mt-1">
             Analyzing logical nodes and conceptual mapping
           </p>
         </div>
@@ -107,40 +125,38 @@ export default function QuizView({
     );
   }
 
-  const flashcards = quizData?.flashcards || [];
-  const quiz = quizData?.quiz || [];
-  const currentCard = flashcards[currentCardIdx];
-
   return (
     <div className="flex flex-col gap-5 w-full h-full" id="quiz-dashboard-container">
       {/* Tab Selectors */}
-      <div className="flex bg-slate-950/40 p-1 border border-slate-800/80 rounded-xl max-w-xs self-center" id="quiz-tab-selectors">
-        <button
-          id="tab-select-flashcards"
-          onClick={() => setActiveTab("flashcards")}
-          className={`flex items-center gap-1.5 px-4 py-2 text-xs font-bold rounded-lg transition-all cursor-pointer ${
-            activeTab === "flashcards"
-              ? "bg-slate-800 text-sky-400 shadow-md"
-              : "text-slate-400 hover:text-slate-200"
-          }`}
-        >
-          <GraduationCap className="w-4 h-4" /> Study Cards
-        </button>
-        <button
-          id="tab-select-quiz"
-          onClick={() => {
-            setActiveTab("quiz");
-            resetQuiz();
-          }}
-          className={`flex items-center gap-1.5 px-4 py-2 text-xs font-bold rounded-lg transition-all cursor-pointer ${
-            activeTab === "quiz"
-              ? "bg-slate-800 text-sky-400 shadow-md"
-              : "text-slate-400 hover:text-slate-200"
-          }`}
-        >
-          <BrainCircuit className="w-4 h-4" /> Practice Quiz
-        </button>
-      </div>
+      {!hideTabSelectors && (
+        <div className="flex bg-slate-950/40 p-1 border border-slate-800/80 rounded-xl max-w-xs self-center" id="quiz-tab-selectors">
+          <button
+            id="tab-select-flashcards"
+            onClick={() => setActiveTab("flashcards")}
+            className={`flex items-center gap-1.5 px-4 py-2 text-xs font-bold rounded-lg transition-all cursor-pointer ${
+              activeTab === "flashcards"
+                ? "bg-slate-800 text-sky-400 shadow-md"
+                : "text-slate-400 hover:text-slate-200"
+            }`}
+          >
+            <GraduationCap className="w-4 h-4" /> Study Cards
+          </button>
+          <button
+            id="tab-select-quiz"
+            onClick={() => {
+              setActiveTab("quiz");
+              resetQuiz();
+            }}
+            className={`flex items-center gap-1.5 px-4 py-2 text-xs font-bold rounded-lg transition-all cursor-pointer ${
+              activeTab === "quiz"
+                ? "bg-slate-800 text-sky-400 shadow-md"
+                : "text-slate-400 hover:text-slate-200"
+            }`}
+          >
+            <BrainCircuit className="w-4 h-4" /> Practice Quiz
+          </button>
+        </div>
+      )}
 
       <AnimatePresence mode="wait">
         {activeTab === "flashcards" && currentCard && (

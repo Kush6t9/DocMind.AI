@@ -51,7 +51,7 @@ export default function LoginScreen({ onLoginSuccess, isVerifying, setIsVerifyin
       <header className="h-16 flex items-center justify-between px-6 md:px-12 bg-slate-900/10 backdrop-blur-sm border-b border-slate-900/40 relative z-10">
         <div className="flex items-center gap-3">
           <span className="font-extrabold text-sm tracking-wider text-white uppercase font-mono">
-            ANALYZER<span className="text-sky-400">.AI</span>
+            DOCMIND<span className="text-sky-400">.AI</span>
           </span>
           <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-slate-800/80 border border-slate-700/50 text-slate-400">
             v2.4.0-AWS_FARGATE
@@ -183,7 +183,7 @@ export default function LoginScreen({ onLoginSuccess, isVerifying, setIsVerifyin
 
       {/* Footer */}
       <footer className="h-14 border-t border-slate-900/40 px-6 flex items-center justify-between text-[10px] font-mono text-slate-500 relative z-10">
-        <span>© 2026 ANALYZER.AI SYSTEM. ALL RIGHTS RESERVED.</span>
+        <span>© 2026 DOCMIND.AI SYSTEM. ALL RIGHTS RESERVED.</span>
         <div className="flex gap-4">
           <a href="#" className="hover:text-slate-300">PRIVACY</a>
           <a href="#" className="hover:text-slate-300">TERMS</a>
