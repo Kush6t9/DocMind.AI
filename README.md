@@ -1,72 +1,112 @@
-# DocMind.ai 📄🤖
+<div align="center">
 
-DocMind.ai is an intelligent full-stack AI Document Companion designed to process, extract, and analyze information from documents seamlessly. It features a modern, beautiful, and minimal interface inspired by Android 16 typography and card aesthetics, backed by a robust Python FastAPI service and the Gemini API.
+# 📄 DocMind.AI
+
+### The Intelligent Open-Source AI Document Companion & Study Suite
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Vite](https://img.shields.io/badge/Vite-6.x-646CFF?style=flat&logo=vite&logoColor=white)](https://vite.dev)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.x-009688?style=flat&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
+[![Google Gemini](https://img.shields.io/badge/Gemini-SDK-blue?style=flat&logo=googlegemini&logoColor=white)](https://deepmind.google/technologies/gemini/)
+
+[Explore features](#-key-features) • [Get Started](#-getting-started--setup) • [Architecture](#-system-architecture)
+
+</div>
+
+---
+
+DocMind.AI is a premium, open-source, full-stack document analyzer designed to process, extract, and convert static documents into active knowledge repositories. Backed by a high-performance **Python FastAPI** service, a reactive **Vite + React** SPA, and powered by **Google Gemini models**, DocMind.AI delivers live synopsis, semantic chat, multi-lingual translations, and interactive practice suites.
+
+---
+
+## ⚡ System Architecture
+
+```mermaid
+graph TD
+    User([User Client]) <-->|React Vite SPA: Port 3000| FE[Frontend Server]
+    FE <-->|API Requests / SSE Streaming| BE[FastAPI Backend: Port 8000]
+    BE <-->|Multi-Modal Ingestion| Gemini[Google Gemini API]
+    BE <-->|OAuth / File Backup| GDrive[Google Drive API]
+```
 
 ---
 
 ## ✨ Key Features
 
-- **📂 Smart Library Dashboard**: Manage your complete document inventory with live analytics counting uploaded documents, pages read, AI answers, response latency, and system ingestion success rate.
-- **🛠️ Workspace Evaluation Studio**: A dedicated full-screen workstation for your selected document, featuring a horizontal multi-tab interface:
-  - **💬 Chat**: Ask questions about the document structure and get streaming responses (SSE).
-  - **📄 Summary**: View a high-level executive synopsis, key takeaways, and action plans.
-  - **📌 Key Points**: Dive deep into bulleted logical concepts.
-  - **🧠 Quiz & Flashcards**: Auto-synthesize interactive multiple-choice practice exams and 3D concept flashcards.
-  - **🌐 Translate**: Translate document insights instantly into multiple world languages.
-  - **✨ Simplify**: Toggle plain-English translations and simple 3-bullet overviews of complex materials.
-- **☁️ Google Drive Sync**: Login securely via Google OAuth to automatically sync and backup your uploaded files directly in your personal Drive folder (`DocMind.ai Workspace`).
+DocMind.AI provides a series of high-level features built to streamline document consumption:
+
+### 📂 Smart Library Dashboard
+- **Translucent Drag & Drop Ingestion**: Upload files instantly with active tracking of file size and ingest progress.
+- **Persistent Inventory**: Saves your inventory across refreshes via local storage syncing.
+- **Analytics Metrics**: Real-time evaluation dashboard tracking total documents, total read pages, AI answers, and response latency.
+
+### 🛠️ Evaluation Studio (Document Workspace)
+Each uploaded document receives a fully insulated, viewport-fitted workspace featuring a custom horizontal tab controller:
+- **💬 Streamed Interactive Chat**: Query document details in natural language with token-by-token server-sent events (SSE) and strict citations.
+- **📄 Executive Summary**: View a structured summary presenting document objectives, target takeaways, and action points.
+- **📌 Key Insights**: Dig into detailed bullet points representing core semantic structures.
+- **🧠 Quiz Generator**: Synthesize multiple-choice interactive exams based on document claims.
+- **🎓 Concept Flashcards**: Flip and study concepts with 3D transition interactive flashcards.
+- **🌐 Translation Studio**: Instantly localize summaries, definitions, and questions into twelve world languages.
+- **💾 Export Notes**: Download a complete compilation of your synopsis, takeaways, and quiz scores as clean Markdown logs.
+
+### ☁️ Cloud Drive Synchronization
+- **Implicit Google OAuth**: Login directly with your Google account.
+- **Secure Backup**: Automatically sync and backup ingested files directly into your personal Google Drive account in a designated `DocMind.ai Workspace` folder.
 
 ---
 
 ## 🛠️ Technology Stack
 
-- **Frontend**: React, TypeScript, Vite, Tailwind CSS, Motion, Lucide Icons.
-- **Backend**: Python, FastAPI, Google GenAI SDK, PyPDF, Mammoth (DOCX parser).
-- **Environment**: Decoupled microservices architecture with local hot-reloading.
+| Layer | Technologies |
+| :--- | :--- |
+| **Frontend** | React SPA, TypeScript, Vite, Tailwind CSS, Motion, Lucide Icons |
+| **Backend** | Python 3.10+, FastAPI, Uvicorn, Google GenAI SDK |
+| **File Parsers** | PyPDF (PDF text), Mammoth (DOCX structure), native Zip/XML parser (PPTX slides) |
 
 ---
 
 ## 📁 Repository Structure
 
 ```text
-├── backend/                  # Python FastAPI Service
-│   ├── auth.py              # Google OAuth Token Verification
-│   ├── drive_service.py     # Google Drive Sync API Utilities
-│   ├── main.py              # FastAPI Application & Gemini SDK Integration
-│   └── requirements.txt     # Python Dependencies
-├── frontend/                 # React SPA Client Service
+├── backend/                  # Python FastAPI Microservice
+│   ├── main.py              # Application Root & Gemini Model SDK Integration
+│   ├── auth.py              # Google OAuth Endpoint Verification
+│   ├── drive_service.py     # Google Drive folder/file backup utilities
+│   └── requirements.txt     # Python PIP packages
+├── frontend/                 # React Client Application
 │   ├── src/
-│   │   ├── components/      # UI Dashboard Modules (Chat, Summary, Quiz, etc.)
-│   │   ├── App.tsx          # Core Navigation & View Controller
-│   │   ├── index.css        # Material Design tokens & Custom Scrollbars
-│   │   └── main.tsx         # App Mounting Root
-│   ├── index.html           # HTML Entry & Google Fonts Loading
-│   └── package.json         # Node Scripts & Dependencies
-├── docker-compose.yml        # Multi-container Orchestration (Optional)
-└── README.md                 # Project Documentation
+│   │   ├── components/      # UI components (ChatInterface, QuizView, etc.)
+│   │   ├── App.tsx          # Workspace Router & Root Controller
+│   │   ├── index.css        # Tailwind directives & CSS Grid definitions
+│   │   └── types.ts         # TypeScript structural definitions
+│   ├── index.html           # Document HTML entrypoint
+│   └── package.json         # Node build scripts
+├── LICENSE                   # MIT License
+└── README.md                 # Documentation
 ```
 
 ---
 
 ## ⚙️ Getting Started & Setup
 
+Follow these steps to deploy a local instance of DocMind.AI for development:
+
 ### Prerequisites
-Make sure you have the following installed:
-- **Node.js** (v18+)
-- **Python** (v3.10+)
+- **Node.js** (v18 or higher)
+- **Python** (v3.10 or higher)
+- **Gemini API Key** (Get one from [Google AI Studio](https://aistudio.google.com))
 
 ---
 
-### 💻 Manual Local Development
+### 💻 Local Installation Guide
 
-To run the services bare-metal without containerization:
-
-#### 1. Start the Backend (FastAPI)
-1. Navigate into the backend directory:
+#### 1. Setup Backend Server (FastAPI)
+1. Navigate to the backend directory:
    ```bash
    cd backend
    ```
-2. Create and activate a virtual environment:
+2. Initialize virtual environment:
    ```bash
    python -m venv venv
    # On Windows:
@@ -74,30 +114,30 @@ To run the services bare-metal without containerization:
    # On macOS/Linux:
    source venv/bin/activate
    ```
-3. Install dependencies:
+3. Install Python requirements:
    ```bash
    pip install -r requirements.txt
    ```
-4. Define your Gemini API Key:
+4. Configure API environment variable:
    ```bash
    # Windows PowerShell:
-   $env:GEMINI_API_KEY="your-api-key"
-   # Windows CMD:
-   set GEMINI_API_KEY="your-api-key"
+   $env:GEMINI_API_KEY="AIzaSyYourGeminiAPIKeyHere"
+   # Windows Command Prompt:
+   set GEMINI_API_KEY="AIzaSyYourGeminiAPIKeyHere"
    # macOS/Linux:
-   export GEMINI_API_KEY="your-api-key"
+   export GEMINI_API_KEY="AIzaSyYourGeminiAPIKeyHere"
    ```
-5. Start the server:
+5. Run the ASGI server:
    ```bash
    uvicorn main:app --host 127.0.0.1 --port 8000 --reload
    ```
 
-#### 2. Start the Frontend (Vite)
-1. Open a new terminal and navigate to the frontend directory:
+#### 2. Setup Client Application (Vite + React)
+1. Open a new terminal instance and enter the frontend directory:
    ```bash
    cd frontend
    ```
-2. Install dependencies:
+2. Install npm dependencies:
    ```bash
    npm install
    ```
@@ -105,4 +145,10 @@ To run the services bare-metal without containerization:
    ```bash
    npm run dev
    ```
-4. Access the application in your browser at: **[http://localhost:3000](http://localhost:3000)**.
+4. Open your browser and navigate to **[http://localhost:3000](http://localhost:3000)**.
+
+---
+
+## 📄 License
+
+DocMind.AI is distributed under the MIT License. See [LICENSE](file:///c:/Users/akano/Documents/IBMInternship/Analyserai/Analyzer.AI/LICENSE) for more details.
