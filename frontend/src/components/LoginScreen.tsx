@@ -235,7 +235,7 @@ export default function LoginScreen({ onLoginSuccess, isVerifying, setIsVerifyin
         <div className="text-left space-y-2">
           <span className="text-xs font-bold text-sky-400 uppercase tracking-widest font-mono">THE TOOLKIT</span>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white uppercase font-sans tracking-tight">
-            ONE UPLOAD. EIGHT SUPERPOWERS.
+            ONE UPLOAD. SEVEN SUPERPOWERS.
           </h2>
         </div>
 
@@ -333,19 +333,6 @@ export default function LoginScreen({ onLoginSuccess, isVerifying, setIsVerifyin
             </div>
           </div>
 
-          {/* Simplify bento (7th superpower) */}
-          <div className="bg-bg-surface/20 backdrop-blur-md border border-slate-800/40 rounded-3xl p-6 space-y-4 hover:border-amber-500/20 transition-all">
-            <div className="flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-amber-400" />
-              <h4 className="text-sm font-bold text-white">Plain-language rewrite</h4>
-            </div>
-            <p className="text-xs text-slate-400 leading-relaxed font-normal">
-              The same document, rewritten so simply a 12-year-old could pass the test.
-            </p>
-            <div className="px-3 py-1.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 text-[10px] font-bold inline-block">
-              ✓ Plain English mode active
-            </div>
-          </div>
 
           {/* Export notes bento (8th superpower - Added according to user requirement) */}
           <div className="bg-bg-surface/20 backdrop-blur-md border border-slate-800/40 rounded-3xl p-6 space-y-4 hover:border-sky-500/20 transition-all">

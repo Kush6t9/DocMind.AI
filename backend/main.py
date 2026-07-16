@@ -88,6 +88,30 @@ def parse_docx(file_bytes: bytes) -> str:
     except Exception as e:
         return f"[DOCX parsing error: {str(e)}]"
 
+# Helper: Parse PPTX
+def parse_pptx(file_bytes: bytes) -> str:
+    import io
+    import zipfile
+    import xml.etree.ElementTree as ET
+    
+    text_runs = []
+    try:
+        with zipfile.ZipFile(io.BytesIO(file_bytes)) as zip_ref:
+            slide_files = [f for f in zip_ref.namelist() if f.startswith("ppt/slides/slide") and f.endswith(".xml")]
+            slide_files.sort(key=lambda x: int(''.join(filter(str.isdigit, x)) or 0))
+            
+            for slide_file in slide_files:
+                slide_xml = zip_ref.read(slide_file)
+                root = ET.fromstring(slide_xml)
+                for elem in root.iter():
+                    if elem.tag.endswith('}t'):
+                        if elem.text:
+                            text_runs.append(elem.text)
+    except Exception as e:
+        return f"[PPTX parsing error: {str(e)}]"
+        
+    return "\n".join(text_runs).strip()
+
 # Helper: Clean and Parse JSON blocks from LLM markdown
 def parse_llm_json(text: str) -> Dict[str, Any]:
     cleaned = text.strip()
@@ -129,6 +153,8 @@ async def upload_document(file: UploadFile = File(...)):
                 raw_text += "\n" + parse_pdf(contents)
         elif mime_type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document" or filename.endswith(".docx"):
             raw_text = parse_docx(contents)
+        elif mime_type == "application/vnd.openxmlformats-officedocument.presentationml.presentation" or filename.endswith(".pptx"):
+            raw_text = parse_pptx(contents)
         else:
             # Fallback text
             raw_text = contents.decode("utf-8", errors="ignore")

@@ -81,7 +81,7 @@ export default function App() {
   const [viewMode, setViewMode] = useState<"library" | "workspace">("library");
 
   // Tab Navigation
-  const [activeTab, setActiveTab] = useState<"summary" | "chat" | "keypoints" | "quiz" | "flashcards" | "translate" | "simplify">("chat");
+  const [activeTab, setActiveTab] = useState<"summary" | "chat" | "keypoints" | "quiz" | "flashcards" | "translate">("chat");
 
   // In-Memory Multi-Document States Cache
   const [chatHistories, setChatHistories] = useState<Record<string, ChatMessage[]>>({});
@@ -494,7 +494,6 @@ ${activeDoc.summary?.actionItems?.map((a, idx) => `- ${a}`).join('\n') || "None"
           { id: "quiz", label: "Quiz", icon: BrainCircuit },
           { id: "flashcards", label: "Flashcards", icon: GraduationCap },
           { id: "translate", label: "Translate", icon: Languages },
-          { id: "simplify", label: "Simplify", icon: Sparkles },
         ].map((tab) => {
           const isActive = activeTab === tab.id;
           const accentColors: Record<string, { bg: string; text: string; shadow: string; iconColor: string }> = {
@@ -503,8 +502,7 @@ ${activeDoc.summary?.actionItems?.map((a, idx) => `- ${a}`).join('\n') || "None"
             keypoints: { bg: "bg-indigo-500", text: "text-slate-950", shadow: "shadow-indigo-500/20", iconColor: "text-indigo-400" },
             quiz: { bg: "bg-orange-500", text: "text-slate-950", shadow: "shadow-orange-500/20", iconColor: "text-orange-450" },
             flashcards: { bg: "bg-purple-500", text: "text-slate-950", shadow: "shadow-purple-500/20", iconColor: "text-purple-400" },
-            translate: { bg: "bg-cyan-500", text: "text-slate-950", shadow: "shadow-cyan-500/20", iconColor: "text-cyan-400" },
-            simplify: { bg: "bg-amber-500", text: "text-slate-950", shadow: "shadow-amber-500/20", iconColor: "text-amber-400" }
+            translate: { bg: "bg-cyan-500", text: "text-slate-950", shadow: "shadow-cyan-500/20", iconColor: "text-cyan-400" }
           };
           const activeColor = accentColors[tab.id] || accentColors.chat;
           return (
@@ -640,39 +638,7 @@ ${activeDoc.summary?.actionItems?.map((a, idx) => `- ${a}`).join('\n') || "None"
               </motion.div>
             )}
 
-            {activeTab === "simplify" && activeDoc && (
-              <motion.div
-                key="simplify"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                className="bg-bg-surface/20 backdrop-blur-xl border border-slate-800/40 rounded-3xl p-8 space-y-6 max-w-3xl mx-auto"
-              >
-                <div className="flex items-center gap-2.5 pb-3.5 border-b border-slate-900">
-                  <Sparkles className="w-5.5 h-5.5 text-amber-400" />
-                  <h2 className="text-lg font-bold text-white">Simplified Summary</h2>
-                </div>
-                <div className="p-6 bg-bg-surface/30 backdrop-blur-xs border border-slate-855 rounded-2xl space-y-4">
-                  <h4 className="text-xs font-bold text-amber-400 font-mono uppercase tracking-wider">Simplified In 3 Bullets:</h4>
-                  <div className="space-y-3">
-                    {(activeDoc.summary?.keyTakeaways || []).slice(0, 3).map((takeaway, idx) => (
-                      <div key={idx} className="flex gap-4 items-start p-3.5 bg-bg-surface-raised/20 backdrop-blur-xs border border-slate-800/50 rounded-2xl">
-                        <span className="w-6 h-6 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-xs font-mono font-bold text-amber-400 mt-0.5 shrink-0">
-                          {idx + 1}
-                        </span>
-                        <p className="text-sm md:text-base text-slate-205 leading-relaxed font-normal">{takeaway}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <div className="p-6 bg-bg-surface-raised/20 border border-slate-800 rounded-2xl space-y-3.5">
-                  <h4 className="text-xs font-bold text-slate-450 font-mono uppercase tracking-wider">Plain English Translation:</h4>
-                  <p className="text-sm md:text-base text-slate-300 leading-relaxed font-normal">
-                    {(activeDoc.summary?.executiveSummary || "").split('.').slice(0, 3).join('.')}.
-                  </p>
-                </div>
-              </motion.div>
-            )}
+
           </AnimatePresence>
         </div>
       </main>
