@@ -268,18 +268,18 @@ ${activeDoc.summary?.actionItems?.map((a, idx) => `- ${a}`).join('\n') || "None"
     }, 2); // default to 2
 
     return (
-      <div className="h-screen w-screen bg-slate-950 flex flex-col text-slate-100 font-sans leading-relaxed selection:bg-sky-500/20 overflow-hidden relative" id="library-view-root">
+      <div className="h-screen w-screen bg-bg-base flex flex-col text-slate-100 font-sans leading-relaxed selection:bg-[#c0ff52]/25 overflow-hidden relative bg-grid" id="library-view-root">
         {/* Soft background layout glows */}
-        <div className="absolute top-[5%] left-[10%] w-[40%] h-[40%] bg-sky-500/5 rounded-full blur-[160px] pointer-events-none" />
+        <div className="absolute top-[5%] left-[10%] w-[40%] h-[40%] bg-[#c0ff52]/5 rounded-full blur-[160px] pointer-events-none" />
         <div className="absolute bottom-[5%] right-[10%] w-[40%] h-[40%] bg-indigo-500/5 rounded-full blur-[160px] pointer-events-none" />
 
         {/* Brand Header */}
-        <header className="h-16 shrink-0 border-b border-slate-900/60 flex items-center justify-between px-6 bg-slate-950/20 backdrop-blur-lg z-40">
+        <header className="h-16 shrink-0 border-b border-slate-900/60 flex items-center justify-between px-6 bg-bg-base/70 backdrop-blur-md z-40">
           <div className="flex items-center gap-3">
             <span className="font-extrabold text-base tracking-tight text-white uppercase font-sans">
-              DocMind<span className="text-sky-400">.ai</span>
+              DocMind<span className="text-[#c0ff52]">.ai</span>
             </span>
-            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-slate-900 border border-slate-800 text-slate-400">
+            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-bg-surface border border-slate-800 text-slate-400">
               Workspace
             </span>
           </div>
@@ -295,13 +295,13 @@ ${activeDoc.summary?.actionItems?.map((a, idx) => `- ${a}`).join('\n') || "None"
                     className="w-8 h-8 rounded-full border border-slate-800"
                   />
                 ) : (
-                  <div className="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-xs text-sky-400 font-bold font-sans">
+                  <div className="w-8 h-8 rounded-full bg-[#12141c] border border-slate-800 flex items-center justify-center text-xs text-[#c0ff52] font-bold font-sans">
                     {(googleUser.name || "U")[0].toUpperCase()}
                   </div>
                 )}
                 <button
                   onClick={handleLogout}
-                  className="p-1.5 rounded-full bg-slate-900 hover:bg-rose-950/20 hover:text-rose-400 border border-slate-800 hover:border-rose-900/40 text-slate-400 transition-all cursor-pointer"
+                  className="p-1.5 rounded-full bg-bg-surface hover:bg-rose-955/20 hover:text-rose-450 border border-slate-800 hover:border-rose-900/40 text-slate-450 transition-all cursor-pointer"
                   title="Sign Out"
                 >
                   <LogOut className="w-3.5 h-3.5" />
@@ -317,7 +317,7 @@ ${activeDoc.summary?.actionItems?.map((a, idx) => `- ${a}`).join('\n') || "None"
             {/* Header Title */}
             <div className="text-left space-y-2">
               <h1 className="text-4xl font-extrabold tracking-tight text-white font-sans uppercase leading-none">
-                THE LIBRARY<span className="text-sky-400">.</span>
+                THE LIBRARY<span className="text-[#c0ff52]">.</span>
               </h1>
               <p className="text-xs md:text-sm text-slate-400 max-w-2xl leading-normal">
                 Every document you feed DocMind becomes a living knowledge base — chat, quizzes, flashcards, translations and notes, one click away.
@@ -333,9 +333,9 @@ ${activeDoc.summary?.actionItems?.map((a, idx) => `- ${a}`).join('\n') || "None"
                 { label: "AVG RESPONSE", value: "419ms", icon: Sparkles, isVanity: true },
                 { label: "SUCCESS RATE", value: "100%", icon: Activity, isVanity: true },
               ].map((stat, idx) => (
-                <div key={idx} className={`bg-bg-surface border border-slate-800/80 rounded-2xl p-4 flex flex-col gap-1.5 shadow-xs transition-colors hover:border-slate-700 ${stat.isVanity ? 'opacity-70' : 'opacity-100'}`}>
-                  <span className={`text-[10px] font-bold uppercase tracking-wider flex items-center gap-1.5 ${stat.isVanity ? 'text-slate-500' : 'text-sky-400'}`}>
-                    <stat.icon className={`w-3.5 h-3.5 ${stat.isVanity ? 'text-slate-500' : 'text-sky-400'}`} />
+                <div key={idx} className={`bg-bg-surface/50 backdrop-blur-md border border-slate-800/80 rounded-2xl p-4 flex flex-col gap-1.5 shadow-xs transition-colors hover:border-slate-700 ${stat.isVanity ? 'opacity-70' : 'opacity-100'}`}>
+                  <span className={`text-[10px] font-bold uppercase tracking-wider flex items-center gap-1.5 ${stat.isVanity ? 'text-slate-500' : 'text-[#c0ff52]'}`}>
+                    <stat.icon className={`w-3.5 h-3.5 ${stat.isVanity ? 'text-slate-500' : 'text-[#c0ff52]'}`} />
                     {stat.label}
                   </span>
                   <span className={`font-extrabold leading-none ${stat.isVanity ? 'text-base text-slate-400' : 'text-xl text-white'}`}>{stat.value}</span>
@@ -344,7 +344,7 @@ ${activeDoc.summary?.actionItems?.map((a, idx) => `- ${a}`).join('\n') || "None"
             </div>
 
             {/* Drag and Drop Container */}
-            <div className="bg-[#12131c]/40 border border-slate-850 rounded-2xl p-4 flex flex-col justify-center items-center shadow-xs">
+            <div className="bg-[#12131c]/30 backdrop-blur-md border border-slate-800/80 rounded-2xl p-4 flex flex-col justify-center items-center shadow-xs">
               <UploadZone
                 onUploadSuccess={handleUploadSuccess}
                 uploadedDocs={uploadedDocs}
@@ -361,7 +361,7 @@ ${activeDoc.summary?.actionItems?.map((a, idx) => `- ${a}`).join('\n') || "None"
                 Ingested Documents
               </h3>
               {uploadedDocs.length === 0 ? (
-                <div className="flex flex-col items-center justify-center rounded-2xl bg-slate-900/20 border border-slate-850 p-12 text-center">
+                <div className="flex flex-col items-center justify-center rounded-2xl bg-bg-surface/30 backdrop-blur-md border border-slate-800 p-12 text-center">
                   <p className="text-xs text-slate-500 font-medium max-w-sm leading-relaxed">
                     No documents in your library yet. Upload documents using the dropzone above to begin analyzing.
                   </p>
@@ -371,13 +371,13 @@ ${activeDoc.summary?.actionItems?.map((a, idx) => `- ${a}`).join('\n') || "None"
                   {uploadedDocs.map((doc) => (
                     <div
                       key={doc.id}
-                      className="bg-bg-surface border border-slate-800/80 hover:border-sky-500/30 rounded-2xl p-5 flex flex-col justify-between gap-4 transition-all duration-300 group shadow-xs relative"
+                      className="bg-bg-surface/50 backdrop-blur-md border border-slate-800/80 hover:border-[#c0ff52]/30 rounded-2xl p-5 flex flex-col justify-between gap-4 transition-all duration-300 group shadow-xs relative"
                     >
                       {/* Top line with title and trash button */}
                       <div className="space-y-2">
                         <div className="flex items-start justify-between gap-3">
                           <div className="flex items-center gap-2">
-                            <FileText className="w-4.5 h-4.5 text-sky-400 shrink-0" />
+                            <FileText className="w-4.5 h-4.5 text-[#c0ff52] shrink-0" />
                             <h4 className="text-xs md:text-sm font-bold text-slate-100 truncate max-w-[180px]" title={doc.name}>
                               {doc.name}
                             </h4>
@@ -406,7 +406,7 @@ ${activeDoc.summary?.actionItems?.map((a, idx) => `- ${a}`).join('\n') || "None"
                       {/* Open Workspace action (Secondary Outline button style) */}
                       <button
                         onClick={() => handleOpenWorkspace(doc.id)}
-                        className="w-full bg-bg-surface-raised border border-slate-700/60 hover:border-slate-500 text-slate-300 py-2 rounded-full text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer active:scale-[0.98]"
+                        className="w-full bg-bg-surface-raised border border-slate-700/60 hover:border-[#c0ff52]/30 text-slate-350 py-2 rounded-full text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer active:scale-[0.98]"
                       >
                         <span>Open workspace</span>
                         <ChevronRight className="w-3.5 h-3.5" />
@@ -424,13 +424,13 @@ ${activeDoc.summary?.actionItems?.map((a, idx) => `- ${a}`).join('\n') || "None"
 
   // --- WORKSPACE VIEW MODE (Android 16 Minimal Style - Scroll-free viewport) ---
   return (
-    <div className="h-screen w-screen bg-slate-950 flex flex-col text-slate-100 font-sans leading-relaxed selection:bg-sky-500/20 overflow-hidden" id="workspace-view-root">
+    <div className="h-screen w-screen bg-bg-base flex flex-col text-slate-100 font-sans leading-relaxed selection:bg-[#c0ff52]/20 overflow-hidden bg-grid" id="workspace-view-root">
       {/* Top bar */}
-      <header className="h-16 shrink-0 border-b border-slate-900 flex items-center justify-between px-6 bg-slate-955/20 backdrop-blur-lg z-40">
+      <header className="h-16 shrink-0 border-b border-slate-900 flex items-center justify-between px-6 bg-bg-base/70 backdrop-blur-md z-40">
         <div className="flex items-center gap-3">
           <button
             onClick={handleBackToLibrary}
-            className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 text-xs font-bold transition-all cursor-pointer"
+            className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-bg-surface hover:bg-bg-surface-raised border border-slate-800 text-slate-300 text-xs font-bold transition-all cursor-pointer"
           >
             <ChevronLeft className="w-4 h-4" />
             <span>Library</span>
@@ -440,7 +440,7 @@ ${activeDoc.summary?.actionItems?.map((a, idx) => `- ${a}`).join('\n') || "None"
 
           {/* Doc metadata */}
           <div className="flex items-center gap-2">
-            <FileText className="w-4.5 h-4.5 text-sky-400" />
+            <FileText className="w-4.5 h-4.5 text-[#c0ff52]" />
             <div>
               <span className="text-xs md:text-sm font-bold text-slate-100 block leading-tight">{activeDoc?.name}</span>
               <span className="text-[10px] text-slate-500 font-mono block leading-none mt-0.5">
@@ -457,7 +457,7 @@ ${activeDoc.summary?.actionItems?.map((a, idx) => `- ${a}`).join('\n') || "None"
               href={activeDoc.driveViewLink}
               target="_blank"
               rel="noreferrer"
-              className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 text-xs font-bold transition-all"
+              className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-bg-surface hover:bg-bg-surface-raised border border-slate-800 text-slate-300 text-xs font-bold transition-all"
             >
               <Eye className="w-4 h-4" />
               <span>Preview</span>
@@ -465,16 +465,16 @@ ${activeDoc.summary?.actionItems?.map((a, idx) => `- ${a}`).join('\n') || "None"
           )}
           <button
             onClick={handleExportNotes}
-            className="flex items-center gap-1 px-4 py-1.5 rounded-full bg-sky-500 hover:bg-sky-400 text-slate-950 text-xs font-bold transition-all cursor-pointer"
+            className="flex items-center gap-1 px-4 py-1.5 rounded-full bg-[#c0ff52] hover:bg-[#b0f53d] text-slate-950 text-xs font-bold transition-all cursor-pointer"
           >
-            <ArrowRight className="w-4 h-4 text-slate-950" />
+            <ArrowRight className="w-4 h-4 text-slate-955" />
             <span>Export notes</span>
           </button>
         </div>
       </header>
 
       {/* Tabs bar */}
-      <div className="h-12 shrink-0 border-b border-slate-900 bg-bg-surface px-6 py-1 flex items-center justify-start gap-1.5 overflow-x-auto select-none scrollbar-none" id="workspace-horizontal-tabs">
+      <div className="h-12 shrink-0 border-b border-slate-900 bg-bg-surface/50 backdrop-blur-md px-6 py-1 flex items-center justify-start gap-1.5 overflow-x-auto select-none scrollbar-none" id="workspace-horizontal-tabs">
         {[
           { id: "chat", label: "Chat", icon: MessageSquare },
           { id: "summary", label: "Summary", icon: FileText },
@@ -486,7 +486,7 @@ ${activeDoc.summary?.actionItems?.map((a, idx) => `- ${a}`).join('\n') || "None"
         ].map((tab) => {
           const isActive = activeTab === tab.id;
           const accentColors: Record<string, { bg: string; text: string; shadow: string; iconColor: string }> = {
-            chat: { bg: "bg-sky-500", text: "text-slate-950", shadow: "shadow-sky-500/20", iconColor: "text-sky-400" },
+            chat: { bg: "bg-[#c0ff52]", text: "text-slate-950", shadow: "shadow-[#c0ff52]/20", iconColor: "text-[#c0ff52]" },
             summary: { bg: "bg-teal-500", text: "text-slate-950", shadow: "shadow-teal-500/20", iconColor: "text-teal-400" },
             keypoints: { bg: "bg-indigo-500", text: "text-slate-950", shadow: "shadow-indigo-500/20", iconColor: "text-indigo-400" },
             quiz: { bg: "bg-orange-500", text: "text-slate-950", shadow: "shadow-orange-500/20", iconColor: "text-orange-450" },
@@ -558,7 +558,7 @@ ${activeDoc.summary?.actionItems?.map((a, idx) => `- ${a}`).join('\n') || "None"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="bg-bg-surface border border-slate-800/80 rounded-3xl p-6 space-y-5"
+                className="bg-bg-surface/50 backdrop-blur-md border border-slate-800/80 rounded-3xl p-6 space-y-5"
               >
                 <div className="flex items-center gap-2 pb-3 border-b border-slate-900">
                   <Bookmark className="w-5 h-5 text-indigo-400" />
@@ -566,7 +566,7 @@ ${activeDoc.summary?.actionItems?.map((a, idx) => `- ${a}`).join('\n') || "None"
                 </div>
                 <div className="space-y-3">
                   {(activeDoc.summary?.keyTakeaways || []).map((takeaway, idx) => (
-                    <div key={idx} className="flex gap-3.5 items-start p-3.5 bg-bg-surface-raised border border-slate-800/60 rounded-2xl">
+                    <div key={idx} className="flex gap-3.5 items-start p-3.5 bg-bg-surface-raised/40 backdrop-blur-xs border border-slate-800/65 rounded-2xl">
                       {/* Indigo Accent Numbered Circle */}
                       <span className="w-5.5 h-5.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-mono font-bold flex items-center justify-center shrink-0 mt-0.5">
                         {idx + 1}
@@ -634,18 +634,17 @@ ${activeDoc.summary?.actionItems?.map((a, idx) => `- ${a}`).join('\n') || "None"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="bg-bg-surface border border-slate-800/80 rounded-3xl p-6 space-y-4"
+                className="bg-bg-surface/50 backdrop-blur-md border border-slate-800/80 rounded-3xl p-6 space-y-4"
               >
                 <div className="flex items-center gap-2.5 pb-3 border-b border-slate-900">
                   <Sparkles className="w-5 h-5 text-amber-400" />
                   <h2 className="text-base font-bold text-white">Simplified Summary</h2>
                 </div>
-                <div className="p-4 bg-bg-surface border border-slate-800/60 rounded-2xl space-y-3">
+                <div className="p-4 bg-bg-surface/60 backdrop-blur-xs border border-slate-800/60 rounded-2xl space-y-3">
                   <h4 className="text-[10px] font-bold text-amber-400 font-mono uppercase tracking-wider">Simplified In 3 Bullets:</h4>
-                  {/* Standardized Numbered Circle pattern instead of list bullets */}
                   <div className="space-y-2.5">
                     {(activeDoc.summary?.keyTakeaways || []).slice(0, 3).map((takeaway, idx) => (
-                      <div key={idx} className="flex gap-3.5 items-start p-2.5 bg-bg-surface-raised border border-slate-800/50 rounded-2xl">
+                      <div key={idx} className="flex gap-3.5 items-start p-2.5 bg-bg-surface-raised/40 backdrop-blur-xs border border-slate-800/50 rounded-2xl">
                         <span className="w-5.5 h-5.5 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-[10px] font-mono font-bold text-amber-400 mt-0.5 shrink-0">
                           {idx + 1}
                         </span>

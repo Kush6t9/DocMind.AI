@@ -162,11 +162,11 @@ export default function UploadZone({
         onClick={triggerFileInput}
         className={`relative flex flex-col items-center justify-center border-2 border-dashed rounded-3xl p-5 text-center cursor-pointer transition-all duration-300 h-36 min-h-[9rem] w-full max-w-lg mx-auto ${
           isDragActive
-            ? "border-sky-400 bg-sky-955/20 shadow-[0_0_20px_rgba(56,189,248,0.15)]"
+            ? "border-[#c0ff52]/60 bg-[#c0ff52]/5 shadow-[0_0_20px_rgba(192,255,82,0.1)]"
             : "border-slate-800 bg-bg-surface-raised/40 hover:border-slate-700 hover:bg-bg-surface-raised/60"
         }`}
         style={{
-          backgroundImage: 'radial-gradient(rgba(56, 189, 248, 0.08) 1.5px, transparent 1.5px)',
+          backgroundImage: 'radial-gradient(rgba(192, 255, 82, 0.08) 1.5px, transparent 1.5px)',
           backgroundSize: '16px 16px',
         }}
       >
@@ -188,7 +188,7 @@ export default function UploadZone({
               exit={{ opacity: 0, y: -10 }}
               className="flex flex-col items-center gap-3"
             >
-              <div className="w-12 h-12 rounded-full bg-slate-800 border border-slate-750 flex items-center justify-center text-sky-400 shadow-inner">
+              <div className="w-12 h-12 rounded-full bg-slate-800 border border-slate-750 flex items-center justify-center text-[#c0ff52] shadow-inner">
                 {accessToken ? (
                   <Check className="w-6 h-6 text-emerald-400 animate-pulse-slow" />
                 ) : (
@@ -205,7 +205,7 @@ export default function UploadZone({
                       Drive Sync Active (click to browse)
                     </span>
                   ) : (
-                    <>or <span className="text-sky-400 underline font-semibold">browse local files</span></>
+                    <>or <span className="text-[#c0ff52] underline font-semibold">browse local files</span></>
                   )}
                 </p>
               </div>
@@ -225,13 +225,13 @@ export default function UploadZone({
               onClick={(e) => e.stopPropagation()} // stop file dialog triggering on background click
             >
               <div className="relative flex items-center justify-center">
-                <Loader2 className="w-10 h-10 text-sky-400 animate-spin" />
-                <span className="absolute text-[9px] font-mono text-sky-300 font-semibold">
+                <Loader2 className="w-10 h-10 text-[#c0ff52] animate-spin" />
+                <span className="absolute text-[9px] font-mono text-[#c0ff52] font-semibold">
                   {progress}%
                 </span>
               </div>
               <div className="w-full text-center">
-                <p className="text-xs font-semibold text-sky-300">
+                <p className="text-xs font-semibold text-[#c0ff52]">
                   {uploadState === "uploading" ? "Uploading Document..." : "Analyzing & Summarizing..."}
                 </p>
                 <p className="text-[10px] text-slate-400 mt-0.5">
@@ -241,7 +241,7 @@ export default function UploadZone({
               {/* Progress track */}
               <div className="w-full bg-slate-800 rounded-full h-1 overflow-hidden">
                 <motion.div
-                  className="bg-sky-400 h-full"
+                  className="bg-[#c0ff52] h-full"
                   initial={{ width: "0%" }}
                   animate={{ width: `${progress}%` }}
                   transition={{ duration: 0.2 }}
