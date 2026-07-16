@@ -13,7 +13,6 @@ import DocumentSummary from "./components/DocumentSummary";
 import ChatInterface from "./components/ChatInterface";
 import QuizView from "./components/QuizView";
 import TranslationView from "./components/TranslationView";
-import ThemeToggle from "./components/ThemeToggle";
 
 export default function App() {
   // Google OAuth States
@@ -289,7 +288,6 @@ ${activeDoc.summary?.actionItems?.map((a, idx) => `- ${a}`).join('\n') || "None"
           </div>
 
           <div className="flex items-center gap-3">
-            <ThemeToggle />
             {googleUser && (
               <div className="flex items-center gap-2.5">
                 {googleUser.picture ? (
@@ -464,9 +462,8 @@ ${activeDoc.summary?.actionItems?.map((a, idx) => `- ${a}`).join('\n') || "None"
           </div>
         </div>
 
-        {/* Top actions with Theme Switcher */}
+        {/* Top actions */}
         <div className="flex items-center gap-2">
-          <ThemeToggle />
           {activeDoc?.driveViewLink && (
             <a
               href={activeDoc.driveViewLink}
