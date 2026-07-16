@@ -58,24 +58,24 @@ export default function LoginScreen({ onLoginSuccess, isVerifying, setIsVerifyin
   });
 
   return (
-    <div className="h-screen w-screen bg-bg-base text-slate-100 font-sans selection:bg-[#c0ff52]/20 overflow-y-auto relative scroll-smooth bg-grid" id="landing-page-root">
+    <div className="h-screen w-screen bg-bg-base text-slate-100 font-sans selection:bg-sky-500/20 overflow-y-auto relative scroll-smooth bg-grid" id="landing-page-root">
       {/* Background ambient layout glows */}
-      <div className="absolute top-[5%] left-[-10%] w-[50%] h-[50%] bg-[#c0ff52]/5 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute top-[5%] left-[-10%] w-[50%] h-[50%] bg-sky-500/5 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute top-[40%] right-[-10%] w-[50%] h-[50%] bg-indigo-500/5 rounded-full blur-[140px] pointer-events-none" />
 
       {/* FIXED HEADER */}
-      <header className="h-16 border-b border-slate-905/60 flex items-center justify-between px-8 bg-bg-base/75 backdrop-blur-lg sticky top-0 z-50">
+      <header className="h-16 border-b border-slate-900/60 flex items-center justify-between px-8 bg-bg-base/40 backdrop-blur-xl sticky top-0 z-50">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-[#c0ff52] flex items-center justify-center text-slate-950 font-bold font-sans">
+          <div className="w-8 h-8 rounded-lg bg-sky-500 flex items-center justify-center text-slate-950 font-bold font-sans">
             D
           </div>
           <span className="font-extrabold text-base tracking-tight text-white uppercase font-sans">
-            DocMind<span className="text-[#c0ff52]">.ai</span>
+            DocMind<span className="text-sky-400">.ai</span>
           </span>
         </div>
 
         {/* Navigation Bar Pills */}
-        <nav className="hidden md:flex items-center gap-1 bg-bg-surface/80 border border-slate-805 rounded-full px-1.5 py-1">
+        <nav className="hidden md:flex items-center gap-1 bg-bg-surface/40 backdrop-blur-md border border-slate-850 rounded-full px-1.5 py-1">
           <a href="#hero" className="px-4 py-1.5 rounded-full text-xs font-semibold text-slate-350 hover:text-white transition-all">Product</a>
           <a href="#workflow" className="px-4 py-1.5 rounded-full text-xs font-semibold text-slate-350 hover:text-white transition-all">Workflow</a>
           <a href="#toolkit" className="px-4 py-1.5 rounded-full text-xs font-semibold text-slate-355 hover:text-white transition-all">Metrics</a>
@@ -85,7 +85,7 @@ export default function LoginScreen({ onLoginSuccess, isVerifying, setIsVerifyin
         <button
           onClick={() => login()}
           disabled={isVerifying}
-          className="flex items-center gap-1.5 px-5 py-2 rounded-full bg-[#c0ff52] hover:bg-[#b0f53d] text-slate-950 text-xs font-bold transition-all cursor-pointer shadow-md active:scale-95"
+          className="flex items-center gap-1.5 px-5 py-2 rounded-full bg-sky-500 hover:bg-sky-400 text-slate-955 text-xs font-bold transition-all cursor-pointer shadow-md active:scale-95"
         >
           <span>{isVerifying ? "Verifying..." : "Launch app"}</span>
           <ArrowRight className="w-3.5 h-3.5" />
@@ -96,18 +96,18 @@ export default function LoginScreen({ onLoginSuccess, isVerifying, setIsVerifyin
       <section id="hero" className="min-h-[calc(100vh-4rem)] max-w-7xl w-full mx-auto px-8 py-12 flex flex-col lg:flex-row items-center gap-12 justify-center relative">
         {/* Left copy column */}
         <div className="flex-1 text-left space-y-6 max-w-2xl">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#c0ff52]/10 border border-[#c0ff52]/20 text-[#c0ff52] text-[11px] font-bold tracking-wide uppercase font-mono">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#c0ff52] animate-pulse"></span>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sky-500/10 border border-sky-500/20 text-sky-400 text-[11px] font-bold tracking-wide uppercase font-mono">
+            <span className="w-1.5 h-1.5 rounded-full bg-sky-400 animate-pulse"></span>
             DOCUMENT INTELLIGENCE, STREAMED LIVE
           </div>
 
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-white leading-none uppercase font-sans">
             READ LESS.<br />
-            KNOW <span className="bg-gradient-to-r from-[#c0ff52] to-emerald-400 bg-clip-text text-transparent">EVERY-</span><br />
+            KNOW <span className="bg-gradient-to-r from-sky-400 to-indigo-400 bg-clip-text text-transparent">EVERY-</span><br />
             THING.
           </h1>
 
-          <p className="text-sm md:text-base text-slate-450 leading-relaxed max-w-xl font-normal">
+          <p className="text-sm md:text-base text-slate-455 leading-relaxed max-w-xl font-normal">
             Upload any document and instantly understand it with AI — chat with it, summarize it, turn it into quizzes and flashcards, translate it, and extract the insights that matter. In seconds, not hours.
           </p>
 
@@ -115,7 +115,7 @@ export default function LoginScreen({ onLoginSuccess, isVerifying, setIsVerifyin
           <div className="flex flex-wrap gap-4 pt-2">
             <button
               onClick={() => login()}
-              className="px-6 py-3 rounded-full bg-[#c0ff52] hover:bg-[#b0f53d] text-slate-955 font-bold text-sm transition-all cursor-pointer shadow-lg hover:shadow-[#c0ff52]/10 flex items-center gap-2 active:scale-95"
+              className="px-6 py-3 rounded-full bg-sky-500 hover:bg-sky-400 text-slate-955 font-bold text-sm transition-all cursor-pointer shadow-lg hover:shadow-sky-500/10 flex items-center gap-2 active:scale-95"
             >
               <span>Drop a PDF in</span>
               <ArrowRight className="w-4 h-4 text-slate-950" />
@@ -129,14 +129,14 @@ export default function LoginScreen({ onLoginSuccess, isVerifying, setIsVerifyin
           </div>
         </div>
 
-        {/* Right side visualization: Interactive Chat Mockup (Matches screenshot exactly, themed Lime Green) */}
-        <div className="flex-1 w-full max-w-lg bg-bg-surface/60 backdrop-blur-md border border-slate-800/80 rounded-3xl p-6 shadow-2xl relative shrink-0">
+        {/* Right side visualization: Interactive Chat Mockup (Matches screenshot exactly, themed Sky-Blue & Transparent) */}
+        <div className="flex-1 w-full max-w-lg bg-bg-surface/20 backdrop-blur-xl border border-slate-800/40 rounded-3xl p-6 shadow-2xl relative shrink-0">
           <div className="flex items-center justify-between border-b border-slate-900 pb-3.5 mb-4">
             <div className="flex items-center gap-2.5">
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
               <span className="text-xs font-mono text-slate-500">docmind · attention-paper.pdf</span>
             </div>
-            <span className="text-[10px] bg-[#c0ff52]/10 border border-[#c0ff52]/20 text-[#c0ff52] px-2.5 py-0.5 rounded font-mono uppercase tracking-wider">
+            <span className="text-[10px] bg-sky-500/10 border border-sky-500/20 text-sky-400 px-2.5 py-0.5 rounded font-mono uppercase tracking-wider">
               ● LIVE
             </span>
           </div>
@@ -144,22 +144,22 @@ export default function LoginScreen({ onLoginSuccess, isVerifying, setIsVerifyin
           <div className="space-y-4 min-h-[160px] flex flex-col justify-end">
             {/* User message */}
             <div className="self-end max-w-[85%] flex gap-2.5 flex-row-reverse items-start">
-              <div className="w-7 h-7 rounded bg-bg-surface-raised border border-slate-850 flex items-center justify-center text-xs text-slate-350 font-mono font-bold">
+              <div className="w-7 h-7 rounded bg-bg-surface-raised/20 border border-slate-850 flex items-center justify-center text-xs text-slate-350 font-mono font-bold">
                 U
               </div>
-              <div className="bg-bg-surface-raised border border-slate-800 rounded-2xl rounded-tr-none px-4 py-2.5 text-xs text-slate-200 leading-relaxed font-normal">
+              <div className="bg-bg-surface-raised/30 border border-slate-800 rounded-2xl rounded-tr-none px-4 py-2.5 text-xs text-slate-200 leading-relaxed font-normal">
                 What problem does this paper solve?
               </div>
             </div>
 
             {/* AI Response message */}
             <div className="self-start max-w-[90%] flex gap-2.5 items-start">
-              <div className="w-7 h-7 rounded bg-[#c0ff52] flex items-center justify-center text-xs text-slate-950 font-bold">
+              <div className="w-7 h-7 rounded bg-sky-500 flex items-center justify-center text-xs text-slate-950 font-bold">
                 AI
               </div>
-              <div className="bg-bg-surface-raised/40 backdrop-blur-xs border border-slate-800/80 rounded-2xl rounded-tl-none px-4 py-3 text-xs text-slate-300 leading-relaxed font-normal space-y-3">
+              <div className="bg-bg-surface-raised/10 backdrop-blur-xs border border-slate-800/60 rounded-2xl rounded-tl-none px-4 py-3 text-xs text-slate-300 leading-relaxed font-normal space-y-3">
                 <p>
-                  It attacks <span className="font-bold text-white underline decoration-[#c0ff52] decoration-2">slow document comprehension</span> — readers lose hours parsing dense PDFs. The fix: extract → understand → test yourself. Summaries with citations ([13]), auto-generated quizzes and flashcards, all in under two seconds.
+                  It attacks <span className="font-bold text-white underline decoration-sky-400 decoration-2">slow document comprehension</span> — readers lose hours parsing dense PDFs. The fix: extract → understand → test yourself. Summaries with citations ([13]), auto-generated quizzes and flashcards, all in under two seconds.
                 </p>
                 <div className="flex flex-wrap gap-1.5 pt-1">
                   <span className="px-2 py-0.5 rounded-md bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-medium flex items-center gap-1">
@@ -168,7 +168,7 @@ export default function LoginScreen({ onLoginSuccess, isVerifying, setIsVerifyin
                   <span className="px-2 py-0.5 rounded-md bg-purple-500/10 border border-purple-500/20 text-purple-400 text-[10px] font-medium flex items-center gap-1">
                     ✓ 10 flashcards built
                   </span>
-                  <span className="px-2 py-0.5 rounded-md bg-[#c0ff52]/10 border border-[#c0ff52]/20 text-[#c0ff52] text-[10px] font-medium flex items-center gap-1">
+                  <span className="px-2 py-0.5 rounded-md bg-sky-500/10 border border-sky-500/20 text-sky-400 text-[10px] font-medium flex items-center gap-1">
                     ✓ Summary exported
                   </span>
                 </div>
@@ -178,10 +178,10 @@ export default function LoginScreen({ onLoginSuccess, isVerifying, setIsVerifyin
 
           {/* Dummy Input bar */}
           <div className="mt-5 pt-3.5 border-t border-slate-900 flex gap-2 items-center">
-            <div className="flex-1 bg-bg-surface-raised border border-slate-800 rounded-full px-4 py-2.5 text-xs text-slate-500 font-normal">
+            <div className="flex-1 bg-bg-surface-raised/20 border border-slate-800 rounded-full px-4 py-2.5 text-xs text-slate-500 font-normal">
               Ask anything about the document...
             </div>
-            <div className="w-8 h-8 rounded-full bg-[#c0ff52] flex items-center justify-center text-slate-950 shrink-0 cursor-pointer">
+            <div className="w-8 h-8 rounded-full bg-sky-500 flex items-center justify-center text-slate-950 shrink-0 cursor-pointer">
               <ArrowRight className="w-4 h-4" />
             </div>
           </div>
@@ -191,7 +191,7 @@ export default function LoginScreen({ onLoginSuccess, isVerifying, setIsVerifyin
       {/* WORKFLOW SECTION */}
       <section id="workflow" className="py-20 border-t border-slate-900/60 max-w-6xl w-full mx-auto px-8 space-y-12 bg-grid">
         <div className="text-left space-y-2">
-          <span className="text-xs font-bold text-[#c0ff52] uppercase tracking-widest font-mono">WORKFLOW</span>
+          <span className="text-xs font-bold text-sky-400 uppercase tracking-widest font-mono">WORKFLOW</span>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white uppercase font-sans tracking-tight">
             FROM PDF TO MASTERY IN THREE MOVES
           </h2>
@@ -215,8 +215,8 @@ export default function LoginScreen({ onLoginSuccess, isVerifying, setIsVerifyin
               desc: "One click turns the material into a summary, key points, a quiz, a deck of flashcards, a translation, or a rewrite so simple a kid could follow it."
             }
           ].map((item, idx) => (
-            <div key={idx} className="bg-bg-surface/50 backdrop-blur-md border border-slate-800/80 rounded-3xl p-6 space-y-5 shadow-xs relative overflow-hidden group hover:border-[#c0ff52]/25 transition-all duration-300">
-              <div className="text-6xl font-extrabold text-slate-900 group-hover:text-[#c0ff52]/10 transition-colors font-mono leading-none">
+            <div key={idx} className="bg-bg-surface/20 backdrop-blur-md border border-slate-800/40 rounded-3xl p-6 space-y-5 shadow-xs relative overflow-hidden group hover:border-sky-500/20 transition-all duration-300">
+              <div className="text-6xl font-extrabold text-slate-900 group-hover:text-sky-500/10 transition-colors font-mono leading-none">
                 {item.step}
               </div>
               <div className="space-y-2">
@@ -231,30 +231,30 @@ export default function LoginScreen({ onLoginSuccess, isVerifying, setIsVerifyin
       {/* THE TOOLKIT SECTION */}
       <section id="toolkit" className="py-20 border-t border-slate-900/60 max-w-6xl w-full mx-auto px-8 space-y-12 mb-12 bg-grid">
         <div className="text-left space-y-2">
-          <span className="text-xs font-bold text-[#c0ff52] uppercase tracking-widest font-mono">THE TOOLKIT</span>
+          <span className="text-xs font-bold text-sky-400 uppercase tracking-widest font-mono">THE TOOLKIT</span>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white uppercase font-sans tracking-tight">
-            ONE UPLOAD. TWELVE SUPERPOWERS.
+            ONE UPLOAD. SEVEN SUPERPOWERS.
           </h2>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {/* Chat bento */}
-          <div className="bg-bg-surface/60 backdrop-blur-md border border-slate-800/80 rounded-3xl p-6 md:col-span-2 space-y-4 hover:border-[#c0ff52]/20 transition-all">
+          <div className="bg-bg-surface/20 backdrop-blur-md border border-slate-800/40 rounded-3xl p-6 md:col-span-2 space-y-4 hover:border-sky-500/20 transition-all">
             <div className="flex items-center gap-2">
-              <Bot className="w-5 h-5 text-[#c0ff52]" />
+              <Bot className="w-5 h-5 text-sky-400" />
               <h4 className="text-sm font-bold text-white">Chat with your document</h4>
             </div>
             <p className="text-xs md:text-sm text-slate-400 leading-relaxed font-normal">
               Ask questions in natural language and get answers pulled straight from the source — with paragraph citations and zero hallucination-by-design. Context-aware follow-ups included.
             </p>
-            <div className="bg-bg-surface-raised border border-slate-850 p-4 rounded-2xl max-w-md space-y-2 font-mono text-[11px] text-slate-500">
+            <div className="bg-bg-surface-raised/20 border border-slate-850 p-4 rounded-2xl max-w-md space-y-2 font-mono text-[11px] text-slate-500">
               <span className="text-slate-400">Which dataset performed best?</span>
-              <p className="text-slate-350"><span className="text-[#c0ff52] font-bold">WikiText-103</span> — perplexity dropped to <span className="text-[#c0ff52] font-bold">18.3</span>, a 12% gain ([T14]).</p>
+              <p className="text-slate-350"><span className="text-sky-400 font-bold">WikiText-103</span> — perplexity dropped to <span className="text-sky-400 font-bold">18.3</span>, a 12% gain ([T14]).</p>
             </div>
           </div>
 
           {/* Summary bento */}
-          <div className="bg-bg-surface/60 backdrop-blur-md border border-slate-800/80 rounded-3xl p-6 space-y-4 hover:border-teal-500/20 transition-all flex flex-col justify-between">
+          <div className="bg-bg-surface/20 backdrop-blur-md border border-slate-800/40 rounded-3xl p-6 space-y-4 hover:border-teal-500/20 transition-all flex flex-col justify-between">
             <div className="space-y-4">
               <div className="flex items-center gap-2">
                 <FileText className="w-5 h-5 text-teal-450" />
@@ -272,7 +272,7 @@ export default function LoginScreen({ onLoginSuccess, isVerifying, setIsVerifyin
           </div>
 
           {/* Keypoints bento */}
-          <div className="bg-bg-surface/60 backdrop-blur-md border border-slate-800/80 rounded-3xl p-6 space-y-4 hover:border-indigo-500/20 transition-all flex flex-col justify-between">
+          <div className="bg-bg-surface/20 backdrop-blur-md border border-slate-800/40 rounded-3xl p-6 space-y-4 hover:border-indigo-500/20 transition-all flex flex-col justify-between">
             <div className="space-y-4">
               <div className="flex items-center gap-2">
                 <Bookmark className="w-5 h-5 text-indigo-400" />
@@ -290,7 +290,7 @@ export default function LoginScreen({ onLoginSuccess, isVerifying, setIsVerifyin
           </div>
 
           {/* Quiz generator bento */}
-          <div className="bg-bg-surface/60 backdrop-blur-md border border-slate-800/80 rounded-3xl p-6 space-y-4 hover:border-orange-500/20 transition-all">
+          <div className="bg-bg-surface/20 backdrop-blur-md border border-slate-800/40 rounded-3xl p-6 space-y-4 hover:border-orange-500/20 transition-all">
             <div className="flex items-center gap-2">
               <BrainCircuit className="w-5 h-5 text-orange-405" />
               <h4 className="text-sm font-bold text-white">Quiz generator</h4>
@@ -304,7 +304,7 @@ export default function LoginScreen({ onLoginSuccess, isVerifying, setIsVerifyin
           </div>
 
           {/* Flashcards bento */}
-          <div className="bg-bg-surface/60 backdrop-blur-md border border-slate-800/80 rounded-3xl p-6 space-y-4 hover:border-purple-500/20 transition-all">
+          <div className="bg-bg-surface/20 backdrop-blur-md border border-slate-800/40 rounded-3xl p-6 space-y-4 hover:border-purple-500/20 transition-all">
             <div className="flex items-center gap-2">
               <GraduationCap className="w-5 h-5 text-purple-400" />
               <h4 className="text-sm font-bold text-white">Flashcards</h4>
@@ -312,11 +312,11 @@ export default function LoginScreen({ onLoginSuccess, isVerifying, setIsVerifyin
             <p className="text-xs text-slate-400 leading-relaxed font-normal">
               A study deck in seconds — flip, shuffle, drill until it sticks.
             </p>
-            <div className="w-14 h-8 bg-bg-surface-raised border border-slate-800 rounded-lg shadow-sm" />
+            <div className="w-14 h-8 bg-bg-surface-raised/20 border border-slate-800 rounded-lg shadow-sm" />
           </div>
 
           {/* Translate bento */}
-          <div className="bg-bg-surface/60 backdrop-blur-md border border-slate-800/80 rounded-3xl p-6 space-y-4 hover:border-cyan-500/20 transition-all">
+          <div className="bg-bg-surface/20 backdrop-blur-md border border-slate-800/40 rounded-3xl p-6 space-y-4 hover:border-cyan-500/20 transition-all">
             <div className="flex items-center gap-2">
               <Languages className="w-5 h-5 text-cyan-400" />
               <h4 className="text-sm font-bold text-white">Translation</h4>
@@ -326,8 +326,22 @@ export default function LoginScreen({ onLoginSuccess, isVerifying, setIsVerifyin
             </p>
             <div className="flex gap-1.5 flex-wrap">
               {["ES", "FR", "DE", "HI", "JA", "ZH"].map((lang) => (
-                <span key={lang} className="px-1.5 py-0.5 rounded bg-bg-surface-raised border border-slate-800 text-[9px] font-mono font-bold text-slate-450">{lang}</span>
+                <span key={lang} className="px-1.5 py-0.5 rounded bg-bg-surface-raised/20 border border-slate-800 text-[9px] font-mono font-bold text-slate-450">{lang}</span>
               ))}
+            </div>
+          </div>
+
+          {/* Simplify bento (7th superpower) */}
+          <div className="bg-bg-surface/20 backdrop-blur-md border border-slate-800/40 rounded-3xl p-6 space-y-4 hover:border-amber-500/20 transition-all">
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-amber-400" />
+              <h4 className="text-sm font-bold text-white">Simplify text</h4>
+            </div>
+            <p className="text-xs text-slate-400 leading-relaxed font-normal">
+              Rewrite complex materials or structural paragraphs in plain English, explaining jargon like a kid could follow.
+            </p>
+            <div className="px-3 py-1.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 text-[10px] font-bold inline-block">
+              ✓ Plain English mode active
             </div>
           </div>
         </div>
