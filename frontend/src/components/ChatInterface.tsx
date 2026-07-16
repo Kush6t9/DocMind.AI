@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Send, Sparkles, User, Bot, AlertCircle, RefreshCw, Trash2, ArrowDown } from "lucide-react";
+import { Send, Sparkles, User, Bot, AlertCircle, RefreshCw, Trash2, ArrowDown, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { ChatMessage } from "../types";
 
