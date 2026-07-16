@@ -103,9 +103,9 @@ export default function LoginScreen({ onLoginSuccess, isVerifying, setIsVerifyin
             DOCUMENT INTELLIGENCE, STREAMED LIVE
           </div>
 
-          <h1 className="text-6xl md:text-8xl lg:text-[100px] font-black tracking-tighter text-white leading-[0.9] uppercase font-sans">
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-white leading-none uppercase font-sans">
             READ LESS.<br />
-            KNOW <span className="bg-gradient-to-r from-cyan-400 via-sky-400 to-indigo-500 bg-clip-text text-transparent">EVERY-</span><br />
+            KNOW <span className="bg-gradient-to-r from-sky-400 to-indigo-400 bg-clip-text text-transparent">EVERY-</span><br />
             THING.
           </h1>
 
