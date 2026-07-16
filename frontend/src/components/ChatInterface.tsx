@@ -168,15 +168,15 @@ export default function ChatInterface({
       {/* Chat Header */}
       <div className="bg-bg-surface-raised/40 px-6 py-3 border-b border-slate-850 flex items-center justify-between" id="chat-header">
         <div className="flex items-center gap-2">
-          <span className="text-sm font-semibold text-slate-200">Interactive Chat <span className="text-[#c0ff52] font-mono text-[11px] ml-1.5">[Streaming Output]</span></span>
+          <span className="text-sm font-semibold text-slate-200">Interactive Chat <span className="text-sky-400 font-mono text-[11px] ml-1.5">[Streaming Output]</span></span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-[10px] bg-[#c0ff52]/10 border border-[#c0ff52]/20 text-[#c0ff52] px-2.5 py-0.5 rounded font-mono">Gemini-3.5-Flash</span>
+          <span className="text-[10px] bg-sky-500/10 border border-sky-500/20 text-sky-400 px-2.5 py-0.5 rounded font-mono">Gemini-3.5-Flash</span>
           {chatHistory.length > 0 && (
             <button
               id="clear-chat-btn"
               onClick={clearHistory}
-              className="text-[10px] flex items-center gap-1 px-2 py-0.5 rounded border border-slate-700 text-slate-400 hover:text-rose-455 hover:border-rose-900/40 hover:bg-rose-955/20 transition-all cursor-pointer font-medium"
+              className="text-[10px] flex items-center gap-1 px-2 py-0.5 rounded border border-slate-700 text-slate-450 hover:text-rose-455 hover:border-rose-900/40 hover:bg-rose-955/20 transition-all cursor-pointer font-medium"
               title="Clear conversation history"
             >
               <Trash2 className="w-3 h-3" /> Clear
@@ -194,7 +194,7 @@ export default function ChatInterface({
       >
         {chatHistory.length === 0 ? (
           <div className="flex-1 flex flex-col items-center justify-center text-center max-w-sm mx-auto gap-4 p-4">
-            <div className="w-10 h-10 rounded-lg bg-[#c0ff52]/10 border border-[#c0ff52]/20 flex items-center justify-center text-[#c0ff52] shadow-[0_0_15px_rgba(192,255,82,0.1)]">
+            <div className="w-10 h-10 rounded-lg bg-sky-500/10 border border-sky-400/20 flex items-center justify-center text-sky-400 shadow-[0_0_15px_rgba(56,189,248,0.1)]">
               <Sparkles className="w-5 h-5 animate-pulse" />
             </div>
             <div>
@@ -212,10 +212,10 @@ export default function ChatInterface({
                   id={`suggestion-chip-${idx}`}
                   key={idx}
                   onClick={() => handleSend(suggestion)}
-                  className="text-xs font-semibold bg-bg-surface border border-slate-800 hover:border-[#c0ff52]/30 px-3.5 py-2.5 rounded-2xl text-slate-355 hover:text-white hover:bg-bg-surface-raised transition-all text-left leading-normal shadow-xs cursor-pointer flex items-center justify-between group"
+                  className="text-xs font-semibold bg-bg-surface border border-slate-800 hover:border-sky-500/30 px-3.5 py-2.5 rounded-2xl text-slate-355 hover:text-white hover:bg-bg-surface-raised transition-all text-left leading-normal shadow-xs cursor-pointer flex items-center justify-between group"
                 >
                   <span className="truncate">{suggestion}</span>
-                  <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity ml-1 shrink-0 text-[#c0ff52]" />
+                  <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity ml-1 shrink-0 text-sky-400" />
                 </button>
               ))}
             </div>
@@ -234,7 +234,7 @@ export default function ChatInterface({
                 <div className={`shrink-0 w-8 h-8 rounded flex items-center justify-center text-xs font-bold ${
                   msg.role === "user"
                     ? "bg-slate-800 text-slate-300 border border-slate-700"
-                    : "bg-[#c0ff52] text-slate-950 shadow-inner"
+                    : "bg-sky-500 text-slate-950 shadow-inner"
                 }`}>
                   {msg.role === "user" ? "U" : "AI"}
                 </div>
@@ -247,10 +247,10 @@ export default function ChatInterface({
                       : "bg-slate-700/20 border border-slate-700 rounded-tl-none p-5 text-slate-300 whitespace-pre-wrap"
                   }`}>
                     {msg.content === "" && msg.isStreaming ? (
-                      <div className="flex items-center gap-1 text-[#c0ff52] py-1" id="chat-typing-indicator">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#c0ff52] animate-bounce" style={{ animationDelay: "0ms" }} />
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#c0ff52] animate-bounce" style={{ animationDelay: "150ms" }} />
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#c0ff52] animate-bounce" style={{ animationDelay: "300ms" }} />
+                      <div className="flex items-center gap-1 text-sky-400 py-1" id="chat-typing-indicator">
+                        <span className="w-1.5 h-1.5 rounded-full bg-sky-400 animate-bounce" style={{ animationDelay: "0ms" }} />
+                        <span className="w-1.5 h-1.5 rounded-full bg-sky-400 animate-bounce" style={{ animationDelay: "150ms" }} />
+                        <span className="w-1.5 h-1.5 rounded-full bg-sky-400 animate-bounce" style={{ animationDelay: "300ms" }} />
                       </div>
                     ) : (
                       msg.content
@@ -278,7 +278,7 @@ export default function ChatInterface({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
             onClick={() => scrollToBottom("smooth")}
-            className="absolute bottom-16 right-5 w-7 h-7 rounded-full bg-[#c0ff52]/20 hover:bg-[#c0ff52]/30 border border-[#c0ff52]/40 text-[#c0ff52] flex items-center justify-center shadow-lg hover:text-white transition-all cursor-pointer"
+            className="absolute bottom-16 right-5 w-7 h-7 rounded-full bg-sky-500/20 hover:bg-sky-500/30 border border-sky-400/40 text-sky-300 flex items-center justify-center shadow-lg hover:text-white transition-all cursor-pointer"
           >
             <ArrowDown className="w-3.5 h-3.5" />
           </motion.button>
@@ -301,13 +301,13 @@ export default function ChatInterface({
           onChange={(e) => setInput(e.target.value)}
           placeholder={isLoading ? "Analyzing document structure..." : "Ask about the document..."}
           disabled={isLoading}
-          className="flex-1 bg-slate-900 border border-slate-700 rounded-full px-5 py-3 text-sm focus:outline-hidden focus:border-[#c0ff52] text-slate-200 outline-hidden transition-all placeholder-slate-500"
+          className="flex-1 bg-slate-900 border border-slate-700 rounded-full px-5 py-3 text-sm focus:outline-hidden focus:border-sky-500 text-slate-200 outline-hidden transition-all placeholder-slate-500"
         />
         <button
           id="chat-send-submit"
           type="submit"
           disabled={!input.trim() || isLoading}
-          className="bg-[#c0ff52] text-slate-955 rounded-full px-6 py-3 font-bold text-sm cursor-pointer hover:bg-[#b0f53d] transition-colors shrink-0 disabled:opacity-40"
+          className="bg-sky-500 text-slate-955 rounded-full px-6 py-3 font-bold text-sm cursor-pointer hover:bg-sky-400 transition-colors shrink-0 disabled:opacity-40"
           title="Send query"
         >
           SEND
