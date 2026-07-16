@@ -2,9 +2,8 @@
 
 <img src="assets/logo.png" alt="DocMind.AI Logo" width="360" style="margin-bottom: 10px;"/>
 
-### The Intelligent Open-Source AI Document Companion & Study Suite
+### The Intelligent AI Document Companion & Study Suite
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Vite](https://img.shields.io/badge/Vite-6.x-646CFF?style=flat&logo=vite&logoColor=white)](https://vite.dev)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.x-009688?style=flat&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 [![Google Gemini](https://img.shields.io/badge/Gemini-SDK-blue?style=flat&logo=googlegemini&logoColor=white)](https://deepmind.google/technologies/gemini/)
@@ -15,7 +14,7 @@
 
 ---
 
-DocMind.AI is a premium, open-source, full-stack document analyzer designed to process, extract, and convert static documents into active knowledge repositories. Backed by a high-performance **Python FastAPI** service, a reactive **Vite + React** SPA, and powered by **Google Gemini models**, DocMind.AI delivers live synopsis, semantic chat, multi-lingual translations, and interactive practice suites.
+DocMind.AI is a premium, full-stack document analyzer designed to process, extract, and convert static documents into active knowledge repositories. Backed by a high-performance **Python FastAPI** service, a reactive **Vite + React** SPA, and powered by **Google Gemini models**, DocMind.AI delivers live synopsis, semantic chat, multi-lingual translations, and interactive practice suites.
 
 ---
 
@@ -147,8 +146,4 @@ Follow these steps to deploy a local instance of DocMind.AI for development:
    ```
 4. Open your browser and navigate to **[http://localhost:3000](http://localhost:3000)**.
 
----
 
-## 📄 License
-
-DocMind.AI is distributed under the MIT License. See [LICENSE](file:///c:/Users/akano/Documents/IBMInternship/Analyserai/Analyzer.AI/LICENSE) for more details.
