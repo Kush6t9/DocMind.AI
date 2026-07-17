@@ -104,13 +104,13 @@ export default function LoginScreen({ onLoginSuccess, isVerifying, setIsVerifyin
           </div>
 
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-white leading-none uppercase font-sans">
-            READ LESS.<br />
-            KNOW<br />
-            <span className="bg-gradient-to-r from-sky-400 via-cyan-400 to-indigo-400 bg-clip-text text-transparent">EVERYTHING.</span>
+            COMPREHEND INSTANTLY.<br />
+            MASTER<br />
+            <span className="bg-gradient-to-r from-sky-400 via-cyan-400 to-indigo-400 bg-clip-text text-transparent">ENTIRELY.</span>
           </h1>
 
           <p className="text-sm md:text-base text-slate-455 leading-relaxed max-w-xl font-normal">
-            Upload any document and instantly understand it with AI — chat with it, summarize it, turn it into quizzes and flashcards, translate it, and extract the insights that matter. In seconds, not hours.
+            Upload any document and instantly understand it with AI — chat with it, summarize it, turn it into quizzes and flashcards, translate it, and extract the insights that matter. In seconds.
           </p>
 
           {/* Action buttons */}
@@ -119,7 +119,7 @@ export default function LoginScreen({ onLoginSuccess, isVerifying, setIsVerifyin
               onClick={() => login()}
               className="px-6 py-3 rounded-full bg-sky-500 hover:bg-sky-400 text-slate-955 font-bold text-sm transition-all cursor-pointer shadow-lg hover:shadow-sky-500/10 flex items-center gap-2 active:scale-95"
             >
-              <span>Drop a PDF in</span>
+              <span>Feed the AI</span>
               <ArrowRight className="w-4 h-4 text-slate-950" />
             </button>
             <a
@@ -195,7 +195,7 @@ export default function LoginScreen({ onLoginSuccess, isVerifying, setIsVerifyin
         <div className="text-left space-y-2">
           <span className="text-xs font-bold text-sky-400 uppercase tracking-widest font-mono">WORKFLOW</span>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white uppercase font-sans tracking-tight">
-            FROM PDF TO MASTERY IN THREE MOVES
+            UPLOAD. INTEGRATE. MASTER.
           </h2>
         </div>
 
@@ -235,7 +235,7 @@ export default function LoginScreen({ onLoginSuccess, isVerifying, setIsVerifyin
         <div className="text-left space-y-2">
           <span className="text-xs font-bold text-sky-400 uppercase tracking-widest font-mono">THE TOOLKIT</span>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white uppercase font-sans tracking-tight">
-            ONE UPLOAD. SEVEN SUPERPOWERS.
+            ONE INGESTION. ULTIMATE SYNTHESIS.
           </h2>
         </div>
 
@@ -244,7 +244,7 @@ export default function LoginScreen({ onLoginSuccess, isVerifying, setIsVerifyin
           <div className="bg-bg-surface/20 backdrop-blur-md border border-slate-800/40 rounded-3xl p-6 md:col-span-2 space-y-4 hover:border-sky-500/20 transition-all">
             <div className="flex items-center gap-2">
               <Bot className="w-5 h-5 text-sky-400" />
-              <h4 className="text-sm font-bold text-white">Chat with your document</h4>
+              <h4 className="text-sm font-bold text-white">Interactive Document Querying</h4>
             </div>
             <p className="text-xs md:text-sm text-slate-400 leading-relaxed font-normal">
               Ask questions in natural language and get answers pulled straight from the source — with paragraph citations and zero hallucination-by-design. Context-aware follow-ups included.
@@ -260,7 +260,7 @@ export default function LoginScreen({ onLoginSuccess, isVerifying, setIsVerifyin
             <div className="space-y-4">
               <div className="flex items-center gap-2">
                 <FileText className="w-5 h-5 text-teal-450" />
-                <h4 className="text-sm font-bold text-white">One-click summary</h4>
+                <h4 className="text-sm font-bold text-white">Instant Core Synthesis</h4>
               </div>
               <p className="text-xs text-slate-400 leading-relaxed font-normal">
                 Dense, structured summaries with the thesis up front — no fluff, no filler.
@@ -278,7 +278,7 @@ export default function LoginScreen({ onLoginSuccess, isVerifying, setIsVerifyin
             <div className="space-y-4">
               <div className="flex items-center gap-2">
                 <Bookmark className="w-5 h-5 text-indigo-400" />
-                <h4 className="text-sm font-bold text-white">Key points</h4>
+                <h4 className="text-sm font-bold text-white">Semantic Extraction</h4>
               </div>
               <p className="text-xs text-slate-400 leading-relaxed font-normal">
                 The key bullet concepts that carry the whole document — bolded terms, core concepts, done.
