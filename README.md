@@ -71,13 +71,16 @@ Open your browser and navigate to **http://localhost:3000**.
 ## 📁 Project Structure
 
 ```text
+├── assets/                  # Brand assets and images
+├── frontend/                # Full-Stack Application Directory
+│   ├── src/                 # React UI Components and Application Logic
+│   ├── package.json         # Node build scripts and dependencies
+│   ├── server.ts            # Monolithic Node.js/Express Server & API Routes
+│   └── vite.config.ts       # React Vite Bundler Configuration
+├── .gitignore               # Git ignore rules
+├── docker-compose.yml       # Production Compose deployment file
 ├── Dockerfile               # Docker configuration for monolithic build
-├── docker-compose.yml       # Production Compose file
-└── frontend/                # Full-Stack Application Directory
-    ├── src/                 # React UI Components and Application Logic
-    ├── package.json         # Build scripts and dependencies
-    ├── server.ts            # Monolithic Node.js/Express Server & API Routes
-    └── vite.config.ts       # React Vite Bundler Configuration
+└── README.md                # Project documentation
 ```
 
 ---
