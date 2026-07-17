@@ -1,4 +1,8 @@
-# DocMind AI
+<div align="center">
+
+<img src="assets/logo.png" alt="DocMind.AI Logo" width="360" style="margin-bottom: 10px;"/>
+
+</div>
 
 > An intelligent, full-stack document analysis suite featuring streaming chat, interactive study tools, and multi-lingual translations.
 
@@ -32,6 +36,13 @@
 ---
 
 ## Architecture Overview
+
+```mermaid
+graph TD
+    User([User Client]) <-->|React Vite SPA: Port 3000| Server[Node.js Express Server]
+    Server <-->|Multi-Modal Ingestion| Gemini[Google Gemini API]
+    Server <-->|OAuth / File Backup| GDrive[Google Drive API]
+```
 
 Requests flow from the user's browser (React SPA) to the monolithic **Node.js Express backend**. The backend parses the uploaded files using specialized libraries (e.g., Mammoth for Word, SheetJS for Excel) and passes the extracted text as context to the **Google Gemini API**. For chat features, the LLM response is streamed back to the browser dynamically using **Server-Sent Events (SSE)**. 
 
