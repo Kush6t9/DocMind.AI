@@ -1,6 +1,8 @@
 <div align="center">
 
-# Analyzer.AI
+<img src="assets/logo.png" alt="DocMind.AI Logo" width="360" style="margin-bottom: 10px;"/>
+
+# DocMind.AI
 ### The Intelligent AI Document Companion & Study Suite
 
 [![Vite](https://img.shields.io/badge/Vite-6.x-646CFF?style=flat&logo=vite&logoColor=white)](https://vite.dev)
@@ -8,7 +10,7 @@
 [![Google Gemini](https://img.shields.io/badge/Gemini-SDK-blue?style=flat&logo=googlegemini&logoColor=white)](https://deepmind.google/technologies/gemini/)
 [![Docker](https://img.shields.io/badge/Docker-Enabled-2496ED?style=flat&logo=docker&logoColor=white)](https://www.docker.com/)
 
-Analyzer.AI is a premium, full-stack document analyzer designed to instantly convert static documents into active knowledge repositories. Powered by a monolithic **Node.js (Express + Vite)** architecture and advanced AI models, Analyzer.AI delivers live synopses, semantic streaming chats, multi-lingual translations, and interactive study suites.
+DocMind.AI is a premium, full-stack document analyzer designed to instantly convert static documents into active knowledge repositories. Powered by a monolithic **Node.js (Express + Vite)** architecture and advanced AI models, DocMind.AI delivers live synopses, semantic streaming chats, multi-lingual translations, and interactive study suites.
 
 </div>
 
@@ -38,7 +40,7 @@ Analyzer.AI is a premium, full-stack document analyzer designed to instantly con
 
 ## 🚀 Quick Start
 
-You can run Analyzer.AI locally either through Docker (recommended) or via a manual Node.js setup.
+You can run DocMind.AI locally either through Docker (recommended) or via a manual Node.js setup.
 
 ### Prerequisites
 - **Google Gemini API Key**: Get one from [Google AI Studio](https://aistudio.google.com).
@@ -86,5 +88,5 @@ Open your browser and navigate to **http://localhost:3000**.
 ---
 
 <div align="center">
-<i>Analyzer.AI — Built for intelligent document analysis and high-performance studying.</i>
+<i>DocMind.AI — Built for intelligent document analysis and high-performance studying.</i>
 </div>
