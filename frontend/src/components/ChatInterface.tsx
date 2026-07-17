@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Send, Sparkles, User, Bot, AlertCircle, RefreshCw, Trash2, ArrowDown, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
+import ReactMarkdown from "react-markdown";
 import { ChatMessage } from "../types";
 
 interface ChatInterfaceProps {
@@ -88,6 +89,9 @@ export default function ChatInterface({
       });
 
       if (!response.ok) {
+        if (response.status === 404) {
+          throw new Error("Document not found on server. The server may have restarted. Please re-upload the document.");
+        }
         throw new Error("Ingestion network pipe error");
       }
 
@@ -98,6 +102,7 @@ export default function ChatInterface({
 
       let accumulatedContent = "";
       let finished = false;
+      let buffer = "";
 
       while (!finished) {
         const { value, done } = await reader.read();
@@ -107,30 +112,39 @@ export default function ChatInterface({
         }
 
         const chunk = decoder.decode(value, { stream: true });
-        // Parse event stream chunks
-        const lines = chunk.split("\n");
-        for (const line of lines) {
-          if (line.startsWith("data: ")) {
-            const dataStr = line.replace("data: ", "").trim();
-            if (dataStr === "[DONE]") {
-              finished = true;
-              break;
-            }
-            try {
-              const dataObj = JSON.parse(dataStr);
-              if (dataObj.text) {
-                accumulatedContent += dataObj.text;
-                // Live state injection
-                setChatHistory((prev) =>
-                  prev.map((msg) =>
-                    msg.id === botMessageId
-                      ? { ...msg, content: accumulatedContent }
-                      : msg
-                  )
-                );
+        buffer += chunk;
+        
+        // Split by double newline to get full events
+        const parts = buffer.split("\n\n");
+        // Keep the last part in buffer because it might be incomplete
+        buffer = parts.pop() || "";
+        
+        for (const part of parts) {
+          const lines = part.split("\n");
+          for (const line of lines) {
+            if (line.startsWith("data: ")) {
+              const dataStr = line.replace("data: ", "").trim();
+              if (dataStr === "[DONE]") {
+                finished = true;
+                break;
               }
-            } catch (e) {
-              // Ignore partial parsing errors
+              try {
+                const dataObj = JSON.parse(dataStr);
+                if (dataObj.text) {
+                  accumulatedContent += dataObj.text;
+                  // Live state injection
+                  setChatHistory((prev) =>
+                    prev.map((msg) =>
+                      msg.id === botMessageId
+                        ? { ...msg, content: accumulatedContent }
+                        : msg
+                    )
+                  );
+                  await new Promise((resolve) => setTimeout(resolve, 25));
+                }
+              } catch (e) {
+                // Ignore partial parsing errors
+              }
             }
           }
         }
@@ -145,12 +159,12 @@ export default function ChatInterface({
         )
       );
 
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
       setChatHistory((prev) =>
         prev.map((msg) =>
           msg.id === botMessageId
-            ? { ...msg, content: "Error: Connection to ingestion pipe lost.", isStreaming: false }
+            ? { ...msg, content: `Error: ${err.message || "Connection to ingestion pipe lost."}`, isStreaming: false }
             : msg
         )
       );
@@ -171,7 +185,7 @@ export default function ChatInterface({
           <span className="text-sm font-semibold text-slate-200">Interactive Chat <span className="text-sky-400 font-mono text-[11px] ml-1.5">[Streaming Output]</span></span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-[10px] bg-sky-500/10 border border-sky-500/20 text-sky-400 px-2.5 py-0.5 rounded font-mono">Gemini-3.5-Flash</span>
+          <span className="text-[10px] bg-sky-500/10 border border-sky-500/20 text-sky-400 px-2.5 py-0.5 rounded font-mono">Analyzer.AI Engine</span>
           {chatHistory.length > 0 && (
             <button
               id="clear-chat-btn"
@@ -253,7 +267,35 @@ export default function ChatInterface({
                         <span className="w-1.5 h-1.5 rounded-full bg-sky-400 animate-bounce" style={{ animationDelay: "300ms" }} />
                       </div>
                     ) : (
-                      msg.content
+                      msg.role === "model" ? (
+                        <ReactMarkdown
+                          components={{
+                            p: ({node, ...props}) => <p className="mb-2 last:mb-0" {...props} />,
+                            ul: ({node, ...props}) => <ul className="list-disc pl-4 mb-2 space-y-1" {...props} />,
+                            ol: ({node, ...props}) => <ol className="list-decimal pl-4 mb-2 space-y-1" {...props} />,
+                            li: ({node, ...props}) => <li className="" {...props} />,
+                            strong: ({node, ...props}) => <strong className="font-bold text-slate-100" {...props} />,
+                            h1: ({node, ...props}) => <h1 className="text-lg font-bold mb-2 text-slate-100" {...props} />,
+                            h2: ({node, ...props}) => <h2 className="text-base font-bold mb-2 text-slate-100" {...props} />,
+                            h3: ({node, ...props}) => <h3 className="text-sm font-bold mb-2 text-slate-100" {...props} />,
+                            code: ({node, className, children, ...props}) => {
+                              const match = /language-(\w+)/.exec(className || '');
+                              const isInline = !match && !className;
+                              return isInline ? (
+                                <code className="bg-slate-800 px-1.5 py-0.5 rounded text-sky-400 font-mono text-xs" {...props}>{children}</code>
+                              ) : (
+                                <div className="bg-slate-900 rounded-lg p-3 overflow-x-auto my-2 border border-slate-700">
+                                  <code className="text-slate-300 font-mono text-xs" {...props}>{children}</code>
+                                </div>
+                              );
+                            }
+                          }}
+                        >
+                          {msg.content}
+                        </ReactMarkdown>
+                      ) : (
+                        msg.content
+                      )
                     )}
                   </div>
                   <span className={`text-[8px] font-mono text-slate-500 px-1 ${

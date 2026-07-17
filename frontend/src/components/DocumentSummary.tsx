@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FileText, Eye, CheckCircle2, Bookmark, Target, Calendar, ExternalLink, Cpu, HardDrive, Check } from "lucide-react";
 import { motion } from "motion/react";
+import ReactMarkdown from "react-markdown";
 import { FileSummary } from "../types";
 
 interface DocumentSummaryProps {
@@ -128,7 +129,7 @@ export default function DocumentSummary({ summary, driveViewLink }: DocumentSumm
         <div className="mt-6 pt-4 border-t border-slate-900 flex flex-wrap gap-2 items-center justify-between text-[10px] font-mono text-slate-500">
           <div className="flex gap-2">
             <span className="px-2 py-0.5 rounded bg-bg-surface-raised border border-slate-800 flex items-center gap-1 text-[10px]">
-              <Cpu className="w-3 h-3 text-teal-400" /> GEMINI ENGINE v1.5
+              <Cpu className="w-3 h-3 text-teal-400" /> AI ANALYTICS ENGINE
             </span>
             <span className="px-2 py-0.5 rounded bg-bg-surface-raised border border-slate-800 flex items-center gap-1 text-[10px]">
               <Check className="w-3 h-3 text-emerald-450" /> HIGH FIDELITY
@@ -160,9 +161,14 @@ export default function DocumentSummary({ summary, driveViewLink }: DocumentSumm
                 <span className="w-5.5 h-5.5 rounded-full bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-[10px] font-mono font-bold text-teal-400 mt-0.5 shrink-0">
                   {idx + 1}
                 </span>
-                <p className="text-xs leading-relaxed text-slate-350">
-                  {item}
-                </p>
+                <div className="text-xs leading-relaxed text-slate-350">
+                  <ReactMarkdown
+                    components={{
+                      p: ({node, ...props}) => <span {...props} />,
+                      strong: ({node, ...props}) => <strong className="font-bold text-slate-200" {...props} />
+                    }}
+                  >{item}</ReactMarkdown>
+                </div>
               </div>
             ))}
           </div>
@@ -200,11 +206,16 @@ export default function DocumentSummary({ summary, driveViewLink }: DocumentSumm
                 >
                   {isChecked && <CheckCircle2 className="w-3 h-3 stroke-[3.5]" />}
                 </button>
-                <p className={`text-xs md:text-sm leading-relaxed transition-all duration-300 ${
+                <div className={`text-xs md:text-sm leading-relaxed transition-all duration-300 ${
                   isChecked ? "line-through text-slate-500 font-normal" : "text-slate-350 font-medium"
                 }`}>
-                  {takeaway}
-                </p>
+                  <ReactMarkdown
+                    components={{
+                      p: ({node, ...props}) => <span {...props} />,
+                      strong: ({node, ...props}) => <strong className="font-bold text-slate-200" {...props} />
+                    }}
+                  >{takeaway}</ReactMarkdown>
+                </div>
               </div>
             );
           })}

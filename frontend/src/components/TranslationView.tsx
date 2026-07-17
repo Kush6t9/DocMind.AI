@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Languages, Globe, Loader2, Sparkles, AlertCircle, FileText, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
+import ReactMarkdown from "react-markdown";
 import { FileSummary } from "../types";
 
 interface TranslationViewProps {
@@ -44,56 +45,6 @@ export default function TranslationView({ fileId, onTranslate }: TranslationView
     }
   };
 
-  const renderMarkdown = (text: string) => {
-    const lines = text.split("\n");
-    return lines.map((line, idx) => {
-      let cleanLine = line.trim();
-      
-      if (cleanLine.startsWith("###")) {
-        return (
-          <h4 key={idx} className="text-sm font-bold text-slate-100 mt-5 mb-2.5 font-mono uppercase tracking-wider">
-            {cleanLine.replace("###", "").trim()}
-          </h4>
-        );
-      }
-      if (cleanLine.startsWith("##")) {
-        return (
-          <h3 key={idx} className="text-sm font-bold text-cyan-400 mt-6 mb-3 border-b border-slate-800 pb-1.5 flex items-center gap-2 font-mono uppercase tracking-wider">
-            <Globe className="w-4.5 h-4.5" /> {cleanLine.replace("##", "").trim()}
-          </h3>
-        );
-      }
-      if (cleanLine.startsWith("#")) {
-        return (
-          <h2 key={idx} className="text-lg font-extrabold text-white mt-7 mb-4 tracking-tight">
-            {cleanLine.replace("#", "").trim()}
-          </h2>
-        );
-      }
-      if (cleanLine.startsWith("-") || cleanLine.startsWith("*")) {
-        return (
-          <li key={idx} className="text-sm leading-relaxed text-slate-300 ml-6 list-disc mb-2 pl-0.5">
-            {cleanLine.substring(1).trim()}
-          </li>
-        );
-      }
-      if (cleanLine.startsWith("**") && cleanLine.endsWith("**")) {
-        return (
-          <p key={idx} className="text-sm font-bold text-slate-200 mt-3">
-            {cleanLine.replace(/\*\*/g, "").trim()}
-          </p>
-        );
-      }
-      if (cleanLine === "") {
-        return <div key={idx} className="h-3" />;
-      }
-      return (
-        <p key={idx} className="text-sm leading-relaxed text-slate-350 mb-2 font-sans">
-          {line}
-        </p>
-      );
-    });
-  };
 
   return (
     <div className="flex flex-col gap-4 w-full h-full" id="translation-view-container">
@@ -108,7 +59,7 @@ export default function TranslationView({ fileId, onTranslate }: TranslationView
               Cross-Lingual Translation
             </h3>
             <p className="text-[10px] text-slate-505 mt-0.5 font-mono">
-              Gemini semantic localization engine
+              AI semantic localization engine
             </p>
           </div>
         </div>
@@ -192,7 +143,7 @@ export default function TranslationView({ fileId, onTranslate }: TranslationView
               </div>
               <h3 className="text-lg font-bold text-slate-100 tracking-tight">Cross-Lingual Localization</h3>
               <p className="text-sm text-slate-450 mt-3 leading-relaxed max-w-sm mx-auto">
-                Choose a target language above and click **Translate** to begin. The Gemini model localizes summaries, key takeaways, and lists.
+                Choose a target language above and click <strong>Translate</strong> to begin. The AI model localizes summaries, key takeaways, and lists.
               </p>
             </motion.div>
           )}
@@ -213,7 +164,21 @@ export default function TranslationView({ fileId, onTranslate }: TranslationView
                 </span>
               </div>
               <div className="space-y-1.5 text-slate-300">
-                {renderMarkdown(translatedText)}
+                <ReactMarkdown
+                  components={{
+                    p: ({node, ...props}) => <p className="text-sm leading-relaxed text-slate-350 mb-2 font-sans" {...props} />,
+                    ul: ({node, ...props}) => <ul className="list-disc pl-6 mb-2 space-y-1 text-slate-300" {...props} />,
+                    ol: ({node, ...props}) => <ol className="list-decimal pl-6 mb-2 space-y-1 text-slate-300" {...props} />,
+                    li: ({node, ...props}) => <li className="text-sm leading-relaxed" {...props} />,
+                    strong: ({node, ...props}) => <strong className="font-bold text-slate-200" {...props} />,
+                    h1: ({node, ...props}) => <h1 className="text-lg font-extrabold text-white mt-7 mb-4 tracking-tight" {...props} />,
+                    h2: ({node, ...props}) => <h2 className="text-sm font-bold text-cyan-400 mt-6 mb-3 border-b border-slate-800 pb-1.5 flex items-center gap-2 font-mono uppercase tracking-wider" {...props} />,
+                    h3: ({node, ...props}) => <h3 className="text-sm font-bold text-slate-100 mt-5 mb-2.5 font-mono uppercase tracking-wider" {...props} />,
+                    h4: ({node, ...props}) => <h4 className="text-sm font-bold text-slate-100 mt-4 mb-2 font-mono" {...props} />,
+                  }}
+                >
+                  {translatedText}
+                </ReactMarkdown>
               </div>
             </motion.div>
           )}

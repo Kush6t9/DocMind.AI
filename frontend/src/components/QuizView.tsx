@@ -96,12 +96,10 @@ export default function QuizView({
           </div>
         )}
         <h3 className="text-lg font-bold text-slate-100 font-sans tracking-tight">
-          {isQuiz ? "Synthesize Practice Quiz" : "Synthesize Flashcards"}
+          {isQuiz ? "Generate Quiz" : "Generate Flashcards"}
         </h3>
         <p className="text-sm text-slate-400 mt-3 leading-relaxed">
-          {isQuiz 
-            ? "Let Gemini scan this document to construct interactive multiple-choice practice quizzes automatically."
-            : "Let Gemini scan this document to construct interactive concept study cards automatically."}
+          Allow our advanced AI to scan this document and instantly generate your interactive practice material.
         </p>
         <button
           id="generate-quiz-btn"
@@ -112,7 +110,7 @@ export default function QuizView({
               : "bg-purple-500 hover:bg-purple-400 shadow-purple-500/10"
           }`}
         >
-          {isQuiz ? "GENERATE QUIZ" : "GENERATE FLASHCARDS"}
+          GENERATE
         </button>
       </div>
     );

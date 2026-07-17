@@ -164,7 +164,7 @@ export default function UploadZone({
           type="file"
           ref={fileInputRef}
           onChange={handleFileChange}
-          accept=".pdf,.docx,.pptx,.png,.jpg,.jpeg,.webp,.txt"
+          accept=".pdf,.docx,.pptx,.png,.jpg,.jpeg,.webp,.txt,.xlsx,.csv"
           className="hidden"
         />
 
@@ -186,7 +186,7 @@ export default function UploadZone({
               </div>
               <div>
                 <p className="text-sm md:text-base font-bold text-slate-200">
-                  {accessToken ? "Save directly to Google Drive" : "Drop PDF, PPTX or Image"}
+                  {accessToken ? "Save directly to Google Drive" : "Drop PDF, Word, Excel, PPTX, Image, or Text"}
                 </p>
                 <p className="text-xs md:text-sm text-slate-400 mt-1">
                   {accessToken ? (

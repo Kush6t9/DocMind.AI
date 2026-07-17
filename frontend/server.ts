@@ -5,6 +5,7 @@ import crypto from "crypto";
 import mammoth from "mammoth";
 import AdmZip from "adm-zip";
 import dotenv from "dotenv";
+import * as xlsx from "xlsx";
 import { GoogleGenAI } from "@google/genai";
 import { createServer as createViteServer } from "vite";
 import { google } from "googleapis";
@@ -366,6 +367,19 @@ app.post("/api/upload", upload.single("file"), async (req, res) => {
     } else if (mimetype === "application/vnd.openxmlformats-officedocument.presentationml.presentation") {
       // PPTX extraction
       rawText = extractTextFromPptx(buffer);
+    } else if (mimetype === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" || originalname.endsWith(".xlsx")) {
+      // XLSX extraction
+      const workbook = xlsx.read(buffer, { type: "buffer" });
+      let extracted = "";
+      workbook.SheetNames.forEach((sheetName) => {
+        extracted += `--- Sheet: ${sheetName} ---\n`;
+        extracted += xlsx.utils.sheet_to_csv(workbook.Sheets[sheetName]);
+        extracted += "\n\n";
+      });
+      rawText = extracted;
+    } else if (mimetype === "text/csv" || originalname.endsWith(".csv")) {
+      // CSV extraction
+      rawText = buffer.toString("utf8");
     } else {
       // Fallback for TXT/Markdown/JSON etc
       rawText = buffer.toString("utf8");
@@ -543,7 +557,12 @@ ${docContext}`;
 
     for await (const chunk of responseStream) {
       const text = chunk.text || "";
-      res.write(`data: ${JSON.stringify({ text })}\n\n`);
+      // Split keeping whitespace to preserve formatting, and add a small delay to simulate typing effect
+      const tokens = text.split(/(?=\s+)/);
+      for (const token of tokens) {
+        res.write(`data: ${JSON.stringify({ text: token })}\n\n`);
+        await new Promise((resolve) => setTimeout(resolve, 20));
+      }
     }
 
     res.write("data: [DONE]\n\n");
@@ -559,7 +578,7 @@ ${docContext}`;
 // 3. Quiz & Flashcards Generator Route
 app.post("/api/quiz", async (req, res) => {
   try {
-    const { fileId } = req.body;
+    const { fileId, type = "quiz" } = req.body;
     if (!fileId) {
       return res.status(400).json({ error: "Missing fileId" });
     }
@@ -613,14 +632,13 @@ app.post("/api/quiz", async (req, res) => {
           }
         ]
       };
-      return res.json(mockQuiz);
+      return res.json({ [type]: mockQuiz[type as keyof typeof mockQuiz] });
     }
 
-    const systemPrompt = `Analyze the content of the attached document and generate:
-1. An interactive multiple-choice quiz (exactly 5 questions, with 4 options each, a correct answer, and an explanation).
-2. A list of interactive flashcards (exactly 5 cards with a 'front' concept/question and a 'back' definition/answer) summarizing key terms.
-
-Format your response as a single, valid JSON object with the following schema:
+    let systemPrompt = "";
+    if (type === "quiz") {
+      systemPrompt = `Analyze the content of the attached document and generate an interactive multiple-choice quiz (exactly 5 questions, with 4 options each, a correct answer, and an explanation).
+Format your response as a valid JSON object with the following schema:
 {
   "quiz": [
     {
@@ -630,7 +648,13 @@ Format your response as a single, valid JSON object with the following schema:
       "correctAnswer": string,
       "explanation": string
     }
-  ],
+  ]
+}
+Ensure the correctAnswer EXACTLY matches one of the values in the options array. Do not include any text before or after the JSON. Return ONLY the raw JSON block without markdown code fences or backticks.`;
+    } else {
+      systemPrompt = `Analyze the content of the attached document and generate a list of interactive flashcards (exactly 5 cards with a 'front' concept/question and a 'back' definition/answer) summarizing key terms.
+Format your response as a valid JSON object with the following schema:
+{
   "flashcards": [
     {
       "id": number,
@@ -639,8 +663,8 @@ Format your response as a single, valid JSON object with the following schema:
     }
   ]
 }
-
-Ensure the correctAnswer EXACTLY matches one of the values in the options array. Do not include any text before or after the JSON. Return ONLY the raw JSON block without markdown code fences or backticks.`;
+Do not include any text before or after the JSON. Return ONLY the raw JSON block without markdown code fences or backticks.`;
+    }
 
     let response;
     if (doc.base64Data && (doc.mimeType === "application/pdf" || doc.mimeType.startsWith("image/"))) {

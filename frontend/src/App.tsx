@@ -175,7 +175,7 @@ ${activeDoc.summary?.actionItems?.map((a, idx) => `- ${a}`).join('\n') || "None"
     URL.revokeObjectURL(url);
   };
 
-  const handleGenerateQuiz = async () => {
+  const handleGenerateBundle = async (type: "quiz" | "flashcards") => {
     if (!activeDocId) return;
     setIsGeneratingQuiz(true);
 
@@ -187,21 +187,24 @@ ${activeDoc.summary?.actionItems?.map((a, idx) => `- ${a}`).join('\n') || "None"
       const response = await fetch("/api/quiz", {
         method: "POST",
         headers,
-        body: JSON.stringify({ fileId: activeDocId }),
+        body: JSON.stringify({ fileId: activeDocId, type }),
       });
 
       if (!response.ok) {
-        throw new Error("Quiz generation server error");
+        throw new Error(`${type} generation server error`);
       }
 
-      const data: QuizData = await response.json();
+      const data = await response.json();
       setQuizzesCache((prev) => ({
         ...prev,
-        [activeDocId]: data,
+        [activeDocId]: {
+          ...(prev[activeDocId] || { quiz: [], flashcards: [] }),
+          ...data
+        },
       }));
     } catch (err) {
       console.error(err);
-      alert("Failed to synthesize quiz questions. Please check connection.");
+      alert(`Failed to synthesize ${type}. Please check connection.`);
     } finally {
       setIsGeneratingQuiz(false);
     }
@@ -598,7 +601,7 @@ ${activeDoc.summary?.actionItems?.map((a, idx) => `- ${a}`).join('\n') || "None"
                 <QuizView
                   fileId={activeDoc.id}
                   quizData={activeQuizData}
-                  onGenerateQuiz={handleGenerateQuiz}
+                  onGenerateQuiz={() => handleGenerateBundle("quiz")}
                   isLoading={isGeneratingQuiz}
                   defaultView="quiz"
                   hideTabSelectors={true}
@@ -616,7 +619,7 @@ ${activeDoc.summary?.actionItems?.map((a, idx) => `- ${a}`).join('\n') || "None"
                 <QuizView
                   fileId={activeDoc.id}
                   quizData={activeQuizData}
-                  onGenerateQuiz={handleGenerateQuiz}
+                  onGenerateQuiz={() => handleGenerateBundle("flashcards")}
                   isLoading={isGeneratingQuiz}
                   defaultView="flashcards"
                   hideTabSelectors={true}

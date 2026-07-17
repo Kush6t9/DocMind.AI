@@ -14,7 +14,7 @@
 
 ---
 
-DocMind.AI is a premium, full-stack document analyzer designed to process, extract, and convert static documents into active knowledge repositories. Backed by a high-performance **Python FastAPI** service, a reactive **Vite + React** SPA, and powered by **Google Gemini models**, DocMind.AI delivers live synopsis, semantic chat, multi-lingual translations, and interactive practice suites.
+DocMind.AI is a premium, full-stack document analyzer designed to process, extract, and convert static documents into active knowledge repositories. Backed by a high-performance **Monolithic Node.js (Express + Vite)** service, and powered by **Google Gemini models**, DocMind.AI delivers live synopsis, semantic chat, multi-lingual translations, and interactive practice suites.
 
 ---
 
@@ -22,10 +22,9 @@ DocMind.AI is a premium, full-stack document analyzer designed to process, extra
 
 ```mermaid
 graph TD
-    User([User Client]) <-->|React Vite SPA: Port 3000| FE[Frontend Server]
-    FE <-->|API Requests / SSE Streaming| BE[FastAPI Backend: Port 8000]
-    BE <-->|Multi-Modal Ingestion| Gemini[Google Gemini API]
-    BE <-->|OAuth / File Backup| GDrive[Google Drive API]
+    User([User Client]) <-->|React Vite SPA: Port 3000| Server[Node.js Express Server]
+    Server <-->|Multi-Modal Ingestion| Gemini[Google Gemini API]
+    Server <-->|OAuth / File Backup| GDrive[Google Drive API]
 ```
 
 ---
@@ -60,7 +59,7 @@ Each uploaded document receives a fully insulated, viewport-fitted workspace fea
 | Layer | Technologies |
 | :--- | :--- |
 | **Frontend** | React SPA, TypeScript, Vite, Tailwind CSS, Motion, Lucide Icons |
-| **Backend** | Python 3.10+, FastAPI, Uvicorn, Google GenAI SDK |
+| **Backend** | Node.js (Express.js), Google GenAI SDK, Multer, SSE |
 | **File Parsers** | PyPDF (PDF text), Mammoth (DOCX structure), native Zip/XML parser (PPTX slides) |
 
 ---
@@ -68,11 +67,7 @@ Each uploaded document receives a fully insulated, viewport-fitted workspace fea
 ## 📁 Repository Structure
 
 ```text
-├── backend/                  # Python FastAPI Microservice
-│   ├── main.py              # Application Root & Gemini Model SDK Integration
-│   ├── auth.py              # Google OAuth Endpoint Verification
-│   ├── drive_service.py     # Google Drive folder/file backup utilities
-│   └── requirements.txt     # Python PIP packages
+├── Dockerfile                # Docker setup for full-stack build
 ├── frontend/                 # React Client Application
 │   ├── src/
 │   │   ├── components/      # UI components (ChatInterface, QuizView, etc.)
@@ -100,39 +95,21 @@ Follow these steps to deploy a local instance of DocMind.AI for development:
 
 ### 💻 Local Installation Guide
 
-#### 1. Setup Backend Server (FastAPI)
-1. Navigate to the backend directory:
-   ```bash
-   cd backend
-   ```
-2. Initialize virtual environment:
-   ```bash
-   python -m venv venv
-   # On Windows:
-   .\venv\Scripts\activate
-   # On macOS/Linux:
-   source venv/bin/activate
-   ```
-3. Install Python requirements:
-   ```bash
-   pip install -r requirements.txt
-   ```
-4. Configure API environment variable:
-   ```bash
-   # Windows PowerShell:
-   $env:GEMINI_API_KEY="YourGeminiAPIKeyHere"
-   # Windows Command Prompt:
-   set GEMINI_API_KEY="YourGeminiAPIKeyHere"
-   # macOS/Linux:
-   export GEMINI_API_KEY="YourGeminiAPIKeyHere"
-   ```
-5. Run the ASGI server:
-   ```bash
-   uvicorn main:app --host 127.0.0.1 --port 8000 --reload
-   ```
+#### 1. Configure Environment
+Create a `.env` file in the `frontend` folder and add your Gemini API Key:
+```env
+GEMINI_API_KEY="YourGeminiAPIKeyHere"
+```
 
-#### 2. Setup Client Application (Vite + React)
-1. Open a new terminal instance and enter the frontend directory:
+#### 2. Run with Docker (Recommended)
+You can launch the entire unified stack via Docker:
+```bash
+docker-compose up --build -d
+```
+The application will be live at **[http://localhost:3000](http://localhost:3000)**.
+
+#### 3. Run Manually for Development
+1. Open a terminal instance and enter the frontend directory:
    ```bash
    cd frontend
    ```
