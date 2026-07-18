@@ -125,6 +125,3 @@ This project was developed using AI-assisted "Vibe Coding" techniques. Advanced 
 
 ---
 
-## License
-
-[Placeholder: Please insert MIT or "Academic project — not licensed for reuse" depending on your course requirements]
