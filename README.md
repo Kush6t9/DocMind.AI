@@ -6,7 +6,7 @@
 
 > An intelligent, full-stack document analysis suite featuring streaming chat, interactive study tools, and multi-lingual translations.
 
-**[Live App]([YOUR_URL_HERE](https://d42tdtjp1jixu.cloudfront.net/))**
+**[Live App][https://d42tdtjp1jixu.cloudfront.net/]**
 
 ---
 
