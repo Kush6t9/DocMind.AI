@@ -6,7 +6,7 @@
 
 > An intelligent, full-stack document analysis suite featuring streaming chat, interactive study tools, and multi-lingual translations.
 
-**[Live App](YOUR_URL_HERE)**
+**[Live App]([YOUR_URL_HERE](https://d42tdtjp1jixu.cloudfront.net/))**
 
 ---
 
@@ -58,8 +58,8 @@ Requests flow from the user's browser (React SPA) to the monolithic **Node.js Ex
 
 ### 1. Clone & Configure
 ```bash
-git clone https://github.com/YOUR_USERNAME/Analyzer.AI.git
-cd Analyzer.AI/frontend
+git clone (https://github.com/Kush6t9/DocMind.AI.git)
+cd DocMind.AI/frontend
 ```
 Create a `.env` file in the `frontend` directory (you can use `.env.example` as a reference):
 ```env
